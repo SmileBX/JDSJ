@@ -25,9 +25,9 @@ div{
   font-size: 28rpx;
 }
 checkbox .wx-checkbox-input {
-  width: 36rpx;
-  height: 36rpx;
-  border-radius: 50%;
+  width: 50rpx;
+  height: 50rpx;
+  /* border-radius: 50%; */
 }
 .list-data{
   line-height: 100rpx;
@@ -38,15 +38,15 @@ checkbox .wx-checkbox-input {
 }
 /*checkbox选中后样式  */
 checkbox .wx-checkbox-input.wx-checkbox-input-checked {
-  background: #0394F0;
+  background: #f00;
 }
 /*checkbox选中后图标样式  */
 checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
-  width: 20rpx;
-  height: 20rpx;  
-  line-height: 20rpx;
+  width: 26rpx;
+  height: 26rpx;  
+  line-height: 26rpx;
   text-align: center;
-  font-size: 22rpx;
+  font-size: 28rpx;
   color: #fff;
   background: transparent;
   transform: translate(-50%, -50%) scale(1);

@@ -40,9 +40,9 @@ page {
 }
 /*复选框清除默认样式*/
 .checkbox-cart .wx-checkbox-input {
-    width: 35rpx;
-    height: 35rpx;
-    border-radius: 50%!important;
+    width: 50rpx;
+    height: 50rpx;
+    // border-radius: 50%!important;
 }
 .bb_sel .checkbox-cart .wx-checkbox-input {
     width: 35rpx;
@@ -54,7 +54,7 @@ page {
 
 .checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked {
     background: #29a49f;
-    border-radius: 50%!important;
+    // border-radius: 50%!important;
     border: 0!important;
     width: 38rpx;
     height: 38rpx;
@@ -63,7 +63,7 @@ page {
 .checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked::before {
     width: 35rpx;
     height: 35rpx;
-    border-radius: 50%!important;
+    // border-radius: 50%!important;
     line-height: 35rpx;
     text-align: center;
     font-size: 26rpx;

@@ -9,7 +9,9 @@
     {
       "root":"pages/myson/",
       "pages":[
-        "ticket/main"
+        "ticket/main",
+        "address/main",
+        "addaddress/main"
         
       ]
     }
@@ -51,5 +53,13 @@
       "selectedIconPath": "static/tabs/4a.png"
     }],
     "position": "bottom"
-  }
+  },
+  "usingComponents": {
+    "van-datetime-picker": "./static/vant/datetime-picker/index",
+    "van-popup": "./static/vant/popup/index",
+    "van-area": "./static/vant/area/index",
+    "van-progress": "./static/vant/progress/index",
+    "van-picker": "./static/vant/picker/index"
+    
+ }
 }
