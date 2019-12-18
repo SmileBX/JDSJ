@@ -6,24 +6,24 @@
         <p class="address" @tap="choseAddress(index)">{{item.Address}}</p>
         <div class="ali-c jus-b foot">
           <label @tap="changeDefault(index)">
-              <radio class="radio" color="#29a49f" :checked="item.IsDefault==1" :value="item.Id" >
+              <radio class="radio" color="#f00000" :checked="item.IsDefault==1" :value="item.Id" >
                 <text>默认地址</text>
               </radio>
           </label>
           <div class="ali-c">
             <div class="ali-c btt" @tap="editSite(item.Id)">
-              <img class="write" src="/static/images/my/write.png" alt="">
+              <img class="write" src="/static/images/icons/write.png" alt="">
               <span>编辑</span>
             </div>
             <div class="ali-c btt" @tap="Delete(item.Id,index)">
-              <img class="delete" src="/static/images/my/delete.png" alt="">
+              <img class="delete" src="/static/images/icons/delete.png" alt="">
               <span>删除</span>
             </div>
           </div>
         </div>    
       </div>
       </radio-group>
-      <p v-else class="nodata_log flex flexColumn flexAlignCenter">
+      <p  class="nodata_log flex flexColumn flexAlignCenter" v-else>
           <img src="/static/images/icons/nosite.png" alt="" class="site_log">
           <span class="cg mt2">还没有收货地址哦~</span>
           <span class="add_new" @tap="toAddSite()">新建地址</span>
@@ -51,7 +51,7 @@ export default {
       userId: "",
       token: "",
       isLoad:true,
-      list:[]
+      list:[{Id:0,Consignee:'哈哈',Mobile:'13652415236',Address:'gsgag嘎嘎嘎噶沙司公司萨嘎是哥仨个撒'},{Id:0,Consignee:'哈哈',Mobile:'13652415236',Address:'gsgag嘎嘎嘎噶沙司公司萨嘎是哥仨个撒'}]
     }
   },
   onShow(){
@@ -242,13 +242,13 @@ export default {
     }
   }
   .write{
-    width: 24rpx;
-    height: 24rpx;
+    width: 32rpx;
+    height: 31rpx;
     margin-right: 10rpx
   }
   .delete{
-    width: 20rpx;
-    height: 24rpx;
+    width: 32rpx;
+    height: 32rpx;
     margin-right: 10rpx
   }
 }
