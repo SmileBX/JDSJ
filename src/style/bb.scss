@@ -720,3 +720,58 @@ page {
 .wd_wdd{
     width:100%;
 }
+//发票列表
+
+/* 收货地址 */
+
+.invoiceList .item {
+    background-color: #fff;
+    margin-bottom: 20rpx;
+}
+
+.invoiceList .item .IconsCK {
+    margin-right: 8rpx;
+}
+
+.invoiceList .item .item__bd {
+    padding: 30rpx;
+}
+
+.invoiceList .item .item__bd .remarks {
+    font-size: 30rpx;
+}
+
+.invoiceList .item .item__bd .remarks .tel {
+    color: #999;
+    margin-left: 20rpx;
+}
+
+.invoiceList .item .item__bd .address {
+    font-size: 28rpx;
+    color: #333333;
+    line-height: 1.4;
+    margin-top: 6rpx;
+}
+
+.invoiceList .item .item__bd .type {
+    color: #999;
+}
+
+.invoiceList .item .item__ft {
+    border-top: 1px solid #f2f2f2;
+    padding: 10rpx 20rpx;
+    line-height: 60rpx;
+    color: #999999;
+}
+
+.invoiceList .item .item__ft .iconText {
+    margin-left: 30rpx;
+}
+
+.invoiceList .item .item__ft .icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 32rpx;
+    height: 32rpx;
+    margin-right: 10rpx;
+}

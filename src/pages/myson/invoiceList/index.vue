@@ -22,12 +22,12 @@
             <span v-if="item.IsDefault===1" style="color:#ff952e">已设为默认</span>
             <span v-else>设为默认</span>
           </label>
-          <div class="flexItem flex1 text_r">
+          <div class="flexItem flex1 flex justifyContentEnd">
             <div class="iconText inline-block" @click="gotoAddInvoice(item.Id)">
-              <img src="/static/images/icons/eadit.jpg" class="icon-compose icon" alt>编辑
+              <img src="/static/images/icons/write.png" class="write" alt>编辑
             </div>
             <div class="iconText inline-block" @click="deleteBtn(index,item.Id)">
-              <img src="/static/images/icons/del.jpg" class="icon-del icon" alt>删除
+              <img src="/static/images/icons/delete.png" class="delete" alt>删除
             </div>
           </div>
         </div>
@@ -133,6 +133,7 @@
   </div>
 </template>
 <script>
+//引用成成拼租
 // import { post, toLogin, getCurrentPageUrlWithArgs, trim } from "@/utils";
 export default {
   onLoad() {
@@ -150,7 +151,7 @@ export default {
     //     this.pramas = this.$root.$mp.query.url
     // }
     
-    // this.list = [];
+    this.list = [{id:1,HeaderName:"哈哈哈",InvoiceTitlestr:"个人",TaxNumber:"3667964979656895659598"},{id:1,HeaderName:"哈哈哈",InvoiceTitlestr:"个人",TaxNumber:"3667964979656895659598"},{id:1,HeaderName:"哈哈哈",InvoiceTitlestr:"个人",TaxNumber:"3667964979656895659598"}];
     // this.hasDataList = "";
     // this.getInvoiceList();
     // this.FeesOrderList();
@@ -691,4 +692,14 @@ export default {
 .site_log{
   width:374rpx;height:288rpx;
 }
+ .write{
+    width: 32rpx;
+    height: 31rpx;
+    margin-right: 10rpx
+  }
+  .delete{
+    width: 32rpx;
+    height: 32rpx;
+    margin-right: 10rpx
+  }
 </style>
