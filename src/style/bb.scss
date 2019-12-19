@@ -18,7 +18,7 @@ page {
 
 .gou radio .wx-radio-input.wx-radio-input-checked {
     border: none;
-    background: #cc9f68;
+    background: #f00;
 }
 
 .gou radio .wx-radio-input.wx-radio-input-checked::before {
@@ -34,15 +34,21 @@ page {
     /* 对勾大小 30rpx *
     color: #fff;
     /* 对勾颜色 白色 */
-    background: #cc9f68;
+    background: #f00;
     transform: translate(-50%, -50%) scale(1);
     -webkit-transform: translate(-50%, -50%) scale(1);
 }
 /*复选框清除默认样式*/
 .checkbox-cart .wx-checkbox-input {
-    width: 50rpx;
-    height: 50rpx;
-    // border-radius: 50%!important;
+    width: 35rpx;
+    height: 35rpx;
+    border-radius: 50%!important;
+}
+.checkbox-cart.chppo .wx-checkbox-input {
+    width: 35rpx;
+    height: 35rpx;
+    background: #333333;
+    border-radius: 50%!important;
 }
 .bb_sel .checkbox-cart .wx-checkbox-input {
     width: 35rpx;
@@ -53,8 +59,8 @@ page {
 }
 
 .checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked {
-    background: #29a49f;
-    // border-radius: 50%!important;
+    background: #f00;
+    border-radius: 50%!important;
     border: 0!important;
     width: 38rpx;
     height: 38rpx;
@@ -63,7 +69,7 @@ page {
 .checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked::before {
     width: 35rpx;
     height: 35rpx;
-    // border-radius: 50%!important;
+    border-radius: 50%!important;
     line-height: 35rpx;
     text-align: center;
     font-size: 26rpx;

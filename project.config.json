@@ -81,6 +81,19 @@
 					"pathName": "pages/myson/order/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的足迹",
+					"pathName": "pages/myson/foot/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的收藏",
+					"pathName": "pages/myson/collect/main",
+					"scene": null
 				}
 			]
 		}

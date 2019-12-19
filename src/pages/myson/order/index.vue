@@ -5,8 +5,8 @@
         <span :style="'left:'+tabStyle+'rpx'"></span>
       </div>
       <div class="or_list mt2">
-        <div class="or_item bg_fff">
-            <div class="flex pp3 justifyContentBetween">
+        <div class="or_item bg_fff" v-for="(item,index) in 3" :key="index">
+            <div class="flex pp2 justifyContentBetween">
                 <p class="flex flexAlignCenter">
                     <img src="/static/images/icons/shop_logo.png" alt="" class="shop_logo">
                     <span class="ml1">花田半亩旗舰店</span>
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="text_right font24 bor_tit">共1件商品 合计 <span class="cr font30">  ¥199</span></div>
-            <div class="flex justifyContentEnd pp3">
+            <div class="flex justifyContentEnd pp2">
                 <p class="btn btn_gray">取消</p>
                 <p class="btn btn_red">去支付</p>
             </div>
