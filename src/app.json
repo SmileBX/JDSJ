@@ -11,6 +11,14 @@
       "pages":[
         "ticket/main",
         "address/main",
+        "order/main",
+        "foot/main",
+        "collect/main",
+        "mytuan/main",
+        "feedback/main",
+        "kefu/main",
+        "addInvoice/main",
+        "invoiceList/main",
         "addaddress/main"
         
       ]
@@ -59,7 +67,10 @@
     "van-popup": "./static/vant/popup/index",
     "van-area": "./static/vant/area/index",
     "van-progress": "./static/vant/progress/index",
-    "van-picker": "./static/vant/picker/index"
+    "van-picker": "./static/vant/picker/index",
+    "van-cell-group": "./static/vant/cell-group/index",
+    "van-cell": "./static/vant/cell/index",
+    "van-swipe-cell": "./static/vant/swipe-cell/index"
     
  }
 }

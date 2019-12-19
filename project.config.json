@@ -74,6 +74,62 @@
 					"pathName": "pages/myson/addaddress/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "订单列表",
+					"pathName": "pages/myson/order/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的足迹",
+					"pathName": "pages/myson/foot/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的收藏",
+					"pathName": "pages/myson/collect/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的拼团",
+					"pathName": "pages/myson/mytuan/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "发票管理",
+					"pathName": "pages/myson/invoiceList/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "新增发票",
+					"pathName": "pages/myson/addInvoice/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 10,
+					"name": "意见反馈",
+					"pathName": "pages/myson/feedback/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "官方客服",
+					"pathName": "pages/myson/kefu/main",
+					"query": "",
+					"scene": null
 				}
 			]
 		}
