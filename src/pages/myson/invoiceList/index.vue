@@ -523,8 +523,8 @@ export default {
       line-height: 86rpx;
     }
     span.active{
-      border-bottom: 4rpx #ff952e solid;
-      color:#ff952e
+      border-bottom: 4rpx #f00 solid;
+      color:#f00
     }
   }
 }
