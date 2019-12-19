@@ -3,6 +3,7 @@
     "pages/index/main",
     "pages/my/main",
     "pages/cart/main",
+    "pages/service/chatRoom/main",
     "pages/shop/main"
   ],
   "subpackages":[
@@ -47,8 +48,8 @@
       "selectedIconPath": "static/tabs/2a.png"
     },
     {
-      "text": "购物车",
-      "pagePath": "pages/cart/main",
+      "text": "导购",
+      "pagePath": "pages/service/chatRoom/main",
       "iconPath": "static/tabs/3.png",
       "selectedIconPath": "static/tabs/3a.png"
     },

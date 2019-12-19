@@ -1,0 +1,856 @@
+/*复选框清除默认样式*/
+.checkbox-cart .wx-checkbox-input {
+    width: 40rpx;
+    height: 40rpx;
+    border-radius: 50%!important;
+}
+
+.checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked {
+    background: #ff9325;
+    border-radius: 50%!important;
+    border: 0!important;
+    width: 45rpx;
+    height: 45rpx;
+}
+
+.checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked::before {
+    width: 45rpx;
+    height: 45rpx;
+    border-radius: 50%!important;
+    line-height: 45rpx;
+    text-align: center;
+    font-size: 28rpx;
+    color: #ffffff;
+    background: transparent;
+    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+.check__label .wx-checkbox-input {
+    border-radius: 8rpx !important;
+    width: 38rpx;
+    height: 38rpx;
+}
+
+.check__label .wx-checkbox-input.wx-checkbox-input-checked {
+    background: #fff;
+    border-radius: 8rpx !important;
+    border: 1px solid #ff9325 !important;
+    width: 38rpx;
+    height: 38rpx;
+}
+
+.check__label .wx-checkbox-input.wx-checkbox-input-checked::before {
+    width: 38rpx;
+    height: 38rpx;
+    border-radius: 8rpx !important;
+    line-height: 38rpx;
+    text-align: center;
+    font-size: 28rpx;
+    color: #ff9325;
+    background: #ffffff !important;
+    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+
+/****************修改radio样式*********************/
+
+
+/*样式1：选中后中间为圆点*/
+
+
+/*外面的边框可以这样*/
+
+radio .wx-radio-input {
+    // height: 44rpx;
+    // width: 44rpx;
+    height: 32rpx;
+    width: 32rpx;
+    border-radius: 50%;
+    border: 1rpx solid #ececec; //替换边框 隐藏原有边框
+}
+
+radio .wx-radio-input.wx-radio-input-checked {
+    border: 1rpx solid #ff9325!important;
+}
+
+
+/*中间圆点   选中的背景需要是xml中设置*/
+
+radio .wx-radio-input.wx-radio-input-checked::before {
+    border-radius: 50%;
+    /* 圆角 */
+    // width: 20rpx;
+    width: 16rpx;
+    /* 选中后对勾大小，不要超过背景的尺寸 */
+    // height: 20rpx;
+    height: 16rpx;
+    /* 选中后对勾大小，不要超过背景的尺寸 */
+    text-align: center;
+    // line-height: 20rpx!important;
+    line-height: 16rpx !important;
+    font-size: 0;
+    /* 对勾大小 30rpx */
+    color: #fff;
+    /* 对勾颜色 白色 */
+    background-color: #ff9325;
+    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+
+/*样式2：选中后重点为对勾*/
+
+.gou radio .wx-radio-input {
+    /* 自定义样式.... */
+    height: 40rpx !important;
+    width: 40rpx !important;
+    border-radius: 50%;
+    border: 2rpx solid #999;
+    background: transparent;
+}
+
+.gou radio .wx-radio-input.wx-radio-input-checked {
+    border: none;
+    background: #ff9325;
+}
+
+.gou radio .wx-radio-input.wx-radio-input-checked::before {
+    border-radius: 50%;
+    /* 圆角 */
+    width: 45rpx !important;
+    /* 选中后对勾大小，不要超过背景的尺寸 */
+    height: 45rpx !important;
+    /* 选中后对勾大小，不要超过背景的尺寸 */
+    line-height: 45rpx !important;
+    text-align: center;
+    font-size: 28rpx !important;
+    /* 对勾大小 30rpx *
+    color: #fff;
+    /* 对勾颜色 白色 */
+    background: #ff9325;
+    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+
+/*遮罩层*/
+
+.mask {
+    position: fixed;
+    background: rgba(0, 0, 0, .5);
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    top: 0;
+    left: 0;
+}
+
+.modal_mask {
+    position: fixed;
+    background: #fff;
+    width: 100%;
+    z-index: 120;
+    left: 0;
+    height: 528rpx;
+    bottom: 0!important;
+}
+
+
+/*字体24rpx*/
+
+.font_four {
+    font-size: 24rpx;
+    color: #9999
+}
+
+.font22 {
+    font-size: 22rpx
+}
+
+.fontColor {
+    color: #9999
+}
+
+.color_white {
+    color: #fff!important
+}
+
+.fontColor99 {
+    color: #ff952e
+}
+
+.font32 {
+    font-size: 32rpx;
+}
+
+.font30 {
+    font-size: 30rpx;
+}
+
+.fontBold {
+    font-weight: 600
+}
+
+.colorRed {
+    color: #f00;
+}
+
+.p1 {
+    padding: 35rpx 0!important;
+}
+
+.p2 {
+    padding: 30rpx 0!important;
+}
+
+.p25 {
+    padding: 25rpx 0!important;
+}
+
+.p3 {
+    padding: 10rpx 0!important;
+}
+
+.boxSize {
+    box-sizing: border-box
+}
+
+.padwid {
+    padding: 0 30rpx;
+}
+
+.pall {
+    padding: 35rpx 30rpx;
+}
+
+.mr0 {
+    margin-right: 0!important
+}
+
+.mrl2 {
+    margin-left: 20rpx
+}
+
+.mrr2 {
+    margin-right: 20rpx
+}
+
+.mm1 {
+    margin: 0 20rpx
+}
+
+
+/*中间块*/
+
+.slidebg {
+    background: #f2f2f2;
+    height: 22rpx;
+    width: 100%;
+}
+
+
+/*线条750**/
+
+.line2 {
+    width: 100%;
+    height: 1rpx;
+    background: #f2f2f2;
+}
+
+
+/*边框*/
+
+.sign:after,
+.avatarhead:after {
+    position: absolute;
+    content: "";
+    height: 1px;
+    width: 100%;
+    background: #ececec;
+    bottom: 0;
+}
+
+
+/*按钮1*/
+
+.btnSub {
+    width: 690rpx;
+    height: 88rpx;
+    background: #ff952e;
+    color: #fff;
+    line-height: 88rpx;
+    text-align: center;
+    border-radius: 15rpx;
+    margin: 0 auto
+}
+
+
+/*按钮2*/
+
+.btnSub2 {
+    width: 100%;
+    height: 88rpx;
+    background: #ff952e;
+    color: #fff;
+    line-height: 88rpx;
+    text-align: center;
+    position: fixed;
+    bottom: 0
+}
+
+
+/*顶部线条*/
+
+.borderTop {
+    border-top: 1rpx solid #ececec;
+}
+
+.flexWrap {
+    flex-wrap: wrap
+}
+
+//*文字超出隐藏*/
+.text_space {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+
+/*************************添加好友*******************/
+
+.head {
+    padding: 0 30rpx;
+    border-top: 1rpx solid #ececec;
+}
+
+.avatarhead {
+    padding: 40rpx 0;
+    position: relative;
+}
+
+.sign:after,
+.avatarhead:after {
+    position: absolute;
+    content: "";
+    height: 1px;
+    width: 100%;
+    background: #ececec;
+    bottom: 0;
+}
+
+.avatarbox {
+    width: 80rpx;
+    height: 80rpx;
+    margin-right: 40rpx;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    // margin-right:40rpx;
+}
+
+.vertical {
+    padding: 30rpx 0 70rpx 0;
+    box-sizing: border-box
+}
+
+.yanz::-webkit-input-placeholder {
+    /* placeholder颜色  */
+    color: #000000;
+    /* placeholder字体大小  */
+    font-size: 12px;
+    /* placeholder位置  */
+}
+
+.setclass {
+    padding: 20rpx 30rpx;
+    color: #9999;
+    box-sizing: border-box;
+    font-size: 26rpx;
+}
+
+.group {
+    padding: 0 30rpx;
+    .slide {
+        padding: 20rpx 0;
+        p:first-child {
+            color: #9999;
+            margin-right: 40rpx;
+        }
+    }
+}
+
+.sign {
+    position: relative;
+}
+
+.addtop {
+    margin-top: 70rpx;
+}
+
+
+/********************消息*********************/
+
+.circlePosition {
+    position: relative;
+}
+
+.onlynum {
+    top: 0!important;
+    right: 0!important;
+    background: #f00!important
+}
+
+.msgnum {
+    right: 29rpx!important;
+    background: #f00!important
+}
+
+
+/********************新朋友*********************/
+
+.btnadd {
+    background: #f4f4f4;
+    padding: 5rpx 15rpx;
+    font-weight: 400
+}
+
+.ignoreBtn span {
+    display: inline-block;
+    width: 100rpx;
+    height: 56rpx;
+    line-height: 56rpx;
+    text-align: center;
+    border-radius: 8rpx;
+}
+
+.ignore {
+    border: 1rpx solid #ff952e;
+    color: #ff952e
+}
+
+.pass {
+    background: #ff952e;
+    color: #fff;
+    margin-left: 20rpx;
+}
+
+
+/*******************聊天对话****************************/
+
+.tagmsg {
+    background: #ff952e;
+    color: #fff;
+    padding: 20rpx;
+    border-radius: 10rpx;
+    margin: 0 20rpx;
+    position: relative;
+}
+
+
+/**三角*/
+
+.sj {
+    width: 6rpx;
+    height: 6rpx;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    position: absolute;
+    top: 50%;
+    margin-top: -3rpx!important
+}
+
+
+/*黄 右三角*/
+
+.rsj {
+    border: 6rpx solid #ff952e;
+    background: #ff952e;
+    right: -10rpx;
+    transform: rotate(-135deg)
+}
+
+
+/*白 左三角*/
+
+.lsj {
+    border: 6rpx solid #fff;
+    background: #fff;
+    left: -10rpx;
+    transform: rotate(45deg)
+}
+
+.bottomicon {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.inputbtn {
+    border: 1rpx solid #f2f2f2;
+    padding: 10rpx 30rpx;
+    input {
+        border: 1rpx solid #f2f2f2;
+        padding: 10rpx 20rpx;
+        border-radius: 10rpx;
+        background: #f4f4f4;
+    }
+}
+
+.logimg {
+    width: 54rpx;
+    height: 54rpx;
+    margin-left: 30rpx;
+}
+
+.icon_box {
+    padding: 30rpx;
+    div {
+        margin-right: 60rpx;
+    }
+}
+
+.icon_put {
+    width: 120rpx;
+    height: 120rpx;
+}
+
+
+/*********************通讯录**************************/
+
+
+/*分组*/
+
+.addteam {
+    font-size: 32rpx;
+    .teamitem {
+        position: relative;
+    }
+    .teamitem:after {
+        position: absolute;
+        content: '';
+        bottom: 0;
+        height: 1px;
+        background: #f2f2f2;
+        width: 100%;
+    }
+}
+
+.icon_search {
+    width: 36rpx;
+    height: 37rpx;
+    vertical-align: middle;
+    margin-right: 10rpx;
+}
+
+.icon_add2 {
+    width: 30rpx;
+    height: 30rpx;
+    vertical-align: middle;
+    margin-right: 10rpx;
+}
+
+
+/*通讯录*/
+
+.icon_fenzu {
+    width: 80rpx;
+    height: 80rpx;
+    margin-right: 30rpx;
+}
+
+.listname {
+    text-align: left;
+    color: #1f1f1f
+}
+
+
+/*********************我的**************************/
+
+.icon_card {
+    width: 180rpx;
+    height: 104rpx;
+    position: absolute;
+    right: 30rpx;
+    top: 30rpx;
+}
+
+.person_info {
+    color: #ffffff;
+    margin-left: 10rpx;
+    margin-top: 5rpx;
+    .name {
+        font-size: 48rpx;
+        margin-right: 250rpx;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .certical {
+        margin: 20rpx 0;
+    }
+    .tips {
+        color: #fef3e9!important
+    }
+}
+
+
+/*上传照片*/
+
+.uploadSection {
+    background: #fff;
+    padding-top: 30rpx;
+}
+
+.uploadImage {
+    display: block;
+    padding-left: 30rpx;
+    padding-bottom: 20rpx;
+    margin-bottom: 20rpx;
+    position: relative;
+}
+
+.uploadTitle {
+    font-size: 30rpx;
+    padding: 0 30rpx;
+}
+
+.uploadImage .upload-img {
+    margin-top: 20rpx;
+    margin-right: 20rpx;
+}
+
+.uploadImage .upload-img .img {
+    width: 100%;
+    height: 100%;
+}
+
+.uploadImage .upload-img .cancel {
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    top: -18rpx;
+    right: -18rpx;
+    text-align: center;
+    color: #bbb;
+    z-index: 5;
+}
+
+.uploadImage .button-upload,
+.uploadImage .upload-img {
+    width: 200rpx;
+    height: 200rpx;
+    float: left;
+    position: relative;
+    border-radius: 10rpx;
+    margin-right: 20rpx;
+    margin-top: 20rpx;
+}
+
+.uploadImage .button-upload {
+    color: #e8e8e8;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    /* background-position: center center !important;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important; */
+}
+
+.uploadImage .button-upload img,
+.uploadImage .upload-img img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.uploadImage .close {
+    position: absolute;
+    width: 40rpx !important;
+    height: 40rpx !important;
+    top: -10rpx !important;
+    right: -10rpx !important;
+    z-index: 4 !important;
+    left: inherit !important;
+}
+
+.pagePublish {
+    .swipe-cell {
+        border: none!important;
+        width: 100%;
+        .van-cell {
+            // padding: 20rpx 10rpx!important;
+            padding: 0 !important;
+        }
+    }
+}
+
+.pageContent {
+    .pickerView {
+        // width:100%;
+        // height: 500rpx;
+        .pickerColumn {
+            .pickerItem {
+                // line-height:100rpx;
+                // height:60rpx!important;
+                overflow: hidden;
+                text-align: center;
+            }
+        }
+    }
+    .van-picker__cancel,
+    .van-picker__confirm {
+        color: #1a1a1a
+    }
+}
+
+.tileText {
+    padding: 30rpx;
+    justify-content: space-between;
+}
+
+.scroll_price_item {
+    padding: 0 30rpx;
+    margin-top: 20rpx;
+    .scroll_price_itemCenter {
+        width: 70%;
+        margin: 0 auto;
+    }
+    input {
+        background: #f2f2f2;
+        text-align: center;
+        font-size: 24rpx;
+        width: 40%;
+        color: #999
+    }
+}
+
+
+/*隐藏滚动条*/
+
+
+/*我的认证*/
+
+.pageVertical {
+    height: 100vh;
+    overflow: hidden;
+    overflow-y: auto;
+    .bg_certical {
+        height: 300rpx;
+        width: 100%;
+    }
+    .card_bd {
+        position: relative;
+        ;
+        left: 30rpx;
+        right: 30rpx;
+        top: -150rpx;
+        width: calc(100% - 60rpx);
+        z-index: 10;
+    }
+    .filterMenu {
+        margin-top: 60rpx;
+    }
+    .weui-cell {
+        font-size: 26rpx;
+        width: 100%;
+        .weui-cell_bd {
+            width: 30%;
+        }
+    }
+    .idendityPic {
+        padding: 30rpx;
+        .inendity_pic {
+            width: 294rpx;
+            height: 194rpx;
+        }
+    }
+    .companyPic {
+        .company_pic {
+            width: 630rpx;
+            height: 280rpx
+        }
+    }
+    .company_pic_title {
+        margin-bottom: 20rpx
+    }
+    .otherPic {
+        padding: 30rpx 0;
+        .up_pic {
+            height: 200rpx;
+            width: 200rpx;
+        }
+    }
+    .btn_box {
+        padding: 60rpx 30rpx;
+        box-sizing: border-box;
+    }
+}
+
+.chat .van-cell {
+    padding: 0;
+    background: #f2f2f2;
+}
+
+// 没有 数据和到底普通样式
+.noData {
+    margin-top: 100rpx;
+    font-size: 30rpx;
+    color: #999;
+    text-align: center;
+}
+
+.dataEnd {
+    font-size: 26rpx;
+    color: #999;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    line-height: 50rpx;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+}
+
+.addDetail {
+    text-align: center;
+    padding-bottom: 40rpx;
+    padding-top: 40rpx;
+    .btn-add {
+        display: block;
+        margin: 0 auto;
+        width: 400rpx;
+        line-height: 70rpx;
+        font-size: 32rpx;
+        text-align: center;
+        color: #666;
+        border-radius: 8rpx;
+        border: 1px solid #e5e5e5;
+    }
+}
+
+.f26{
+  font-size:26rpx;
+}
+.mr12{
+  margin-right:12rpx!important;
+}
+.ml12{
+  margin-left:12rpx!important;
+}
+
+.flex-center-start{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+}
