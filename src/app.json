@@ -11,6 +11,7 @@
       "pages":[
         "ticket/main",
         "address/main",
+        "order/main",
         "addaddress/main"
         
       ]
