@@ -114,6 +114,21 @@
 					"id": -1,
 					"name": "新增发票",
 					"pathName": "pages/myson/addInvoice/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 10,
+					"name": "意见反馈",
+					"pathName": "pages/myson/feedback/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "官方客服",
+					"pathName": "pages/myson/kefu/main",
+					"query": "",
 					"scene": null
 				}
 			]
