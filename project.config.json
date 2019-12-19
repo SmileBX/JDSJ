@@ -93,6 +93,27 @@
 					"id": -1,
 					"name": "我的收藏",
 					"pathName": "pages/myson/collect/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的拼团",
+					"pathName": "pages/myson/mytuan/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "发票管理",
+					"pathName": "pages/myson/invoiceList/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "新增发票",
+					"pathName": "pages/myson/addInvoice/main",
 					"scene": null
 				}
 			]

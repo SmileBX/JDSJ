@@ -14,6 +14,9 @@
         "order/main",
         "foot/main",
         "collect/main",
+        "mytuan/main",
+        "addInvoice/main",
+        "invoiceList/main",
         "addaddress/main"
         
       ]

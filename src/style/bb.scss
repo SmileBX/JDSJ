@@ -573,3 +573,150 @@ page {
   .icon_right{
     width:11rpx;height:20rpx;
   }
+  //底部
+.ftBtn {
+    width:100%;
+    height: 90rpx;
+    // line-height: 90rpx;
+    .inner {
+        background: #fff;
+    }
+    .iconGroup {
+        .item {
+            width: 118rpx;
+            text-align: center;
+            font-size: 24rpx;
+            line-height: 1.4;
+        }
+        img {
+            width: 42rpx;
+            height: 42rpx;
+            display: block;
+            margin: 8rpx auto;
+        }
+    }
+    .btns {
+        .btn {
+            line-height: 90rpx;
+            font-size: 32rpx;
+            width:750rpx;
+
+        }
+    }
+}
+//固定定位
+.fixed {
+    position: fixed;
+    z-index: 4;
+    width: 100%;
+}
+.bm0 {
+    bottom: 0 !important;
+}
+.bg_ff952e{
+    background: #f00;
+    color:#ffffff;
+}
+// 添加发票
+.addInvoice__weui-cells .weui-cell:before {
+    left: 0;
+    right: 0;
+}
+
+.addInvoice__weui-cells .weui-label {
+    width: 170rpx;
+    display: block;
+}
+
+.addInvoice__weui-cells .tag {
+    margin-bottom: 0;
+    width: 100rpx;
+    border-color: #bfbfbf;
+    border-radius: 8rpx;
+    margin-right: 40rpx;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 28px;
+    border: 1px solid #f2f2f2;
+    text-align: center;
+}
+
+.addInvoice__weui-cells .tag.active {
+    border-color: #f00;
+    color: #f00;
+}
+
+.addInvoice__weui-cells .msg {
+    line-height: 1.2;
+    font-size: 26rpx;
+}
+.weui-cells {
+    background-color: #fff;
+    margin-top: 20rpx;
+    line-height: 1.8;
+    .icon-arrow {
+        margin-right: -16rpx;
+    }
+    &.icon__weui-cells {
+        .icon-menu {
+            width: 80rpx;
+            height: 80rpx;
+            margin-right: 20rpx;
+        }
+    }
+    &.selectCard__weui-cells {
+        .icon-card {
+            width: 40rpx;
+            height: 40rpx;
+            margin-right: 18rpx;
+        }
+    }
+}
+.weui-cell {
+    padding: 20rpx 30rpx;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    -o-align-items: center;
+    align-items: center;
+    font-size: 30rpx;
+}
+
+.weui-cell__bd {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    -o-flex: 1;
+    overflow: hidden;
+}
+
+.weui-cells .weui-cell:before {
+    position: absolute;
+    left: 30rpx;
+    right: 30rpx;
+    content: "";
+    height: 1px;
+    background: #F2F2F2;
+    bottom: 0;
+}
+
+.weui-cells .weui-cell:last-child:before {
+    display: none;
+}
+
+.weui-cells.noBorder__weui-cells .weui-cell:before {
+    display: none;
+}
+.wd_wdd{
+    width:100%;
+}
