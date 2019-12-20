@@ -144,6 +144,20 @@
 					"pathName": "pages/myson/addcomment/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "物流信息",
+					"pathName": "pages/myson/orderRoute/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "订单详情",
+					"pathName": "pages/myson/orderdetail/main",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

@@ -22,7 +22,9 @@
         "mycomment/main",
         "addInvoice/main",
         "invoiceList/main",
-        "addaddress/main"
+        "addaddress/main",
+        "orderRoute/main",
+        "orderdetail/main"
         
       ]
     }
