@@ -3,7 +3,9 @@
     "pages/index/main",
     "pages/my/main",
     "pages/cart/main",
-    "pages/shop/main"
+    "pages/service/chatRoom/main",
+    "pages/service/copyLink/main",
+    "pages/product/detail/main"
   ],
   "subpackages":[
     {
@@ -11,15 +13,25 @@
       "pages":[
         "ticket/main",
         "address/main",
-        "order/main",
         "foot/main",
         "collect/main",
         "mytuan/main",
         "feedback/main",
         "kefu/main",
+        "addcomment/main",
+        "mycomment/main",
         "addInvoice/main",
         "invoiceList/main",
         "addaddress/main"
+      ]
+    },
+    {
+      "root":"pages/myson2/",
+      "pages":[
+        "order/main",
+        "orderRoute/main",
+        "orderdetail/main",
+        "orderapply/main"
         
       ]
     },
@@ -51,14 +63,8 @@
       "selectedIconPath": "static/tabs/1a.png"
     },
     {
-      "text": "店铺",
-      "pagePath": "pages/shop/main",
-      "iconPath": "static/tabs/2.png",
-      "selectedIconPath": "static/tabs/2a.png"
-    },
-    {
-      "text": "购物车",
-      "pagePath": "pages/cart/main",
+      "text": "导购",
+      "pagePath": "pages/service/chatRoom/main",
       "iconPath": "static/tabs/3.png",
       "selectedIconPath": "static/tabs/3a.png"
     },

@@ -76,9 +76,9 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 4,
 					"name": "订单列表",
-					"pathName": "pages/myson/order/main",
+					"pathName": "pages/myson2/order/main",
 					"query": "",
 					"scene": null
 				},
@@ -133,22 +133,37 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/goodsSon/rob/main",
-					"pathName": "pages/goodsSon/rob/main",
+					"name": "我的评论",
+					"pathName": "pages/myson/mycomment/main",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pages/goodsSon/dayday/main",
-					"pathName": "pages/goodsSon/dayday/main",
+					"name": "发表评价",
+					"pathName": "pages/myson/addcomment/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 14,
+					"name": "物流信息",
+					"pathName": "pages/myson2/orderRoute/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 15,
+					"name": "订单详情",
+					"pathName": "pages/myson2/orderdetail/main",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pages/goodsSon/goodsDetail/main",
-					"pathName": "pages/goodsSon/goodsDetail/main",
+					"name": "详情中申请退款",
+					"pathName": "pages/myson2/orderapply/main",
+					"query": "",
 					"scene": null
 				}
 			]
