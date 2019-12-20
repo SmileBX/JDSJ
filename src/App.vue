@@ -34,4 +34,5 @@ export default {
 @import './style/common.scss';
 @import './style/lz';
 @import './style/bb';
+@import './style/ans-self.scss';
 </style>

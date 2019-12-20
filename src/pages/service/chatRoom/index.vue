@@ -121,39 +121,35 @@
         />
         <div class="flex flexAlignCenter">
           <img
-            src="/static/images/icons/smile.jpg"
+            src="/static/images/service/smile.jpg"
             alt
             class="logimg"
             @click="onShowModule('emotion')"
           />
           <img
-            src="/static/images/icons/add.jpg"
+            src="/static/images/service/add.jpg"
             alt
             class="logimg"
             @click="onShowModule('imgage')"
             v-if="!sendInfo"
           />
-          <img src="/static/images/icons/send.png" alt class="logimg" @click="sendMessage()" v-else />
+          <img src="/static/images/service/send.png" alt class="logimg" @click="sendMessage()" v-else />
         </div>
       </div>
       <!--按钮组-->
       <div v-if="showModule==='imgage'">
         <div class="icon_box flex">
           <div class="flex flexAlignCenter flexColumn" @click="chosseImg('camera')">
-            <img src="/static/images/icons/photo.jpg" alt class="icon_put" />
+            <img src="/static/images/service/photo.jpg" alt class="icon_put" />
             <p class="fontColor">拍照</p>
           </div>
           <div class="flex flexAlignCenter flexColumn" @click="chosseImg('album')">
-            <img src="/static/images/icons/albrem.jpg" alt class="icon_put" />
+            <img src="/static/images/service/albrem.jpg" alt class="icon_put" />
             <p class="fontColor">相册</p>
           </div>
-          <div class="flex flexAlignCenter flexColumn" @click="goLocation">
-            <img src="/static/images/icons/location.jpg" alt class="icon_put">
-            <p class="fontColor">删除历史记录</p>
-          </div>
-          <div class="flex flexAlignCenter flexColumn" @click="goLocation">
-            <img src="/static/images/icons/location.jpg" alt class="icon_put">
-            <p class="fontColor">拉黑</p>
+          <div class="flex flexAlignCenter flexColumn" @click="copyLink()">
+            <img src="/static/images/service/link.png" alt class="icon_put" />
+            <p class="fontColor">复制链接</p>
           </div>
         </div>
       </div>
@@ -275,7 +271,6 @@ export default {
     };
   },
   onLoad() {
-    this.setBarTitle();
     this.initEmotion();
     this.initData();
     this.sendInfo = "";
@@ -348,11 +343,6 @@ export default {
       }
 
       return len;
-    },
-    setBarTitle() {
-      wx.setNavigationBarTitle({
-        title: "对话框"
-      });
     },
     // 判断是否会员
     async isVip() {
@@ -818,19 +808,13 @@ export default {
       });
     },
     //**************************拍照，图片End************************** */
-    // 跳转到选择定位
-    // goLocation(){
-    //   const that = this;
-    //   wx.chooseLocation({
-    //     success(res){
-    //       console.log(res)
-    //       that.sendMessage({type:'map',data:res})
-    //     },
-    //     fail(err){
-    //       console.log(err)
-    //     }
-    //   })
-    // },
+    // copyLink
+
+    copyLink(){
+      wx.navigateTo({
+        url:'/pages/service/copyLink/main'
+      })
+    },
     // 初始化表情
     initEmotion() {
       const list = this.emotionList;

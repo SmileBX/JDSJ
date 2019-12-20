@@ -4,7 +4,7 @@
     "pages/my/main",
     "pages/cart/main",
     "pages/service/chatRoom/main",
-    "pages/shop/main"
+    "pages/service/copyLink/main"
   ],
   "subpackages":[
     {
@@ -42,12 +42,6 @@
       "pagePath": "pages/index/main",
       "iconPath": "static/tabs/1.png",
       "selectedIconPath": "static/tabs/1a.png"
-    },
-    {
-      "text": "店铺",
-      "pagePath": "pages/shop/main",
-      "iconPath": "static/tabs/2.png",
-      "selectedIconPath": "static/tabs/2a.png"
     },
     {
       "text": "导购",
