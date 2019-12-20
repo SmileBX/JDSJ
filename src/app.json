@@ -22,6 +22,14 @@
         "addaddress/main"
         
       ]
+    },
+    {
+      "root":"pages/goodsSon/",
+      "pages":[
+        "rob/main",
+        "dayday/main",
+        "goodsDetail/main"
+      ]
     }
   ],
   "window": {

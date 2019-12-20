@@ -130,6 +130,26 @@
 					"pathName": "pages/myson/kefu/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/goodsSon/rob/main",
+					"pathName": "pages/goodsSon/rob/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/goodsSon/dayday/main",
+					"pathName": "pages/goodsSon/dayday/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/goodsSon/goodsDetail/main",
+					"pathName": "pages/goodsSon/goodsDetail/main",
+					"scene": null
 				}
 			]
 		}
