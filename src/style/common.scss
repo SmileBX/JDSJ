@@ -1,0 +1,402 @@
+/*复选框清除默认样式*/
+.checkbox-cart .wx-checkbox-input {
+    width: 40rpx;
+    height: 40rpx;
+    border-radius: 50%!important;
+}
+
+.checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked {
+    background: #ff9325;
+    border-radius: 50%!important;
+    border: 0!important;
+    width: 45rpx;
+    height: 45rpx;
+}
+
+.checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked::before {
+    width: 45rpx;
+    height: 45rpx;
+    border-radius: 50%!important;
+    line-height: 45rpx;
+    text-align: center;
+    font-size: 28rpx;
+    color: #ffffff;
+    background: transparent;
+    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+.check__label .wx-checkbox-input {
+    border-radius: 8rpx !important;
+    width: 38rpx;
+    height: 38rpx;
+}
+
+.check__label .wx-checkbox-input.wx-checkbox-input-checked {
+    background: #fff;
+    border-radius: 8rpx !important;
+    border: 1px solid #ff9325 !important;
+    width: 38rpx;
+    height: 38rpx;
+}
+
+.check__label .wx-checkbox-input.wx-checkbox-input-checked::before {
+    width: 38rpx;
+    height: 38rpx;
+    border-radius: 8rpx !important;
+    line-height: 38rpx;
+    text-align: center;
+    font-size: 28rpx;
+    color: #ff9325;
+    background: #ffffff !important;
+    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+
+/****************修改radio样式*********************/
+
+
+/*样式1：选中后中间为圆点*/
+
+
+/*外面的边框可以这样*/
+
+radio .wx-radio-input {
+    // height: 44rpx;
+    // width: 44rpx;
+    height: 32rpx;
+    width: 32rpx;
+    border-radius: 50%;
+    border: 1rpx solid #ececec; //替换边框 隐藏原有边框
+}
+
+radio .wx-radio-input.wx-radio-input-checked {
+    border: 1rpx solid #ff9325!important;
+}
+
+
+/*中间圆点   选中的背景需要是xml中设置*/
+
+radio .wx-radio-input.wx-radio-input-checked::before {
+    border-radius: 50%;
+    /* 圆角 */
+    // width: 20rpx;
+    width: 16rpx;
+    /* 选中后对勾大小，不要超过背景的尺寸 */
+    // height: 20rpx;
+    height: 16rpx;
+    /* 选中后对勾大小，不要超过背景的尺寸 */
+    text-align: center;
+    // line-height: 20rpx!important;
+    line-height: 16rpx !important;
+    font-size: 0;
+    /* 对勾大小 30rpx */
+    color: #fff;
+    /* 对勾颜色 白色 */
+    background-color: #ff9325;
+    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+
+/*样式2：选中后重点为对勾*/
+
+.gou radio .wx-radio-input {
+    /* 自定义样式.... */
+    height: 40rpx !important;
+    width: 40rpx !important;
+    border-radius: 50%;
+    border: 2rpx solid #999;
+    background: transparent;
+}
+
+.gou radio .wx-radio-input.wx-radio-input-checked {
+    border: none;
+    background: #ff9325;
+}
+
+.gou radio .wx-radio-input.wx-radio-input-checked::before {
+    border-radius: 50%;
+    /* 圆角 */
+    width: 45rpx !important;
+    /* 选中后对勾大小，不要超过背景的尺寸 */
+    height: 45rpx !important;
+    /* 选中后对勾大小，不要超过背景的尺寸 */
+    line-height: 45rpx !important;
+    text-align: center;
+    font-size: 28rpx !important;
+    /* 对勾大小 30rpx *
+    color: #fff;
+    /* 对勾颜色 白色 */
+    background: #ff9325;
+    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+
+/*遮罩层*/
+
+.mask {
+    position: fixed;
+    background: rgba(0, 0, 0, .5);
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    top: 0;
+    left: 0;
+}
+
+.modal_mask {
+    position: fixed;
+    background: #fff;
+    width: 100%;
+    z-index: 120;
+    left: 0;
+    height: 528rpx;
+    bottom: 0!important;
+}
+
+
+/*字体24rpx*/
+
+.font_four {
+    font-size: 24rpx;
+    color: #9999
+}
+
+.font22 {
+    font-size: 22rpx
+}
+
+.fontColor {
+    color: #9999
+}
+
+.color_white {
+    color: #fff!important
+}
+
+.fontColor99 {
+    color: #ff952e
+}
+
+.font32 {
+    font-size: 32rpx;
+}
+
+.font30 {
+    font-size: 30rpx;
+}
+
+.fontBold {
+    font-weight: 600
+}
+
+.colorRed {
+    color: #f00;
+}
+
+.p1 {
+    padding: 35rpx 0!important;
+}
+
+.p2 {
+    padding: 30rpx 0!important;
+}
+
+.p25 {
+    padding: 25rpx 0!important;
+}
+
+.p3 {
+    padding: 10rpx 0!important;
+}
+
+.boxSize {
+    box-sizing: border-box
+}
+
+.padwid {
+    padding: 0 30rpx;
+}
+
+.pall {
+    padding: 35rpx 30rpx;
+}
+
+.mr0 {
+    margin-right: 0!important
+}
+
+.mrl2 {
+    margin-left: 20rpx
+}
+
+.mrr2 {
+    margin-right: 20rpx
+}
+
+.mm1 {
+    margin: 0 20rpx
+}
+
+
+/*中间块*/
+
+.slidebg {
+    background: #f2f2f2;
+    height: 22rpx;
+    width: 100%;
+}
+
+
+/*线条750**/
+
+.line2 {
+    width: 100%;
+    height: 1rpx;
+    background: #f2f2f2;
+}
+
+
+/*边框*/
+
+.sign:after,
+.avatarhead:after {
+    position: absolute;
+    content: "";
+    height: 1px;
+    width: 100%;
+    background: #ececec;
+    bottom: 0;
+}
+
+
+/*按钮1*/
+
+.btnSub {
+    width: 690rpx;
+    height: 88rpx;
+    background: #ff952e;
+    color: #fff;
+    line-height: 88rpx;
+    text-align: center;
+    border-radius: 15rpx;
+    margin: 0 auto
+}
+
+
+/*按钮2*/
+
+.btnSub2 {
+    width: 100%;
+    height: 88rpx;
+    background: #ff952e;
+    color: #fff;
+    line-height: 88rpx;
+    text-align: center;
+    position: fixed;
+    bottom: 0
+}
+
+
+/*顶部线条*/
+
+.borderTop {
+    border-top: 1rpx solid #ececec;
+}
+
+.flexWrap {
+    flex-wrap: wrap
+}
+
+//*文字超出隐藏*/
+.text_space {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+
+/*******************聊天对话****************************/
+
+.tagmsg {
+    background: #ff952e;
+    color: #fff;
+    padding: 20rpx;
+    border-radius: 10rpx;
+    margin: 0 20rpx;
+    position: relative;
+}
+
+
+/**三角*/
+
+.sj {
+    width: 6rpx;
+    height: 6rpx;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    position: absolute;
+    top: 50%;
+    margin-top: -3rpx!important
+}
+
+
+/*黄 右三角*/
+
+.rsj {
+    border: 6rpx solid #ff952e;
+    background: #ff952e;
+    right: -10rpx;
+    transform: rotate(-135deg)
+}
+
+
+/*白 左三角*/
+
+.lsj {
+    border: 6rpx solid #fff;
+    background: #fff;
+    left: -10rpx;
+    transform: rotate(45deg)
+}
+
+.bottomicon {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.inputbtn {
+    border: 1rpx solid #f2f2f2;
+    padding: 10rpx 30rpx;
+    input {
+        border: 1rpx solid #f2f2f2;
+        padding: 10rpx 20rpx;
+        border-radius: 10rpx;
+        background: #f4f4f4;
+    }
+}
+
+.logimg {
+    width: 54rpx;
+    height: 54rpx;
+    margin-left: 30rpx;
+}
+
+.icon_box {
+    padding: 30rpx;
+    div {
+        margin-right: 60rpx;
+    }
+}
+
+.icon_put {
+    width: 120rpx;
+    height: 120rpx;
+}
+
+
+
