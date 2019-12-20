@@ -76,9 +76,9 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 4,
 					"name": "订单列表",
-					"pathName": "pages/myson/order/main",
+					"pathName": "pages/myson2/order/main",
 					"query": "",
 					"scene": null
 				},
@@ -146,16 +146,23 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 14,
 					"name": "物流信息",
-					"pathName": "pages/myson/orderRoute/main",
+					"pathName": "pages/myson2/orderRoute/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 15,
+					"name": "订单详情",
+					"pathName": "pages/myson2/orderdetail/main",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "订单详情",
-					"pathName": "pages/myson/orderdetail/main",
+					"name": "详情中申请退款",
+					"pathName": "pages/myson2/orderapply/main",
 					"query": "",
 					"scene": null
 				}

@@ -13,7 +13,6 @@
       "pages":[
         "ticket/main",
         "address/main",
-        "order/main",
         "foot/main",
         "collect/main",
         "mytuan/main",
@@ -23,9 +22,16 @@
         "mycomment/main",
         "addInvoice/main",
         "invoiceList/main",
-        "addaddress/main",
+        "addaddress/main"
+      ]
+    },
+    {
+      "root":"pages/myson2/",
+      "pages":[
+        "order/main",
         "orderRoute/main",
-        "orderdetail/main"
+        "orderdetail/main",
+        "orderapply/main"
         
       ]
     }
