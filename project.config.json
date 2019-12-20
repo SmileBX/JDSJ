@@ -130,6 +130,20 @@
 					"pathName": "pages/myson/kefu/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的评论",
+					"pathName": "pages/myson/mycomment/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "发表评价",
+					"pathName": "pages/myson/addcomment/main",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

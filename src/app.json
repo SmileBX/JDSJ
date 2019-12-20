@@ -17,6 +17,8 @@
         "mytuan/main",
         "feedback/main",
         "kefu/main",
+        "addcomment/main",
+        "mycomment/main",
         "addInvoice/main",
         "invoiceList/main",
         "addaddress/main"
