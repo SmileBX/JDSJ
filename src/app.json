@@ -4,7 +4,8 @@
     "pages/my/main",
     "pages/cart/main",
     "pages/service/chatRoom/main",
-    "pages/service/copyLink/main"
+    "pages/service/copyLink/main",
+    "pages/product/detail/main"
   ],
   "subpackages":[
     {
@@ -34,6 +35,14 @@
         "sertydetail/main",
         "sertype/main"
         
+      ]
+    },
+    {
+      "root":"pages/goodsSon/",
+      "pages":[
+        "rob/main",
+        "dayday/main",
+        "goodsDetail/main"
       ]
     }
   ],

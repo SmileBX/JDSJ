@@ -16,7 +16,7 @@
     </div>
     <div class="bai"></div>
     <div class="icon flex">
-      <div class="flex1 flexc">
+      <div class="flex1 flexc" @click="goUrl('/pages/goodsSon/dayday/main')">
         <div>
           <img src="/static/images/index/icon1.png" alt="">
           <p>天天特惠</p>
@@ -28,7 +28,7 @@
           <p>动态文章</p>
         </div>
       </div>
-      <div class="flex1 flexc">
+      <div class="flex1 flexc" @click="goUrl('/pages/myson/ticket/main')">
         <div>
           <img src="/static/images/index/icon3.png" alt="">
           <p>优惠券</p>
@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="youhui ali-c jus-b">
-      <img src="/static/images/index/qianggou.png" alt="">
+      <img @click="goUrl('/pages/goodsSon/rob/main')" src="/static/images/index/qianggou.png" alt="">
       <img src="/static/images/index/pintuan.png" alt="">
     </div>
     <div class="goods-box">
@@ -65,7 +65,7 @@
         </div>
       </div>
       <div class="goods jus-b flex-wrap">
-        <div class="list" v-for="(item, index) in goodsList" :key="index">
+        <div class="list" v-for="(item, index) in goodsList" :key="index" @click="goUrl('/pages/goodsSon/goodsDetail/main')">
           <img class="img" src="/static/images/index/goods.png" alt="">
           <div class="text-box">
             <p class="tit oneline">至本舒颜修护氨基酸洁至本舒颜修护氨基酸洁</p>
@@ -95,7 +95,11 @@ export default {
   },
   
   methods: {
-
+    goUrl(url,param){
+      wx.navigateTo({
+        url:url+'?id='+param
+      })
+    },
   }
 }
 </script>
