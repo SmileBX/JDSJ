@@ -165,6 +165,20 @@
 					"pathName": "pages/myson2/orderapply/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "选择服务类型",
+					"pathName": "pages/myson2/sertype/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "申请退款等页面",
+					"pathName": "pages/myson2/sertydetail/main",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

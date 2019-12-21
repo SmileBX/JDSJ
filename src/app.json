@@ -30,7 +30,9 @@
         "order/main",
         "orderRoute/main",
         "orderdetail/main",
-        "orderapply/main"
+        "orderapply/main",
+        "sertydetail/main",
+        "sertype/main"
         
       ]
     }
