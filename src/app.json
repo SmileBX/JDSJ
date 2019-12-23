@@ -42,6 +42,10 @@
       "pages":[
         "rob/main",
         "dayday/main",
+        "article/main",
+        "articleDetail/main",
+        "classify/main",
+        "classifyDetail/main",
         "goodsDetail/main"
       ]
     }

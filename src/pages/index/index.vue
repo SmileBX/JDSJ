@@ -22,7 +22,7 @@
           <p>天天特惠</p>
         </div>
       </div>
-      <div class="flex1 flexc">
+      <div class="flex1 flexc" @click="goUrl('/pages/goodsSon/article/main')">
         <div>
           <img src="/static/images/index/icon2.png" alt="">
           <p>动态文章</p>
@@ -34,7 +34,7 @@
           <p>优惠券</p>
         </div>
       </div>
-      <div class="flex1 flexc">
+      <div class="flex1 flexc" @click="goUrl('/pages/goodsSon/classify/main')">
         <div>
           <img src="/static/images/index/icon4.png" alt="">
           <p>商品分类</p>

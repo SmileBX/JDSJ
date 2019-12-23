@@ -88,6 +88,27 @@
       <div class="goods-detail">
         <p class="tit">商品详情</p>
       </div>
+      <div class="foot ali-c jus-b">
+        <div class="left ali-c">
+          <div>
+            <img src="/static/images/index/ans.png" alt="">
+            <p>客服</p>
+          </div>
+          <div>
+            <img src="/static/images/index/collect_n.png" alt="">
+            <p>收藏</p>
+          </div>
+          <div>
+            <img src="/static/images/index/cart.png" alt="">
+            <p>购物车</p>
+            <span class="num flexc">2</span>
+          </div>
+        </div>
+        <div class="right flex">
+          <p class="flex1 flexc">加入购物车</p>
+          <p class="flex1 flexc">立即购买</p>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -121,6 +142,63 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+.foot{
+  background-color: #fff;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: 98rpx;
+  box-sizing: border-box;
+  padding: 0 30rpx 0 0;
+  box-shadow: 0 -3rpx 8rpx 0rpx rgba($color: #000000, $alpha: 0.1);
+  .left div:nth-child(1) img{
+    width: 34rpx;
+	  height: 34rpx;
+  }
+  .left div:nth-child(2) img{
+    width: 32rpx;
+	  height: 32rpx;
+  }
+  .left div:nth-child(3) img{
+    width: 34rpx;
+	  height: 32rpx;
+  }
+  .right{
+    width: 400rpx;
+    height: 70rpx;
+    border-radius: 35rpx;
+    color: #fff;
+    font-size: 26rpx;
+	  font-weight: bold;
+    overflow: hidden;
+  }
+  .right p:nth-child(1){
+    background-color: #fda33a
+  }
+  .right p:nth-child(2){
+    background-color: #ff3333
+  }
+  .left{
+    div{
+      width: 105rpx;
+      text-align: center;
+      font-size: 22rpx;
+      color: #999;
+      position: relative;
+    }
+    span{
+      position: absolute;
+      width: 26rpx;
+      height: 26rpx;
+      border-radius: 50%;
+      background-color: #fa3d34;
+      color: #fff;
+      font-size: 20rpx;
+      top: -10rpx;
+      right: 23rpx
+    }
+  }
+}
 .goods-detail{
   background-color: #fff;
   margin-top: 20rpx;
