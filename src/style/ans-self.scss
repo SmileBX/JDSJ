@@ -144,6 +144,22 @@
 .text-Capitalize{
     text-transform:Capitalize;
 }
+// 不自动换行,超长用省略号
+.ellipsis{
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+// 超出两行用省略号，必须固定行高
+.ellipsis2{
+    height:100%;
+    overflow: hidden;
+    text-overflow: ellipsis;//可以用来多行文本的情况下，用省略号“…”隐藏超出范围的文本 
+    text-overflow: -o-ellipsis-lastline;
+    display: -webkit-box;//必须结合的属性 ，将对象作为弹性伸缩盒子模型显示 。
+    -webkit-line-clamp: 2; //用来限制在一个块元素显示的文本的行数。这是一个 不规范的属性
+    -webkit-box-orient: vertical;//必须结合的属性 ，设置或检索伸缩盒对象的子元素的排列方式 。
+}
 /* 按钮默认样式*/
 .ans-button{
     background:rgba(0,0,0,0);
