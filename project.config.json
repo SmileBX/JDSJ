@@ -186,6 +186,12 @@
 					"pathName": "pages/goodsSon/goodsSearch/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/cart/main",
+					"scene": null
 				}
 			]
 		}

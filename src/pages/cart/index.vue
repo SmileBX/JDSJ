@@ -1,138 +1,77 @@
 <template>
   <div>
-    <div class="cliDom" :style="clientX?domStyle:''"  :class="clientX?'cliDomActive':''"></div>
-      <div class="top-box">
-        <div class="top ali-c">
-          <img mode='aspectFill' class="left" src="/static/images/ava.png" alt="">
-          <div class="right">
-            <div class="ali-c one">
-              <p>巴啦啦小魔仙</p>
-            </div>
-            <p class="two">13257927518</p>
+      <div class="pw3">
+          <img src="/static/images/red_bg.png" alt="" class="mine_red">
+          <div class="cart_main">
+              <div class="text_right cf p3"  @click="showMenu = true" v-if="!showMenu">编辑</div>
+              <div class="text_right cf p3"  @click="showMenu = false" v-if="showMenu">完成</div>
+              <div class="cart_list">
+                  <div class="cart_shop bg_fff mt2" v-for="(item,oll) in 2" :key="oll">
+                      <div class="flex justifyContentBetween">
+                          <div class="left">
+                            <input
+                              type="checkbox"
+                              class="checkbox-cart"
+                            >
+                            <span>炫宝迪旗舰店</span>
+                          </div>
+                          <div class="cr">领券</div>
+                      </div>
+                      <div class="shopcar_list" v-for="(item,ell) in 3" :key="ell">
+                          <div class="shopcart_item flex justifyContentBetween flexAlignCenter">
+                            <div class="left">
+                              <input
+                                type="checkbox"
+                                class="checkbox-cart"
+                              >
+                            </div>
+                            <div class="flex justifyContentBetween">
+                                <img src="/static/images/shop.png" alt="" class="shop">
+                                <div class="flex1 mr2">
+                                    <div>床头灯智能家用卧室宿舍阳台书桌装饰氛围LED小台灯</div>
+                                    <span class="mt1 spec">
+                                        <span class="cg font24">白色</span>
+                                        <img src="/static/images/icons/down.png" alt="" class="down">
+                                    </span>
+                                    <div class="flex justifyContentBetween mt1">
+                                        <p class="cr font30">￥128.00</p>
+                                        <p class="flex flexAlignCenter jj_dao">
+                                            <span class="jia_num input_num"><img src="/static/images/icons/jian.png" alt="" class="jian"></span>
+                                            <input type="text" placeholder="1" class="input_num input_bo">
+                                            <span class="jia_num input_num"><img src="/static/images/icons/jia.png" alt="" class="jia"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </div>
-        </div>
-        <img class="bg" mode='aspectFill' src="/static/images/mine_bg.png" alt="">
+          <!--底部按钮-->
+        <div class="flex btn_bot flexAlignCenter justifyContentBetween">
+          <div class="left btn_left">
+            <input
+              type="checkbox"
+              class="checkbox-cart"
+            >
+            <span>全选</span>
+          </div>
+          <div class="flex flexAlignCenter btn_rr justifyContentEnd">
+              <div class="flex1" v-if="!showMenu">总计: ￥<span class="cr font30">600</span></div>
+              <div class="btn_right flex">
+                  <!-- <div class="btn_coll" v-if="showMenu" @tap="MenuCart(2)">移至收藏</div> -->
+                  <div class="btn_del" v-if="showMenu" @tap="MenuCart(1)">删除</div>
+                  <div class="btn_del mr5" @tap="Order" v-if="!showMenu">结算（2）</div>
+              </div>
+          </div>
+        </div> 
       </div>
-      <div class="card-box">
-        <div class="card">
-          <p class="flex justifyContentBetween less_bb">
-              <span>我的订单</span>
-              <span class="flex cg flexAlignCenter">
-                <span class="font24">全部订单</span>
-                <img src="/static/images/icons/right.png" alt="" class="icon_right mr1">
-              </span>
-          </p>
-          <div class="icon-box flex-wrap ali-c">
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main',$event)">
-              <div>
-                <img src="/static/images/icons/1.png" alt="">
-                <p>待付款</p>
-                <span class="flexc">2</span>
-              </div>
-            </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main',$event)">
-              <div>
-                <img src="/static/images/icons/2.png" alt="">
-                <p>待发货</p>
-                <span class="flexc">2</span>
-              </div>
-            </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main',$event)">
-              <div>
-                <img src="/static/images/icons/3.png" alt="">
-                <p>待收货</p>
-                <span class="flexc">2</span>
-              </div>
-            </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main',$event)">
-              <div>
-                <img src="/static/images/icons/4.png" alt="">
-                <p>评价</p>
-                <span class="flexc">2</span>
-              </div>
-            </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main',$event)">
-              <div>
-                <img src="/static/images/icons/5.png" alt="">
-                <p>退款/售后</p>
-                <span class="flexc">2</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="card">
-          <p class="tit ali-c">常用功能</p>
-          <div class="icon-box icon-boxb flex-wrap ali-c">
-            <div class="icon flexc" @click="switchPath('/pages/home/card/main',$event)">
-              <div>
-                <img src="/static/images/icons/6.png" alt="">
-                <p>优惠劵</p>
-              </div>
-            </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/ticket/main',$event)">
-              <div>
-                <img src="/static/images/icons/7.png" alt="">
-                <p>我的收藏</p>
-              </div>
-            </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/invite/main',$event)">
-              <div>
-                <img src="/static/images/icons/8.png" alt="">
-                <p>浏览记录</p>
-              </div>
-            </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main',$event)">
-              <div>
-                <img src="/static/images/icons/9.png" alt="">
-                <p>地址管理</p>
-              </div>
-            </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main',$event)">
-              <div>
-                <img src="/static/images/icons/10.png" alt="">
-                <p>店铺列表</p>
-              </div>
-            </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main',$event)">
-              <div>
-                <img src="/static/images/icons/11.png" alt="">
-                <p>申请店铺</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <p class="tit ali-c">更多工具</p>
-          <div class="icon-box icon-boxb flex-wrap ali-c">
-            <div class="icon flexc" @click="switchPath('/pages/home/card/main',$event)">
-              <div>
-                <img src="/static/images/icons/12.png" alt="">
-                <p>我的拼团</p>
-              </div>
-            </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/ticket/main',$event)">
-              <div>
-                <img src="/static/images/icons/13.png" alt="">
-                <p>我的评价</p>
-              </div>
-            </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/invite/main',$event)">
-              <div>
-                <img src="/static/images/icons/14.png" alt="">
-                <p>我的发票</p>
-              </div>
-            </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main',$event)">
-              <div>
-                <img src="/static/images/icons/15.png" alt="">
-                <p>在线客服</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <!--空-->
+      <div class="flex flexAlignCenter flexColumn" style="display:none">
+          <img src="/static/images/icons/box.png" alt="" class="box">
+          <p class="cg">购物车空空如也~~~</p>
+          <span class="go_shop">去购物</span>
       </div>
   </div>
 </template>
@@ -143,13 +82,7 @@ export default {
 
   data () {
     return {
-      clientX:0,
-      clientY:0
-    }
-  },
-  computed: {
-    domStyle(){
-      return 'top:'+(this.clientY*2)+'rpx;left:'+(this.clientX*2)+'rpx'
+      showMenu:true,
     }
   },
   methods: {
@@ -163,130 +96,99 @@ export default {
           url:path
         })
       }, 0);
-    }
+    },
+    
   },
 }
 </script>
 
 <style scoped lang='scss'>
-.less_bb{
-  padding:20rpx 30rpx;
-  border-bottom:1rpx solid #ededed;
-}
-.card-box{
-  padding: 0 30rpx;
-  width: 100vw;
-  box-sizing: border-box;
-  position: relative;
-  top: -150rpx;
-  z-index: 99;
-  .card{
-    background-color: #fff;
-    width: 100%;
+  .box{
+    width:311rpx;height:343rpx;
+    margin:150rpx 0 50rpx 0;
+  }
+  .go_shop{
+    display: inline-block;
+    height:65rpx;line-height: 65rpx;
+    margin-top:50rpx;
+    border:1rpx solid red;color:#f00;
+    border-radius: 10rpx;padding:0 60rpx;
+  }
+  .mine_red{
+    width:100%;position: absolute;top:-100rpx;left:0;
+  }
+  .cart_main{
+    position: absolute;
     box-sizing: border-box;
-    border-radius: 15rpx;
-    margin-bottom: 20rpx;
-    .tit{
-      // display: flex;
-      height: 92rpx;
-      padding-left: 30rpx;
-      border-bottom: 1px solid #ededed;
-      font-weight: 900;
-      font-size: 30rpx
+    right:30rpx;left:30rpx;
+    z-index:20;width:690rpx;
+  }
+  .cart_list{
+    .cart_shop{
+      padding:30rpx;border-radius:15rpx;
     }
-    .icon-boxb .icon{
-      font-size: 24rpx!important;
-      width:25%;
-      box-sizing: border-box;
+  }
+  .shopcart_item{
+    margin-top:20rpx;
+    .shop{
+      width:172rpx;height:172rpx;
     }
-    
-    .icon-box{
-      padding-bottom: 30rpx;
-      .icon2{
-        width:20%;
-        text-align: center;
-        margin-top: 30rpx;
-        position: relative;
-      }
-      .icon{
-        width: 25%;
-        text-align: center;
-        margin-top: 30rpx;
-        position: relative;
-      }
-      span{
-          width: 28rpx;
-          height: 28rpx;
-          border-radius: 50%;
-          color: #fff;
-          font-size: 20rpx;
-          background-color: #ff3333;
-          position: absolute;
-          top: -16rpx;
-          right: 30rpx;
-        }
-      img{
-          width: 50rpx;
-          height: 50rpx;
-          margin-bottom: 5rpx
-        }
+    .down{
+      width:20rpx;height:10rpx;margin-left:10rpx;margin-bottom:5rpx;
+    }
+    .jian{
+      width:18rpx;height:2rpx;
+    }
+    .jia{
+      width:18rpx;height:18rpx;
+    }
+    .input_num{
+      width:58rpx;
+      text-align: center;
+    }
+    .jia_num{
+      display: flex;justify-content: center;align-items: center;
+    }
+    .input_bo{
+      border-left:1rpx solid #f5f5f5;
+      border-right:1rpx solid #f5f5f5;
+    }
+    .jj_dao{
+      border:1rpx solid #f5f5f5;border-radius: 25rpx;
+    }
+    .spec{
+      background: #f5f5f5;display: inline-block;
+      padding:0 20rpx;
+    }
+  }
+  .btn_bot{
+  position:fixed;
+  z-index:60;
+  bottom:0;
+  width:750rpx;left:0;
+  background:#ffffff;
+  .btn_left{
+    padding-left:30rpx
+  }
+  .btn_rr{
+    width:60%;text-align: right;
+  }
+  .btn_right{
+    div{
+      width:210rpx;
+      height:95rpx;
+      line-height:95rpx;
+      color:#ffffff;
+      text-align:center;
+    }
+    .btn_coll{
+      background:#666666;
+    }
+    .btn_del{
+      background:#f00
     }
   }
 }
-.top-box{
-  height: 407rpx;
-  width: 100vw;
-  position: relative;
-  .bg{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 5
-  }
-  .top{
-    width: 100%;
-    height: 270rpx;
-    position: absolute;
-    z-index: 9;
-    padding-left: 40rpx;
-    .left{
-      width: 130rpx;
-	    height: 130rpx;
-      border-radius: 50%;
-      border: 2rpx solid #fff;
-      margin-right: 20rpx
-    }
-    .right{
-      .one{
-        p{
-          font-size: 35rpx;
-          font-weight: 900;
-          color: #fff;
-        }
-        .vip{
-          width: 124rpx;
-          height: 32rpx;
-          background-color: #bb945c;
-          border-radius: 16rpx;
-          margin-left: 20rpx;
-          img{
-            width: 32rpx;
-	          height: 32rpx;
-            margin-right: 5rpx;
-          }
-          span{
-            font-size: 20rpx;
-            color: #fff
-          }
-        }
-      }
-      .two{
-        color: #fff;
-        margin-top: 20rpx
-      }
-    }
-  }
-}
+
+
 </style>
