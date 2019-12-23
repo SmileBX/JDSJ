@@ -70,7 +70,7 @@ export default {
         wx.navigateTo({
           url:url+'?id='+param
         })
-      }, 100);
+      }, 100); 
     },
     
   },
