@@ -182,29 +182,15 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/goodsSon/goodsDetail/main",
-					"pathName": "pages/goodsSon/goodsDetail/main",
+					"name": "搜索",
+					"pathName": "pages/goodsSon/goodsSearch/main",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pages/goodsSon/article/main",
-					"pathName": "pages/goodsSon/article/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/goodsSon/articleDetail/main",
-					"pathName": "pages/goodsSon/articleDetail/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/goodsSon/classify/main",
-					"pathName": "pages/goodsSon/classify/main",
+					"name": "购物车",
+					"pathName": "pages/cart/main",
 					"scene": null
 				}
 			]

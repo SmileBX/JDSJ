@@ -5,7 +5,9 @@
     "pages/cart/main",
     "pages/service/chatRoom/main",
     "pages/service/copyLink/main",
-    "pages/product/detail/main"
+    "pages/product/detail/main",
+    "pages/shop/index/main",
+    "pages/shop/join/main"
   ],
   "subpackages":[
     {
@@ -46,7 +48,9 @@
         "articleDetail/main",
         "classify/main",
         "classifyDetail/main",
-        "goodsDetail/main"
+        "goodsDetail/main",
+        "goodsSearch/main"
+
       ]
     }
   ],
