@@ -80,7 +80,12 @@
         </div>
       </div>
     </div>
-    <img class="car" src="/static/images/index/card.png" alt="">
+    <movable-area class="move-box-fa">
+      <movable-view class="move-box" direction='all' inertia x='10000' y='0' damping='1000000' friction='1'>
+        <img class="car" src="/static/images/index/card.png" alt="">
+      </movable-view>
+    </movable-area>
+    
   </div>
 </template>
 
@@ -111,6 +116,22 @@ export default {
   background-color: #fff;
   box-shadow: 0 5rpx 8rpx 0rpx rgba($color: #000000, $alpha: 0.1)
 }
+.move-box-fa{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none
+}
+.move-box{
+  pointer-events: auto;
+  position: fixed;
+  bottom: 30rpx;
+  right: 30rpx;
+  width: 98rpx;
+	height: 98rpx;
+}
 // .xd{
 //   transition: all 0.3s;
 //   width:100%;
@@ -125,9 +146,6 @@ export default {
 .car{
   width: 98rpx;
 	height: 98rpx;
-  position: fixed;
-  bottom: 30rpx;
-  right: 30rpx;
 }
 .goods-box{
   background-color: #fff;
