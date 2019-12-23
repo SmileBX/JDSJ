@@ -46,7 +46,9 @@
         "articleDetail/main",
         "classify/main",
         "classifyDetail/main",
-        "goodsDetail/main"
+        "goodsDetail/main",
+        "goodsSearch/main"
+
       ]
     }
   ],
