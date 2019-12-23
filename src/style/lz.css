@@ -4,6 +4,9 @@ page{
   color: #333;
   font-size: 28rpx;
 }
+div,p,span{
+  box-sizing: border-box;
+}
 .cliDom{
   width: 0rpx;
   height: 0rpx;

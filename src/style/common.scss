@@ -4,7 +4,9 @@
     height: 40rpx;
     border-radius: 50%!important;
 }
-
+*{
+    box-sizing: border-box;
+}
 .checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked {
     background: #ff9325;
     border-radius: 50%!important;
