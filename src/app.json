@@ -42,7 +42,9 @@
     {
       "root":"pages/team/",
       "pages":[
-        "goods/main"
+        "goods/main",
+        "orderdetail/main",
+        "confirmOrder/main"
       ]
     },
     {
