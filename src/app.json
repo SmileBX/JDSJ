@@ -49,8 +49,8 @@
         "classify/main",
         "classifyDetail/main",
         "goodsDetail/main",
-        "goodsSearch/main"
-
+        "goodsSearch/main",
+        "confirmOrder/main"
       ]
     }
   ],
@@ -94,7 +94,8 @@
     "van-picker": "./static/vant/picker/index",
     "van-cell-group": "./static/vant/cell-group/index",
     "van-cell": "./static/vant/cell/index",
-    "van-swipe-cell": "./static/vant/swipe-cell/index"
+    "van-swipe-cell": "./static/vant/swipe-cell/index",
+    "van-icon": "./static/vant/icon/index"
     
  }
 }
