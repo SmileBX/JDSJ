@@ -40,6 +40,12 @@
       ]
     },
     {
+      "root":"pages/team/",
+      "pages":[
+        "goods/main"
+      ]
+    },
+    {
       "root":"pages/goodsSon/",
       "pages":[
         "rob/main",

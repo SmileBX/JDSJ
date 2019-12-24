@@ -21,7 +21,7 @@
           <!-- <img src="/static/images/icons/right.png" alt=""> -->
         </div>
         <div class="tag flex-wrap jus-b">
-          <p class="ali-c">套装礼盒</p>
+          <p class="ali-c"  @click="goUrl('/pages/goodsSon/classifyGoods/main')">套装礼盒</p>
           <p class="ali-c">套装礼盒</p>
           <p class="ali-c">套装礼盒</p>
         </div>

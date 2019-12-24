@@ -43,7 +43,7 @@
     </div>
     <div class="youhui ali-c jus-b">
       <img @click="goUrl('/pages/goodsSon/rob/main')" src="/static/images/index/qianggou.png" alt="">
-      <img src="/static/images/index/pintuan.png" alt="">
+      <img @click="goUrl('/pages/team/goods/main')" src="/static/images/index/pintuan.png" alt="">
     </div>
     <div class="goods-box">
       <div class="xd">

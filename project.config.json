@@ -191,6 +191,13 @@
 					"id": -1,
 					"name": "购物车",
 					"pathName": "pages/cart/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/team/goods/main",
+					"pathName": "pages/team/goods/main",
 					"scene": null
 				}
 			]
