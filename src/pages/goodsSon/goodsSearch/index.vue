@@ -109,10 +109,10 @@ export default {
     margin-right:20rpx;
   }
   .goods-box{
-  background-color: #fff;
-  margin-top: 20rpx;
-  .goods{
-    padding: 30rpx;
+    background-color: #fff;
+    margin-top: 20rpx;
+    .goods{
+      padding: 30rpx;
     .list{
       width: 335rpx;
       height: 525rpx;

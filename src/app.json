@@ -55,6 +55,7 @@
         "classify/main",
         "classifyDetail/main",
         "goodsDetail/main",
+        "paysuccess/main",
         "goodsSearch/main"
 
       ]

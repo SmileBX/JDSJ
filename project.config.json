@@ -196,8 +196,8 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/team/goods/main",
-					"pathName": "pages/team/goods/main",
+					"name": "支付成功",
+					"pathName": "pages/goodsSon/paysuccess/main",
 					"scene": null
 				}
 			]
