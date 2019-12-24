@@ -191,6 +191,13 @@
 					"id": -1,
 					"name": "购物车",
 					"pathName": "pages/cart/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "支付成功",
+					"pathName": "pages/goodsSon/paysuccess/main",
 					"scene": null
 				}
 			]
