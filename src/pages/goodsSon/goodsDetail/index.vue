@@ -59,7 +59,34 @@
           </div>
         </div>
       </div>
-      
+
+      <div class="play">
+        <div class="tit ali-c jus-b">
+          <p>拼团玩法</p>
+          <div class="ali-c">
+            <span>详细规则</span>
+            <img src="/static/images/icons/right.png" alt="">
+          </div>
+        </div>
+        <div class="flexc img">
+          <img src="/static/images/index/play.png" alt="">
+        </div>
+      </div>
+
+      <div class="pin">
+        <div class="tit ali-c">他们都在拼，可直接参团</div>
+        <div class="list ali-c jus-b">
+          <div class="left ali-c">
+            <img src="/static/images/index/ok.png" alt="">
+            <div>
+              <span>如果</span>
+              <p>还差1人成团，剩余<span>02:54:03</span>结束</p>
+            </div>
+          </div>
+          <p class="flexc right">去参团</p>
+        </div>
+      </div>
+
       <div class="comment">
         <div class="tit ali-c jus-b">
           <p class="left">商品评价<span>(1)</span></p>
@@ -142,6 +169,73 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+.pin{
+  background-color: #fff;
+  margin-top: 20rpx;
+  .tit{
+    height: 90rpx;
+    border-bottom: 1rpx solid #ededed;
+    font-size: 32rpx;
+	  font-weight: bold;
+    padding: 0 30rpx
+  }
+  .list{
+    height: 142rpx;
+    border-bottom: 1rpx solid #ededed;
+    padding: 0 30rpx;
+    .right{
+      width: 144rpx;
+      height: 49rpx;
+      background-color: #ff3333;
+      border-radius: 24rpx;
+      font-size: 24rpx;
+      color: #fff
+    }
+    img{
+      width: 72rpx;
+	    height: 73rpx;
+      border-radius: 50%;
+      margin-right: 20rpx
+    }
+    .left{
+      p{
+        font-size: 24rpx;
+        color: #666666;
+        span{
+          color: #ff3333;
+        }
+      }
+    }
+  }
+}
+.play{
+  background-color: #fff;
+  padding: 0 30rpx;
+  margin-top: 20rpx;
+  .img{
+    img{
+      width: 690rpx;
+      height: 190rpx;
+      margin: 10rpx 0
+    }
+  }
+  .tit{
+    height: 88rpx;
+    img{
+      width: 12rpx;
+	    height: 20rpx;
+      margin-left: 20rpx
+    }
+    p{
+      font-size: 32rpx;
+	    font-weight: bold;
+    }
+    span{
+      color: #999999;
+    }
+
+  }
+}
 .foot{
   background-color: #fff;
   position: fixed;

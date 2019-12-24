@@ -198,6 +198,13 @@
 					"id": -1,
 					"name": "支付成功",
 					"pathName": "pages/goodsSon/paysuccess/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/goodsSon/goodsDetail/main",
+					"pathName": "pages/goodsSon/goodsDetail/main",
 					"scene": null
 				}
 			]

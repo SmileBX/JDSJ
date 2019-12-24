@@ -42,7 +42,8 @@
     {
       "root":"pages/team/",
       "pages":[
-        "goods/main"
+        "goods/main",
+        "pintuan/main"
       ]
     },
     {
