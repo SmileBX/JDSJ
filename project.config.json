@@ -205,6 +205,20 @@
 					"id": -1,
 					"name": "pages/goodsSon/goodsDetail/main",
 					"pathName": "pages/goodsSon/goodsDetail/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/myson/mytuan/main",
+					"pathName": "pages/myson/mytuan/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/team/pintuan/main",
+					"pathName": "pages/team/pintuan/main",
 					"scene": null
 				}
 			]
