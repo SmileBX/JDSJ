@@ -118,9 +118,9 @@ export default {
       const openId = wx.getStorageSync("openId");
       const token = wx.getStorageSync("wxToken");
       const unionid = wx.getStorageSync("unionid");
-      const res = await post("Login/MemberBindOrRegister", {
+      const res = await post("Login/BindOrRegister", {
         Mobile: this.phoneNumber,
-        VerifyCode: this.verifyCode,
+        yzcode: this.verifyCode,
         PassWord: this.password,
         OkPassWord: this.password2,
         Unionid: unionid, //微信统一unionid号
@@ -180,7 +180,7 @@ export default {
         // 会员重新绑定手机号5,会员微信绑定手机号6, 师傅登录7,师傅注册8,师傅绑定银行卡9,
         // 师傅微信绑定手机号10,师傅修改手机号11,师傅重新绑定手机号12,师傅找回密码13,
         // 客服登录14,客服找回密码15,客服绑定账号16
-        const result = get("Login/GetWxBindTelCode", {
+        const result = get("Login/GetMiniAppBindTelCode", {
           mobile: this.phoneNumber,
         });
         wx.showToast({
