@@ -2,20 +2,20 @@
   <div style="padding-bottom:120rpx">
     <radio-group class="radio-group" @tap="radioChange" v-if="list.length>0">
       <div class="list bpr-box" v-for="(item, index) in list" :key="index">
-        <p class="jus-b" @tap="choseAddress(index)"><span class="name">{{item.Consignee}}</span><span>{{item.Mobile}}</span></p>
-        <p class="address" @tap="choseAddress(index)">{{item.Address}}</p>
+        <p class="jus-b" @tap="choseAddress(index)"><span class="name">{{item.name}}</span><span>{{item.tel}}</span></p>
+        <p class="address" @tap="choseAddress(index)">{{item.addressinfo}}</p>
         <div class="ali-c jus-b foot">
           <label @tap="changeDefault(index)">
-              <radio class="radio" color="#f00000" :checked="item.IsDefault==1" :value="item.Id" >
+              <radio class="radio" color="#f00000" :checked="item.is_def==1" :value="item.Id" >
                 <text>默认地址</text>
               </radio>
           </label>
           <div class="ali-c">
-            <div class="ali-c btt" @tap="editSite(item.Id)">
+            <div class="ali-c btt" @tap="editSite(item.id)">
               <img class="write" src="/static/images/icons/write.png" alt="">
               <span>编辑</span>
             </div>
-            <div class="ali-c btt" @tap="Delete(item.Id,index)">
+            <div class="ali-c btt" @tap="Delete(item.id,index)">
               <img class="delete" src="/static/images/icons/delete.png" alt="">
               <span>删除</span>
             </div>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-// import {post} from '@/utils'
+import {post} from '@/utils'
 import { formatTime } from '@/utils/index'
 
 export default {
@@ -55,6 +55,7 @@ export default {
     }
   },
   onShow(){
+    console.log('111111111111')
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     wx.setStorageSync("addressinfo",'');
@@ -105,7 +106,7 @@ export default {
       console.log('111111111111')
       //设置默认
       const params = {
-        Id: this.list[i].Id,
+        Id: this.list[i].id,
         UserId: this.userId,
         Token: this.token
       };
@@ -153,7 +154,7 @@ export default {
     },
     editSite(id){
        wx.navigateTo({
-        url:'/pages/myson2/addaddress/main?id='+id
+        url:'/pages/myson/addaddress/main?id='+id
       })
     },
     toAddSite(){
