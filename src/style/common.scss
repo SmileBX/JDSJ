@@ -399,6 +399,19 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     width: 120rpx;
     height: 120rpx;
 }
-
+/* 返回顶部 */
+.topbtn{ 
+    height: 100rpx; 
+    width: 100rpx; 
+    background: url(http://www.sc-mall.net/static/top.png) center center; 
+    background-size: cover; 
+    position: fixed; 
+    right: 10rpx; 
+    bottom: 110rpx;
+    z-index: 99;
+}
+.red{
+    color: #f63517
+}
 
 

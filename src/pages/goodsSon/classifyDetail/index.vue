@@ -217,7 +217,7 @@ export default {
   box-shadow: 0 5rpx 8rpx 0rpx rgba($color: #000000, $alpha: 0.1)
 }
 .goods-box{
-  background-color: #fff;
+  background-color: #f5f5f5;
   .goods{
     padding: 30rpx;
     .list{
@@ -226,6 +226,7 @@ export default {
       border-radius: 10rpx;
       overflow: hidden;
       margin-bottom: 20rpx;
+      background: #fff;
       box-shadow: 0rpx 2rpx 5rpx 0rpx rgba(0, 0, 0, 0.1);
       .text-box{
         padding: 0 20rpx;
