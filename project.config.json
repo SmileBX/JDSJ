@@ -240,6 +240,13 @@
 					"id": -1,
 					"name": "pages/my/main",
 					"pathName": "pages/my/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/myson/address/main",
+					"pathName": "pages/myson/address/main",
 					"scene": null
 				}
 			]

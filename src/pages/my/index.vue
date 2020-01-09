@@ -2,12 +2,12 @@
   <div>
       <div class="top-box">
         <div class="top ali-c">
-          <img mode='aspectFill' class="left" src="/static/images/ava.png" alt="">
+          <img mode='aspectFill' class="left" :src="info.Avatar" alt="">
           <div class="right">
             <div class="ali-c one">
-              <p>巴啦啦小魔仙</p>
+              <p>{{info.NickName}}</p>
             </div>
-            <p class="two">13257927518</p>
+            <p class="two">{{info.Mobile}}</p>
           </div>
         </div>
         <img class="bg" mode='aspectFill' src="/static/images/mine_bg.png" alt="">
@@ -82,7 +82,7 @@
                 <p>浏览记录</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/address/main')">
               <div>
                 <img src="/static/images/icons/9.png" alt="">
                 <p>地址管理</p>
@@ -142,7 +142,7 @@ export default {
 
   data () {
     return {
-      
+      info:{}
     }
   },
   onShow(){
@@ -158,6 +158,10 @@ export default {
       post('User/GetMemberInfo',{
         UserId:wx.getStorageSync("userId"),
         Token:wx.getStorageSync("token")
+      }).then(res=>{
+        if(res.code===0){
+          this.info = res.data
+        }
       })
     },
     switchPath(path){
