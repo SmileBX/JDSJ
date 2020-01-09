@@ -2,7 +2,7 @@
   <div>
     <div class="top">
       <div class="search ali-c">
-        <p>家乐福</p>
+        <p class="oneline">{{shopName}}</p>
         <div class="right flexc">
           <img src="/static/images/index/search.png" alt="">
           <span>搜索</span>
@@ -100,6 +100,7 @@ export default {
       userId: "",
 			token: "",
       shopid:"",
+      shopName:"集店",
       banner:[],
       hasData:false,
 			noDataIsShow: false,//没有数据的提示是否显示
@@ -140,12 +141,18 @@ export default {
   onLoad(e){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    // this.shopid = decodeURIComponent(e.shopid);
-    //this.shopid =this.$root.$mp.query.shopid;
-    this.shopid ="50FB070743F1853A";
-    wx.setStorageSync("shopid", this.shopid);
+    if(decodeURIComponent(e.shopid)&&decodeURIComponent(e.shopid)!='undefined'){
+      this.shopid = decodeURIComponent(e.shopid);
+      wx.setStorageSync("shopid", this.shopid);
+    }
   },
   onShow(){
+    if(wx.getStorageSync("shopid")){
+      this.shopid =wx.getStorageSync("shopid");
+    }else{
+      this.shopid ="";
+    }
+    this.GetMerchantDetail();
     this.GetShopRecruitment();
     this.GetProductList();
   },
@@ -154,6 +161,15 @@ export default {
       wx.navigateTo({
         url:url+'?id='+param
       })
+    },
+    // 店铺信息
+    async GetMerchantDetail(){
+      let res=await post("Shop/GetMerchantDetail",{
+        ShopId:this.shopid
+      })
+      if(res.code==0){
+        this.shopName=res.data.ShopInfo.companyName;
+      }
     },
     async GetShopRecruitment(){
       let res=await post("Shop/GetShopRecruitment",{
@@ -293,6 +309,7 @@ export default {
 .move-box{
   pointer-events: auto;
   position: fixed;
+  top: auto;
   bottom: 30rpx;
   right: 30rpx;
   width: 98rpx;

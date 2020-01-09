@@ -3,36 +3,46 @@
       <img class="shopImg" src="/static/images/shop/joinShop.png" alt="" @click="joinShop">
       <h3>为你收集港澳台心意店铺</h3>
       <div class="list">
-        <div class="item flex-center-start" v-for="item in 6" :key="item">
-          <img src="/static/images/shop2.png" alt="">
-          <div class="item_r">
-            <div class="item-top flex-center-between">
-              <div class="tit ellipsis">浅恋旗舰店</div>
-              <div class="inShop">进店</div>
+        <block v-for="(item,index) in ShopList" :key="index">
+          <div class="item flex-center-start" @click="goshop(item.Id)">
+            <img :src="item.Logo" :alt="item.Name">
+            <div class="item_r">
+              <div class="item-top flex-center-between">
+                <div class="tit ellipsis">{{item.Name}}</div>
+                <div class="inShop">进店</div>
+              </div>
+              <p class="ellipsis">{{item.Describe}}</p>
             </div>
-            <p class="ellipsis">外贸原单精选百万商品</p>
           </div>
-        </div>
+        </block>
       </div>
   </div>
 </template>
 
 <script>
 import {post,get} from '@/utils'
-import { async } from 'q';
 export default {
   data () {
     return {
-        ShopList:{}
+      userId: "",
+      token: "",
+      ShopList:{}
     }
   },
   onLoad(){
-   
+   this.userId = wx.getStorageSync("userId");
+   this.token = wx.getStorageSync("token");
   },
   onShow(){
     this.GetVisitShopList();
   },
   methods: {
+      goshop(id){
+        wx.switchTab({
+          url: '/pages/index/main'
+        })
+        wx.setStorageSync("shopid", id);
+      },
       // 加入店铺
       joinShop(){
         wx.navigateTo({
@@ -42,12 +52,11 @@ export default {
       // 店铺列表
       async GetVisitShopList(){
         let res=await post("User/GetVisitShopList",{
-          UserId:wx.getStorageSync('userId'),
-          Token:wx.getStorageSync('token')
+          userId: this.userId,
+          token: this.token,
         })
-        console.log(res)
         if(res.code==0){
-          
+          this.ShopList=res.data
         }
       }
   }

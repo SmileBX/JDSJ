@@ -88,7 +88,7 @@
                 <p>地址管理</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main')">
+            <div class="icon flexc" @click="switchPath('/pages/shop/index/main')">
               <div>
                 <img src="/static/images/icons/10.png" alt="">
                 <p>店铺列表</p>

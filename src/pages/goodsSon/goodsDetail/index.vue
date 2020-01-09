@@ -203,7 +203,7 @@ export default {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.shopid = wx.getStorageSync("shopid");
-    this.proId=this.$root.$mp.query.id||15;
+    this.proId=this.$root.$mp.query.id;
   },
   onShow(){
     this.ProductInfo();
