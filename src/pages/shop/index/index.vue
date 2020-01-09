@@ -18,19 +18,37 @@
 </template>
 
 <script>
+import {post,get} from '@/utils'
+import { async } from 'q';
 export default {
   data () {
     return {
-        
+        ShopList:{}
     }
   },
-  
+  onLoad(){
+   
+  },
+  onShow(){
+    this.GetVisitShopList();
+  },
   methods: {
       // 加入店铺
       joinShop(){
         wx.navigateTo({
           url:'/pages/shop/join/main'
         })
+      },
+      // 店铺列表
+      async GetVisitShopList(){
+        let res=await post("User/GetVisitShopList",{
+          UserId:wx.getStorageSync('userId'),
+          Token:wx.getStorageSync('token')
+        })
+        console.log(res)
+        if(res.code==0){
+          
+        }
       }
   }
 }

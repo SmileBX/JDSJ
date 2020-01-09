@@ -140,30 +140,43 @@
 </template>
 
 <script>
-import {switchPath,isJump} from '@/utils'
+import {post,get} from '@/utils'
 export default {
-
   data () {
     return {
-     showEdit:false,
-      
+      userId: "",
+      token: "",
+      proId:"",
+      shopid:"" 
     }
   },
-
+  onLoad(){
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+    this.shopid = wx.getStorageSync("shopid");
+    this.proId=this.$root.$mp.query.id;
+  },
   onShow(){
-    
+    this.ProductInfo();
   },
   methods: {
     goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
-        wx.navigateTo({
-          url:url+'?id='+param
-        })
-      }, 100);
+      wx.navigateTo({
+        url:url+'?id='+param
+      })
     },
-    
+    async ProductInfo(){
+      let res=await post("Goods/ProductInfo",{
+        userId: this.userId,
+        token: this.token,
+        ShopId:this.shopid,
+        proId: this.proId
+      })
+      if(res.code==0){
+        
+      }
+    },
+
   },
 }
 </script>
