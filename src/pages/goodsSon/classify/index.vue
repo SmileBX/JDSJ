@@ -1,7 +1,7 @@
 <template>
   <div class="page">
       <div class="top">
-        <img class="bg" mode='aspectFill' src="/static/images/index/goods_banner.png" alt="">
+        <img class="bg" mode='aspectFill' :src="datainfo.bannerPicNo" alt="">
         <div class="main">
           <div class="flexc search-box">
             <div class="search flexc">
@@ -10,50 +10,95 @@
             </div>
           </div>
           <div class="shop ali-c">
-            <img src="/static/images/index/goods_banner.png" alt="">
-            <p>进鑫铭帮化妆店</p>
+            <img :src="datainfo.logo" :alt="datainfo.companyName">
+            <p>{{datainfo.companyName}}</p>
           </div>
         </div>
       </div>
-      <div class="main-box" v-for="(item, index) in 2" :key="index">
+      <div class="main-box" v-for="(item, index) in datalist" :key="index">
         <div class="tit ali-c">
-          <p>面部护肤</p>
-          <!-- <img src="/static/images/icons/right.png" alt=""> -->
+          <p>{{item.TypeName}}</p>
         </div>
         <div class="tag flex-wrap jus-b">
-          <p class="ali-c"  @click="goUrl('/pages/goodsSon/classifyGoods/main')">套装礼盒</p>
-          <p class="ali-c">套装礼盒</p>
-          <p class="ali-c">套装礼盒</p>
+          <p class="ali-c" v-for="(i,e) in item.classilyList" :key="e"  @click="goUrl(i.Id,i.ClassName)">{{i.ClassName}}</p>
         </div>
       </div>
   </div>
 </template>
 
 <script>
-import {switchPath,isJump} from '@/utils'
+import {post,get} from '@/utils'
 export default {
-
   data () {
     return {
-     showEdit:false,
-      
+     datainfo:{},//店铺信息
+     typelist:{},//类型
+     datalist:{},//分类数据
+     shopid:"" 
     }
   },
-
+  onLoad(){
+    this.shopid = wx.getStorageSync("shopid");
+  },
   onShow(){
-    
+    this.GetMerchantDetail();
+    this.GetProductType();
   },
   methods: {
-    goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
-        wx.navigateTo({
-          url:url+'?id='+param
-        })
-      }, 100);
+    goUrl(id,name){
+      wx.navigateTo({
+        url:'/pages/goodsSon/classifyDetail/main?cid='+id+'&name='+name
+      })
     },
-    
+    async GetMerchantDetail(){
+      let res=await post("Shop/GetMerchantDetail",{
+        ShopId:this.shopid
+      })
+      if(res.code==0){
+        this.datainfo=res.data.ShopInfo;
+        this.datainfo.bannerPicNo=this.datainfo.bannerPicNo.split(',')[0];
+      }
+    },
+    async GetProductType(){
+      let res=await post("Goods/GetProductType",{})
+      if(res.code==0){
+        this.typelist=res.data;
+        this.GetProductClass();
+      }
+    },
+    async GetProductClass(){
+      let res=await post("Goods/GetProductClass",{
+        ShopId:this.shopid,
+        typeId: 0,
+        parentId: 0
+      })
+      if(res.code==0){
+        let _this=this;
+				const newData =[];
+        res.data.forEach(item=>{
+          _this.typelist.forEach(i=>{
+            if(i.Id==item.TypeId){
+               _this.$set(item, "TypeName", i.TypeName);
+            }
+          })
+          const indexFound = newData.findIndex(newItem => newItem.TypeId === item.TypeId);
+          const currentClassily={
+            Id: item.Id,
+            ClassName: item.ClassName
+          }
+          if (indexFound > -1) {
+						  newData[indexFound].classilyList.push(currentClassily)
+						} else {
+						  newData.push({
+							TypeId: item.TypeId,
+              TypeName: item.TypeName,
+							classilyList: [currentClassily]
+						  })
+						}
+        });
+        this.datalist=newData;
+      }
+    }
   },
 }
 </script>
