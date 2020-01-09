@@ -6,9 +6,9 @@ import logins from './login'
 // const host = 'https://api.gllyz.com/api/';
 // 线上后台地址
 // const filePath = 'http://xcx.gllgyz.com';
-const host = 'http://hxapia.com/api/';// 测试
+const host = 'http://jdapi.wtvxin.com/api/';// 测试
 const wssPath = 'wss://hxapia.com/WebSocketServer.ashx';// wss地址
-const filePath = 'http://www.hxapia.com';// 测试后台地址
+const filePath = 'http://www.jdapi.wtvxin.com/';// 测试后台地址
 const LoginPath = "/pages/login/main";//登录路径
 const RegisterPath = "/pages/login/register/main";//注册路径
 const emotionPath = 'https://res.wx.qq.com'; //替换表情

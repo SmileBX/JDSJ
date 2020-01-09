@@ -7,7 +7,9 @@
     "pages/service/copyLink/main",
     "pages/product/detail/main",
     "pages/shop/index/main",
-    "pages/shop/join/main"
+    "pages/shop/join/main",
+    "pages/login/main",
+    "pages/login/register/main"
   ],
   "subpackages":[
     {

@@ -3,7 +3,7 @@
       <img class="shopImg" src="/static/images/shop/joinShop.png" alt="" @click="joinShop">
       <h3>为你收集港澳台心意店铺</h3>
       <div class="list">
-        <div class="item flex-center-start" v-for="item in 5" :key="item">
+        <div class="item flex-center-start" v-for="item in 6" :key="item">
           <img src="/static/images/shop2.png" alt="">
           <div class="item_r">
             <div class="item-top flex-center-between">
@@ -18,19 +18,37 @@
 </template>
 
 <script>
+import {post,get} from '@/utils'
+import { async } from 'q';
 export default {
   data () {
     return {
-        
+        ShopList:{}
     }
   },
-  
+  onLoad(){
+   
+  },
+  onShow(){
+    this.GetVisitShopList();
+  },
   methods: {
       // 加入店铺
       joinShop(){
         wx.navigateTo({
           url:'/pages/shop/join/main'
         })
+      },
+      // 店铺列表
+      async GetVisitShopList(){
+        let res=await post("User/GetVisitShopList",{
+          UserId:wx.getStorageSync('userId'),
+          Token:wx.getStorageSync('token')
+        })
+        console.log(res)
+        if(res.code==0){
+          
+        }
       }
   }
 }

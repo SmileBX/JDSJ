@@ -1,14 +1,13 @@
 <template>
   <div>
-    <div class="cliDom" :style="clientX?domStyle:''"  :class="clientX?'cliDomActive':''"></div>
       <div class="top-box">
         <div class="top ali-c">
-          <img mode='aspectFill' class="left" src="/static/images/ava.png" alt="">
+          <img mode='aspectFill' class="left" :src="info.Avatar" alt="">
           <div class="right">
             <div class="ali-c one">
-              <p>巴啦啦小魔仙</p>
+              <p>{{info.NickName}}</p>
             </div>
-            <p class="two">13257927518</p>
+            <p class="two">{{info.Mobile}}</p>
           </div>
         </div>
         <img class="bg" mode='aspectFill' src="/static/images/mine_bg.png" alt="">
@@ -23,35 +22,35 @@
               </span>
           </p>
           <div class="icon-box flex-wrap ali-c">
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main',$event)">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main')">
               <div>
                 <img src="/static/images/icons/1.png" alt="">
                 <p>待付款</p>
                 <span class="flexc">2</span>
               </div>
             </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main',$event)">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main')">
               <div>
                 <img src="/static/images/icons/2.png" alt="">
                 <p>待发货</p>
                 <span class="flexc">2</span>
               </div>
             </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main',$event)">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main')">
               <div>
                 <img src="/static/images/icons/3.png" alt="">
                 <p>待收货</p>
                 <span class="flexc">2</span>
               </div>
             </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main',$event)">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main')">
               <div>
                 <img src="/static/images/icons/4.png" alt="">
                 <p>评价</p>
                 <span class="flexc">2</span>
               </div>
             </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main',$event)">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main')">
               <div>
                 <img src="/static/images/icons/5.png" alt="">
                 <p>退款/售后</p>
@@ -65,37 +64,37 @@
         <div class="card">
           <p class="tit ali-c">常用功能</p>
           <div class="icon-box icon-boxb flex-wrap ali-c">
-            <div class="icon flexc" @click="switchPath('/pages/home/card/main',$event)">
+            <div class="icon flexc" @click="switchPath('/pages/home/card/main')">
               <div>
                 <img src="/static/images/icons/6.png" alt="">
                 <p>优惠劵</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/ticket/main',$event)">
+            <div class="icon flexc" @click="switchPath('/pages/myson/ticket/main')">
               <div>
                 <img src="/static/images/icons/7.png" alt="">
                 <p>我的收藏</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/invite/main',$event)">
+            <div class="icon flexc" @click="switchPath('/pages/myson/invite/main')">
               <div>
                 <img src="/static/images/icons/8.png" alt="">
                 <p>浏览记录</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main',$event)">
+            <div class="icon flexc" @click="switchPath('/pages/myson/address/main')">
               <div>
                 <img src="/static/images/icons/9.png" alt="">
                 <p>地址管理</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main',$event)">
+            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main')">
               <div>
                 <img src="/static/images/icons/10.png" alt="">
                 <p>店铺列表</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main',$event)">
+            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main')">
               <div>
                 <img src="/static/images/icons/11.png" alt="">
                 <p>申请店铺</p>
@@ -107,25 +106,25 @@
         <div class="card">
           <p class="tit ali-c">更多工具</p>
           <div class="icon-box icon-boxb flex-wrap ali-c">
-            <div class="icon flexc" @click="switchPath('/pages/home/card/main',$event)">
+            <div class="icon flexc" @click="switchPath('/pages/home/card/main')">
               <div>
                 <img src="/static/images/icons/12.png" alt="">
                 <p>我的拼团</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/ticket/main',$event)">
+            <div class="icon flexc" @click="switchPath('/pages/myson/ticket/main')">
               <div>
                 <img src="/static/images/icons/13.png" alt="">
                 <p>我的评价</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/invite/main',$event)">
+            <div class="icon flexc" @click="switchPath('/pages/myson/invite/main')">
               <div>
                 <img src="/static/images/icons/14.png" alt="">
                 <p>我的发票</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main',$event)">
+            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main')">
               <div>
                 <img src="/static/images/icons/15.png" alt="">
                 <p>在线客服</p>
@@ -138,14 +137,16 @@
 </template>
 
 <script>
-
+import {post} from "@/utils";
 export default {
 
   data () {
     return {
-      clientX:0,
-      clientY:0
+      info:{}
     }
+  },
+  onShow(){
+    this.getInfo()
   },
   computed: {
     domStyle(){
@@ -153,12 +154,18 @@ export default {
     }
   },
   methods: {
-    switchPath(path,e){
-      this.clientX = e.clientX
-      this.clientY = e.clientY
+    getInfo(){
+      post('User/GetMemberInfo',{
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token")
+      }).then(res=>{
+        if(res.code===0){
+          this.info = res.data
+        }
+      })
+    },
+    switchPath(path){
       setTimeout(() => {
-        this.clientX = 0
-        this.clientY = 0
         wx.navigateTo({
           url:path
         })

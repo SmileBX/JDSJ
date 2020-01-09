@@ -35,7 +35,7 @@
 
 <script>
 import areaList from "@/utils/areaList";
-// import {post} from '@/utils'
+import {post} from '@/utils'
 import { formatTime } from '@/utils/index'
 
 
@@ -140,9 +140,10 @@ export default {
           Token: that.token
       }
       ).then(res=>{
-          that.Consignee=res.data.Consignee;
-          that.Mobile=res.data.Mobile;
-          that.isDefault=res.data.IsDefault?true:false;
+          that.Consignee=res.data.name;
+          that.Mobile=res.data.tel;
+          that.isDefault=res.data.is_def?true:false;
+          //
           that.ProvinceCode=res.data.ProvinceCode;
           that.CityCode=res.data.CityCode;
           that.DistrictCode =res.data.DistrictCode;
