@@ -1,12 +1,12 @@
 <template>
   <div class="page">
-      <div class="detail">文章详情</div>
-      <div class="goods ali-c jus-b">
+      <div class="detail"><div v-html="list.ContentDetails"></div></div>
+      <div class="goods ali-c jus-b" v-for="(item,index) in list.ProductInfo" :key="index" @click="goUrl('/pages/goodsSon/goodsDetail/main',item.Id)">
         <div class="left ali-c">
-          <img src="/static/images/index/goods_banner.png" alt="">
+          <img :src="item.Image" alt="">
           <div>
-            <p>九阳多功能蒸气饭煲</p>
-            <span><span>¥</span>25.00</span>
+            <p>{{item.Name}}</p>
+            <span><span>¥</span>{{item.Price}}</span>
           </div>
         </div>
         <img class="right" src="/static/images/index/go.png" alt="">
@@ -14,35 +14,42 @@
       <div class="foot ali-c jus-b">
         <div class="ali-c">
           <img class="one" src="/static/images/index/good_n.png" alt="">
-          <span>24</span>
+          <span>{{list.LikeNum}}</span>
           <img class="two" src="/static/images/index/zhuanfa.png" alt="">
         </div>
-        <p class="flexc mai">立即购买</p>
+        <p class="flexc mai" @click="goUrl('/pages/goodsSon/goodsDetail/main',list.ProductInfo[0].Id)">立即购买</p>
       </div>
   </div>
 </template>
 
 <script>
+import {post,get} from '@/utils'
 export default {
 
   data () {
     return {
-
+      ArticleId:"",
+      list:{}
     }
   },
 
   onShow(){
-    
+    this.ArticleId=this.$root.$mp.query.id;
+    this.GetArticleInfo()
   },
   methods: {
     goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
         wx.navigateTo({
           url:url+'?id='+param
         })
-      }, 100);
+    },
+    async GetArticleInfo(){
+      let res=await post("Find/GetArticleInfo",{
+        ArticleId :this.ArticleId
+      })
+      if(res.code==0){
+        this.list = res.data;
+      }
     },
     
   },
@@ -55,6 +62,9 @@ export default {
   background-color: #fff;
   .detail{
     margin: 0 30rpx;
+    width: 690rpx;
+    padding: 20rpx 0;
+    line-height: 1.7
   }
   .foot{
     box-sizing: border-box;
@@ -94,7 +104,7 @@ export default {
     border-radius: 16rpx;
     box-sizing: border-box;
     padding: 0 40rpx 0 20rpx;
-    margin: auto;
+    margin: 20rpx auto;
     .right{
       width: 50rpx;
 	    height: 50rpx;

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div class="goods-box">
+    <div class="goods-box">
       <div class="xd">
         <div class="shai flex">
           <div :class="['flex1 flexc',item.active?'active':'']" @click="filter(index)" v-for="(item,index) in filterTab" :key="index">

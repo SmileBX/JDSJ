@@ -1,19 +1,22 @@
 <template>
   <div class="ticket">
-      <div class="tab flex">
-        <div class="flex1 flexc" :class="{'active':tabIndex==index}" v-for="(item, index) in tabList" :key="index" @click="cliTab(index)">{{item}}</div>
-        <span :style="'left:'+tabStyle+'rpx'"></span>
-      </div>
       <div class="list jus-b" v-for="(item,index) in list" :key="index">
-        <div class="left">
-          <p>{{item.title}}</p>
-          <span>有效期至{{item.endTime}}</span>
-          <div class="flexc" :class="tabIndex==0?'back_col':'use'">{{item.discountType==1?'减满券':'折扣券'}}</div>
-        </div>
-        <div class="right flexc" :class="tabIndex==0?'back_col':''">
+        <div class="left flex">
+          <div class="price">
+            {{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span>
+          </div>
           <div>
-            <p>{{item.discountType==1?item.denomination:item.denomination*10}}<span>{{item.discountType==1?'元':'折'}}</span></p>
-            <span>满{{item.meetConditions}}元可使用</span>
+            <p v-if="item.DiscountType==1">满{{item.MeetConditions}}元减{{item.Denomination}}元券</p>
+            <p v-else>满{{item.MeetConditions}}元打{{item.Denomination*10}}折券</p>
+            <span>有效期至{{item.EndTime}}</span>
+          </div>
+          <div class="flexc back_col">{{item.DiscountType==1?'减满券':'折扣券'}}</div>
+        </div>
+        <div class="right flexc back_col" @click="ReceiveCoupon(item.Id)">
+          <div>
+            <!-- <p>20<span>元</span></p>
+            <span>满100可使用</span> -->
+            <p>立即领取</p>
           </div>
         </div>
       </div>
@@ -26,8 +29,6 @@ export default {
 
   data () {
     return {
-      tabList:['未使用','已使用','已失效'],
-      tabIndex:0,
       userId: "",
 			token: "",
       shopid:"",
@@ -37,54 +38,37 @@ export default {
       list:[],
     }
   },
-  computed: {
-    tabStyle(){
-      return ((750/this.tabList.length)*this.tabIndex)+(((750/this.tabList.length)-50)/2)
-    }
-  },
   onShow(){
     this.shopid=wx.getStorageSync("shopid");
     this.userId=wx.getStorageSync("userId");
     this.token=wx.getStorageSync("token");
-    this.tabIndex=0,
-    this.GetMyCouponList()
+    this.GetCouponCenter()
   },
   methods: {
-    async GetMyCouponList(){console.log(this.tabIndex)
-      let res=await post("Coupon/MyCouponList",{
+    async GetCouponCenter(){
+      let res=await post("Coupon/CouponCenter",{
         "UserId": this.userId,
         "Token": this.token,
         "page": this.page,
         "pageSize": this.pageSize,
         "ShopId": this.shopid,
         "ProClassId": 0,
-        "Enable": this.tabIndex+1
+        "Enable": 3
       })
       if(res.code==0){
-        if(res.data.length>0){
-          res.data.map(item=>{
-            item.endTime=item.endTime.replace(/T/,' ')
-          })
-        }
         this.list = res.data;
       }
     },
-    goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
-        wx.navigateTo({
-          url:url+'?id='+param
+    async ReceiveCoupon(id){
+      let res=await post("Coupon/ReceiveCoupon",{
+        "UserId": this.userId,
+        "Token": this.token,
+        "CouponId": id
+      })
+        wx.showToast({
+          title: res.msg,
+          icon: 'none',
         })
-      }, 100);
-    },
-    cliServer(index){
-      this.serverIndex = index
-    },
-    cliTab(index){
-      this.tabIndex = index;
-      this.GetMyCouponList()
-      // console.log(this.tabIndex,"this.tabIndex")
     },
   },
 }
@@ -128,11 +112,20 @@ export default {
     width: 460rpx;
     padding: 60rpx 0 0 35rpx;
     position: relative;
+    .price{
+      color: #f00;
+      font-size: 48rpx;
+      margin-right: 20rpx;
+      span{
+        font-size: 36rpx!important;
+        color: #f00;
+      }
+    }
     span{
       font-size: 20rpx;
       color: #999;
     }
-    div{
+    .back_col{
       width: 128rpx;
 	    height: 40rpx;
       border-radius: 0 0 24px 0;
@@ -149,8 +142,8 @@ export default {
     text-align: center;
     p{
       color: #fff;
-      font-size: 56rpx;
-      font-weight: 900;
+      font-size: 38rpx;
+      font-weight: bold;
       span{
         font-size: 20rpx
       }
@@ -161,25 +154,8 @@ export default {
     }
   }
 }
-.tab{
-  position: relative;
-  height: 92rpx;
-  background-color: #fff;
-  position: relative;
-  .active{
-    color: #f00
-  }
-  span{
-    position: absolute;
-    bottom: 0;
-    transition: all .2s;
-    height: 5rpx;
-    width: 50rpx;
-    background-color: #f00
-  }
-}
 .back_col{
-  background-color: #f00!important;
+  background-color: #ff3333!important;
 }
 
 </style>

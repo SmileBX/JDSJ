@@ -64,7 +64,7 @@
         <div class="card">
           <p class="tit ali-c">常用功能</p>
           <div class="icon-box icon-boxb flex-wrap ali-c">
-            <div class="icon flexc" @click="switchPath('/pages/home/card/main')">
+            <div class="icon flexc"  @click="switchPath('/pages/myson/ticket/main')">
               <div>
                 <img src="/static/images/icons/6.png" alt="">
                 <p>优惠劵</p>
