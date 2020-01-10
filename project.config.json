@@ -256,6 +256,12 @@
 					"pathName": "pages/goodsSon/goodsDetail/main",
 					"query": "proId=15",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "下单",
+					"pathName": "pages/goodsSon/confirmOrder/main",
+					"scene": null
 				}
 			]
 		}
