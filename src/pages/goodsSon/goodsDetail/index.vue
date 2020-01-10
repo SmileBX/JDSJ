@@ -246,7 +246,7 @@ export default {
         ShopId:this.shopid
       })
       if(res.code==0){
-        this.CartNumber=res.data;
+        this.CartNumber=res.data.AllNumber;
       }
     },
     //添加取消收藏

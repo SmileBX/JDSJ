@@ -79,7 +79,7 @@
     </div>
     <movable-area class="move-box-fa">
       <movable-view class="move-box" direction='all' inertia x='10000' y='0' damping='1000000' friction='1'>
-        <img class="car" src="/static/images/index/card.png" alt="">
+        <img class="car" src="/static/images/index/card.png" alt="" @click="goCart">
       </movable-view>
     </movable-area>
     
@@ -150,7 +150,7 @@ export default {
     if(wx.getStorageSync("shopid")){
       this.shopid =wx.getStorageSync("shopid");
     }else{
-      this.shopid ="";
+      this.shopid ="50FB070743F1853A";
     }
     this.GetMerchantDetail();
     this.GetShopRecruitment();
@@ -160,6 +160,11 @@ export default {
     goUrl(url,param){
       wx.navigateTo({
         url:url+'?id='+param
+      })
+    },
+    goCart(){
+      wx.navigateTo({
+        url:'/pages/cart/main'
       })
     },
     // 店铺信息

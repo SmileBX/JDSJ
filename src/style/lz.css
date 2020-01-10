@@ -25,11 +25,6 @@ div,p,span{
   /* opacity: 0.8; */
   background-color: #f5f5f5!important;
 }
-checkbox .wx-checkbox-input {
-  width: 50rpx;
-  height: 50rpx;
-  /* border-radius: 50%; */
-}
 .list-data{
   line-height: 100rpx;
   text-align: center;
@@ -37,22 +32,7 @@ checkbox .wx-checkbox-input {
   color: #999;
   background-color: #f5f5f5;
 }
-/*checkbox选中后样式  */
-checkbox .wx-checkbox-input.wx-checkbox-input-checked {
-  background: #f00;
-}
-/*checkbox选中后图标样式  */
-checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
-  width: 26rpx;
-  height: 26rpx;  
-  line-height: 26rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #fff;
-  background: transparent;
-  transform: translate(-50%, -50%) scale(1);
-  -webkit-transform: translate(-50%, -50%) scale(1);
-}
+
 /* 盒子样式 */
 .bp-box{/*带内边距 */
   background-color: #fff;

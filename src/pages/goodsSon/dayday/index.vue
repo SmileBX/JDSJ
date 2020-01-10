@@ -52,9 +52,9 @@ export default {
   onLoad(){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    this.shopid = wx.getStorageSync("shopid");
   },
   onShow(){
+    this.shopid = wx.getStorageSync("shopid");
     this.GetProductList();
   },
   methods: {

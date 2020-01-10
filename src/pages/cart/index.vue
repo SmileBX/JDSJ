@@ -1,43 +1,35 @@
 <template>
   <div>
-      <div class="pw3">
+      <div class="pw3" v-if="hasData">
           <img src="/static/images/red_bg.png" alt="" class="mine_red">
           <div class="cart_main">
-              <div class="text_right cf p3"  @click="showMenu = true" v-if="!showMenu">编辑</div>
-              <div class="text_right cf p3"  @click="showMenu = false" v-if="showMenu">完成</div>
+              <div class="text_right cf p3"  @click="isEdit=!isEdit">{{isEdit?'完成':'编辑'}}</div>
               <div class="cart_list">
-                  <div class="cart_shop bg_fff mt2" v-for="(item,oll) in 2" :key="oll">
+                  <div class="cart_shop bg_fff mt2">
                       <div class="flex justifyContentBetween">
                           <div class="left">
-                            <input
-                              type="checkbox"
-                              class="checkbox-cart"
-                            >
-                            <span>炫宝迪旗舰店</span>
+                            <span>{{cartList[0].ShopName}}</span>
                           </div>
                           <div class="cr">领券</div>
                       </div>
-                      <div class="shopcar_list" v-for="(item,ell) in 3" :key="ell">
+                      <div class="shopcar_list" v-for="(item,index) in cartList" :key="index">
                           <div class="shopcart_item flex justifyContentBetween flexAlignCenter">
                             <div class="left">
-                              <input
-                                type="checkbox"
-                                class="checkbox-cart"
-                              >
+                              <input type="checkbox" class="checkbox-cart" :checked="item.select">
                             </div>
                             <div class="flex justifyContentBetween">
-                                <img src="/static/images/shop.png" alt="" class="shop">
-                                <div class="flex1 mr2">
-                                    <div>床头灯智能家用卧室宿舍阳台书桌装饰氛围LED小台灯</div>
-                                    <span class="mt1 spec">
-                                        <span class="cg font24">白色</span>
+                                <img :src="item.ProductImg" alt="" class="shop" @click="goUrl('/pages/goodsSon/goodsDetail/main?id'+item.ProductId)">
+                                <div class="flex1 mr2 txtbox">
+                                    <div class="twoline" @click="goUrl('/pages/goodsSon/goodsDetail/main?id'+item.ProductId)">{{item.ProductName}}</div>
+                                    <span class="mt1 spec" v-if="item.SpecText">
+                                        <span class="cg font24">{{item.SpecText}}</span>
                                         <img src="/static/images/icons/down.png" alt="" class="down">
                                     </span>
                                     <div class="flex justifyContentBetween mt1">
-                                        <p class="cr font30">￥128.00</p>
+                                        <p class="cr font30">￥{{item.SalePrice}}</p>
                                         <p class="flex flexAlignCenter jj_dao">
                                             <span class="jia_num input_num"><img src="/static/images/icons/jian.png" alt="" class="jian"></span>
-                                            <input type="text" placeholder="1" class="input_num input_bo">
+                                            <input type="text" v-model="item.Number" class="input_num input_bo">
                                             <span class="jia_num input_num"><img src="/static/images/icons/jia.png" alt="" class="jia"></span>
                                         </p>
                                     </div>
@@ -49,6 +41,7 @@
               </div>
           </div>
           <!--底部按钮-->
+        <div style="height: 100rpx;"></div>  
         <div class="flex btn_bot flexAlignCenter justifyContentBetween">
           <div class="left btn_left">
             <input
@@ -58,45 +51,77 @@
             <span>全选</span>
           </div>
           <div class="flex flexAlignCenter btn_rr justifyContentEnd">
-              <div class="flex1" v-if="!showMenu">总计: ￥<span class="cr font30">600</span></div>
+              <div class="flex1" v-if="!isEdit">总计: ￥<span class="cr font30">600</span></div>
               <div class="btn_right flex">
-                  <!-- <div class="btn_coll" v-if="showMenu" @tap="MenuCart(2)">移至收藏</div> -->
-                  <div class="btn_del" v-if="showMenu" @tap="MenuCart(1)">删除</div>
-                  <div class="btn_del mr5" @tap="Order" v-if="!showMenu">结算（2）</div>
+                  <div class="btn_del" v-if="isEdit" @tap="MenuCart(1)">删除</div>
+                  <div class="btn_del mr5" @tap="Order" v-if="!isEdit">结算（2）</div>
               </div>
           </div>
         </div> 
       </div>
       <!--空-->
-      <div class="flex flexAlignCenter flexColumn" style="display:none">
+      <div class="flex flexAlignCenter flexColumn" v-else>
           <img src="/static/images/icons/box.png" alt="" class="box">
           <p class="cg">购物车空空如也~~~</p>
-          <span class="go_shop">去购物</span>
+          <span class="go_shop" @click="goshop">去购物</span>
       </div>
   </div>
 </template>
 
 <script>
-
+import {post,get} from '@/utils'
 export default {
-
   data () {
     return {
-      showMenu:true,
+      userId: "",
+      token: "",
+      hasData:false,
+      cartList:{},
+      isEdit:false,
     }
   },
+  onLoad(){
+    
+  },
+  onShow(){
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+    this.shopid = wx.getStorageSync("shopid");
+    this.getCartList();
+  },
   methods: {
-    switchPath(path,e){
-      this.clientX = e.clientX
-      this.clientY = e.clientY
-      setTimeout(() => {
-        this.clientX = 0
-        this.clientY = 0
-        wx.navigateTo({
-          url:path
-        })
-      }, 0);
+    goshop(){
+      wx.switchTab({
+        url: '/pages/index/main'
+      })
     },
+    goUrl(url){
+      wx.navigateTo({
+        url:url
+      })
+    },
+   // 购物车列表
+    async getCartList(){
+      let res=await post("Cart/CartList",{
+        userId: this.userId,
+        token: this.token,
+        ShopId:this.shopid
+      })
+      if(res.code==0){
+        if(res.data.length){
+          this.hasData=true; 
+          this.cartList=res.data;
+          let _this = this;
+          _this.$nextTick(function() {
+            _this.cartList.forEach(item=> {
+              _this.$set(item, "select", false);
+            }); 
+          });
+        }else{
+          this.hasData=false;
+        }
+      }
+    }
     
   },
 }
@@ -160,6 +185,7 @@ export default {
       background: #f5f5f5;display: inline-block;
       padding:0 20rpx;
     }
+    .txtbox{ width: 400rpx}
   }
   .btn_bot{
   position:fixed;
