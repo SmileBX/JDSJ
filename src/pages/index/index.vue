@@ -3,7 +3,7 @@
     <div class="top">
       <div class="search ali-c">
         <p>家乐福</p>
-        <div class="right flexc">
+        <div class="right flexc" @click="goUrl('/pages/goodsSon/goodsSearch/main')">
           <img src="/static/images/index/search.png" alt="">
           <span>搜索</span>
         </div>
@@ -28,7 +28,7 @@
           <p>动态文章</p>
         </div>
       </div>
-      <div class="flex1 flexc" @click="goUrl('/pages/myson/ticket/main')">
+      <div class="flex1 flexc" @click="goUrl('/pages/myson/ticketcenter/main')">
         <div>
           <img src="/static/images/index/icon3.png" alt="">
           <p>优惠券</p>
