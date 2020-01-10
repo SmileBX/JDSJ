@@ -70,15 +70,6 @@ export default {
           icon: 'none',
         })
     },
-    goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
-        wx.navigateTo({
-          url:url+'?id='+param
-        })
-      }, 100);
-    },
   },
 }
 </script>
