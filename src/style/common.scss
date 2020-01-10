@@ -1,31 +1,7 @@
 /*复选框清除默认样式*/
-.checkbox-cart .wx-checkbox-input {
-    width: 40rpx;
-    height: 40rpx;
-    border-radius: 50%!important;
-}
+
 *{
     box-sizing: border-box;
-}
-.checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked {
-    background: #ff9325;
-    border-radius: 50%!important;
-    border: 0!important;
-    width: 45rpx;
-    height: 45rpx;
-}
-
-.checkbox-cart .wx-checkbox-input.wx-checkbox-input-checked::before {
-    width: 45rpx;
-    height: 45rpx;
-    border-radius: 50%!important;
-    line-height: 45rpx;
-    text-align: center;
-    font-size: 28rpx;
-    color: #ffffff;
-    background: transparent;
-    transform: translate(-50%, -50%) scale(1);
-    -webkit-transform: translate(-50%, -50%) scale(1);
 }
 
 .check__label .wx-checkbox-input {
@@ -399,6 +375,19 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     width: 120rpx;
     height: 120rpx;
 }
-
+/* 返回顶部 */
+.topbtn{ 
+    height: 100rpx; 
+    width: 100rpx; 
+    background: url(http://www.sc-mall.net/static/top.png) center center; 
+    background-size: cover; 
+    position: fixed; 
+    right: 10rpx; 
+    bottom: 110rpx;
+    z-index: 99;
+}
+.red{
+    color: #f63517
+}
 
 

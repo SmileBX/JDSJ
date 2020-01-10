@@ -67,7 +67,7 @@ export default {
   display: inline-block;
   position: absolute;
   top: -20rpx;
-  left: 450rpx;
+  left: 440rpx;
   width: 40rpx;
   height: 40rpx;
   border-radius: 50%;
@@ -78,7 +78,7 @@ export default {
   display: inline-block;
   position: absolute;
   bottom: -20rpx;
-  left: 450rpx;
+  left: 440rpx;
   width: 40rpx;
   height: 40rpx;
   border-radius: 50%;

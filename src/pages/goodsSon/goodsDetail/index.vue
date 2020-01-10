@@ -1,28 +1,55 @@
 <template>
   <div>
-      <swiper class="swiper" indicator-dots autoplay circular>
-        <swiper-item class="flexc">
-          <img mode='aspectFill' src="/static/images/index/goods_banner.png" alt="">
+      <swiper class="swiper" @change="changeBanner">
+        <div class="numpage">{{bannerindex+1}}/{{BannerNum}}</div>
+        <swiper-item class="flexc" v-for="(item,index) in proInfo.ProductImgList" :key="index">
+          <img mode='aspectFill' :src="item.PicUrl" alt="">
         </swiper-item>
       </swiper>
-      <div class="top jus-b ali-c">
-        <div class="left">
-          <p class="price">
-            <span>￥</span><span>199.00</span><span>￥168.00</span>
-          </p>
-          <p class="tit oneline">仙醇城 吸尘器家用  DK-2302</p>
-          <p class="shou">已售485</p>
+      <div class="top">
+        <div class="jus-b ali-c">
+          <div class="left">
+            <p class="price">
+              <span>￥</span><span>{{proInfo.ProductPrice}}</span><span>￥{{proInfo.MarketPrice}}</span>
+            </p>
+            <p class="tit">{{proInfo.ProductName}}</p>
+          </div>
+          <div class="right">
+            <img src="/static/images/index/fenxiang.png" alt="">
+          </div>
         </div>
-        <div class="right">
-          <img src="/static/images/index/fenxiang.png" alt="">
-          <p>福建泉州</p>
+        <div class="jus-b ali-c">
+          <span class="txtinfo">已售：{{proInfo.SalesVolume}}</span>
+          <span class="txtinfo">好评：{{proInfo.PraiseRate}}%</span>
         </div>
       </div>
       <div class="list-box">
-        <div class="list ali-c jus-b">
+        <div class="list ali-c jus-b" v-if="proInfo.Score!=0||proInfo.CouponList.length">
           <div class="left ali-c">
             <span>领券</span>
-            <p class="quan">满100减50</p>
+            <div>
+              <div class="couponico ali-c jus-b">
+                <block v-for="(item,index) in proInfo.CouponList" :key="index">
+                  <div class="coupontxt" v-if="index<2">
+                    <block v-if="item.DiscountType==1">
+                      <block v-if="item.MeetConditions!=0">
+                        满{{item.MeetConditions}}
+                      </block>
+                      <block v-else>下单立</block>
+                      减{{item.Denomination}}
+                    </block>
+                    <block v-else>
+                      <block v-if="item.MeetConditions!=0">
+                        满{{item.MeetConditions}}
+                      </block>
+                      <block v-else>下单立</block>
+                      打{{item.Denomination}}折
+                    </block>
+                  </div>
+                </block>
+              </div>
+              <p v-if="proInfo.Score!=0">购物返<text class="red">{{proInfo.Score}}</text>积分</p>
+            </div>
           </div>
           <div class="right ali-c">
             <img src="/static/images/icons/right.png" alt="">
@@ -31,13 +58,13 @@
         <div class="list ali-c jus-b">
           <div class="left ali-c">
             <span>规格</span>
-            <p class="quan">1件</p>
+            <p class="quan">{{SpecText||'请选择规格数量'}}</p>
           </div>
           <div class="right ali-c">
             <img src="/static/images/icons/right.png" alt="">
           </div>
         </div>
-        <div class="list ali-c jus-b">
+        <div class="list ali-c jus-b" v-if="false">
           <div class="left ali-c">
             <span>送至</span>
             <p class="quan">广东深圳</p>
@@ -59,8 +86,7 @@
           </div>
         </div>
       </div>
-
-      <div class="play">
+      <div class="play" v-if="isPin==1">
         <div class="tit ali-c jus-b">
           <p>拼团玩法</p>
           <div class="ali-c">
@@ -72,8 +98,7 @@
           <img src="/static/images/index/play.png" alt="">
         </div>
       </div>
-
-      <div class="pin">
+      <div class="pin" v-if="isPin==1">
         <div class="tit ali-c">他们都在拼，可直接参团</div>
         <div class="list ali-c jus-b">
           <div class="left ali-c">
@@ -89,46 +114,60 @@
 
       <div class="comment">
         <div class="tit ali-c jus-b">
-          <p class="left">商品评价<span>(1)</span></p>
-          <div class="right">
+          <p class="left">商品评价<span>({{proInfo.EvaluateCount}})</span></p>
+          <div class="right" v-if="proInfo.EvaluateCount>0">
             <span>查看全部</span>
             <img src="/static/images/index/more_r.png" alt="">
           </div>
         </div>
-        <div class="main">
-          <div class="name ali-c jus-b">
-            <div class="ali-c">
-              <img class="left" src="/static/images/ava.png" alt="">
-              <p>巴啦啦小魔仙</p>
+        <div class="main" v-if="proInfo.EvaluateCount>0">
+          <block v-for="(item,index) in proInfo.EvaluateList" :key="index">
+            <div v-if="index<1">
+              <div class="name ali-c jus-b">
+                <div class="ali-c">
+                  <img class="left" :src="item.MemberAvatar||'/static/images/ava.png'" alt="">
+                  <p>{{item.MemberName}}</p>
+                </div>
+                <div>
+                  <img class="right" src="/static/images/index/star.png" alt="">
+                </div>
+              </div>
+              <p class="detail">
+                {{item.ContentText}}
+              </p>
+              <p class="time">{{item.AddTime}}</p>
             </div>
-            <div>
-              <img class="right" src="/static/images/index/star.png" alt="">
-            </div>
-          </div>
-          <p class="detail">
-            不管有多忙，总要付诸一定的时间与精力，细心经营彼此的
-关系，肌肤水嫩润泽，底妆才能更好地贴合
+          </block>
+        </div>
+        <div class="main" v-else>
+          <p style="padding: 20rpx; color: #999; text-align: center;">
+            暂无评论
           </p>
-          <p class="time">2019-09-08</p>
         </div>
       </div>
       <div class="goods-detail">
         <p class="tit">商品详情</p>
+        <div class="detail-box">
+          <div v-html="proInfo.ContentDetail"></div>
+          <div v-if="proInfo.ContentDetail==''" style="text-align: center;">卖家暂时还没有为该商品提供详细信息！</div>
+        </div>
       </div>
+      <div style="height: 100rpx;"></div>
       <div class="foot ali-c jus-b">
         <div class="left ali-c">
           <div>
             <img src="/static/images/index/ans.png" alt="">
             <p>客服</p>
           </div>
-          <div>
-            <img src="/static/images/index/collect_n.png" alt="">
+          <div @click="collect"> 
+            <img v-if="IsCollect" src="/static/images/index/collect_y.png" alt="">
+            <img v-else src="/static/images/index/collect_n.png" alt="">
             <p>收藏</p>
           </div>
           <div>
             <img src="/static/images/index/cart.png" alt="">
             <p>购物车</p>
-            <span class="num flexc">2</span>
+            <span class="num flexc" v-if="CartNumber>0">{{CartNumber}}</span>
           </div>
         </div>
         <div class="right flex">
@@ -136,6 +175,7 @@
           <p class="flex1 flexc">立即购买</p>
         </div>
       </div>
+      <div class="topbtn" @click="Top" v-if="isTop"></div>
   </div>
 </template>
 
@@ -147,7 +187,16 @@ export default {
       userId: "",
       token: "",
       proId:"",
-      shopid:"" 
+      shopid:"",
+      isTop:false,//是否显示置顶
+      IsCollect:false, //是否收藏该商品
+      isLimint:0,//0非限时购产品，1限时购产品
+      isPin:0,//0非拼团产品，1拼团产品
+      proInfo:{},//商品信息
+      bannerindex:0,//当前轮播图
+      BannerNum:0,//轮播图数量
+      CartNumber:0,//购物车数量
+      SpecText:""
     }
   },
   onLoad(){
@@ -158,12 +207,23 @@ export default {
   },
   onShow(){
     this.ProductInfo();
+    this.GetAllCartNumber();
   },
   methods: {
     goUrl(url,param){
       wx.navigateTo({
         url:url+'?id='+param
       })
+    },
+    //返回顶部
+    Top(){
+      wx.pageScrollTo({
+        scrollTop: 0,
+        duration: 200
+      });
+    },
+    changeBanner(e){
+      this.bannerindex=e.detail.current;
     },
     async ProductInfo(){
       let res=await post("Goods/ProductInfo",{
@@ -173,10 +233,54 @@ export default {
         proId: this.proId
       })
       if(res.code==0){
-        
+        this.proInfo=res.data;
+        this.BannerNum=res.data.ProductImgList.length;
+        this.IsCollect=res.data.IsCollectionPro;
       }
     },
-
+    //获取购物车数
+    async GetAllCartNumber(){
+      let res=await post("Cart/GetAllCartNumber",{
+        userId: this.userId,
+        token: this.token,
+        ShopId:this.shopid
+      })
+      if(res.code==0){
+        this.CartNumber=res.data.AllNumber;
+      }
+    },
+    //添加取消收藏
+			async collect(){
+				let res = await post("Goods/ProductCollection", {
+					proId: this.proId,
+					userId:this.userId,
+					token:this.token
+				  });
+				if(res.code==0){
+					if(this.IsCollect){
+						wx.showToast({
+							title: "已取消收藏！",
+							icon:"none",
+							duration: 1500
+						});
+						this.IsCollect=false;
+					}else{
+						wx.showToast({
+							title: "添加收藏成功！",
+							icon:"none",
+							duration: 1500
+						});
+						this.IsCollect=true;
+					}
+				};
+			},
+  },
+  onPageScroll(e){
+    if(e.scrollTop>300){
+      this.isTop=true;
+    }else{
+      this.isTop=false;
+    }
   },
 }
 </script>
@@ -315,6 +419,11 @@ export default {
     font-size: 32rpx;
 	  font-weight: bold;
   }
+  .detail-box{
+    image{
+      max-width:100%!important
+    }
+  }
 }
 .comment{
   background-color: #fff;
@@ -406,8 +515,7 @@ export default {
 }
 .top{
   background-color: #fff;
-  height: 200rpx;
-  padding: 0 30rpx;
+  padding: 0 30rpx 20rpx;
   .right{
     text-align: right;
     img{
@@ -443,17 +551,64 @@ export default {
       font-weight: bold;
       margin: 5rpx 0 10rpx;
     }
-    .shou{
-      font-size: 26rpx;
-      color: #999
-    }
+  }
+  .txtinfo{
+    font-size: 26rpx;
+    color: #999
   }
 }
 .swiper{
   height: 700rpx;
+  position: relative;
+  .numpage{
+    position: absolute;
+    right: 20rpx; 
+    bottom: 20rpx;
+    padding: 0 10rpx;
+    color: #fff;
+    font-size: 24rpx;
+    background: rgba(0,0,0,.4); 
+    border-radius: 100px;
+    z-index: 2;
+  }
   img{
     width: 100%;
     height: 100%;
+  }
+}
+.couponico {
+  margin: 10rpx 0 4rpx;
+   .coupontxt {
+    line-height: 1;
+    padding: 6rpx 16rpx;
+    color: #f63517;
+    font-size: 26rpx;
+    border: 1px solid #f63517;
+    margin-right: 20rpx;
+    border-radius: 4px;
+    position: relative;
+  }
+  .coupontxt:before,.coupontxt:after {
+    display: block;
+    content: "";
+    position: absolute;
+    height: 16rpx;
+    width: 16rpx;
+    border-top: 1px solid #f63517;
+    border-right: 1px solid #f63517;
+    top: 50%;
+    margin-top: -8rpx;
+    background: #fff;
+    border-radius: 50%;
+    box-sizing: border-box;
+  }
+  .coupontxt:before {
+    left: -8rpx;
+    transform: rotate(45deg);
+  }
+  .coupontxt:after {
+    right: -8rpx;
+    transform: rotate(-135deg);
   }
 }
 </style>
