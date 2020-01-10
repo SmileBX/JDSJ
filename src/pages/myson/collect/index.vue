@@ -2,7 +2,7 @@
   <div class="foot_list">
       <scroll-view class="filterContent bg_fff mt10" scroll-y="true">  
         <div class="or_list">
-          <block v-for="(item,index) in 3" :key="index">
+          <block v-for="(item,index) in list" :key="index">
           <van-swipe-cell
             :right-width="65"
             async-close
@@ -13,11 +13,11 @@
               <van-cell class="item" @click="goDetail(item)">
                 <div class="or_item bg_fff flex justifyContentBetween flexAlignCenter pw3">
                     <div class="flex or_main">
-                        <img src="/static/images/shop.png" alt="" class="shop">
+                        <img :src="item.PicFrist" alt="" class="shop">
                         <div class="flex1 flex flexAlignCenter mr2 text_left">
                             <div class="or_left flex flexColumn justifyContentBetween">
-                              <p>精华液面部精华雪域滋润保湿补水提亮肤色官</p>
-                              <p class="cr font30">￥199 <span class="line_through font22 cg">￥600</span> </p>
+                              <p>{{item.AssociationName}}111111111111111111111</p>
+                              <p class="cr font30 jus-b"><span>￥{{item.Price}} </span><span class="font22 cg">{{item.AddTime}}</span> </p>
                             </div>
                         </div>
                     </div>
@@ -36,28 +36,40 @@
 </template>
 
 <script>
-import {switchPath,isJump} from '@/utils'
+import {post} from '@/utils'
 export default {
 
   data () {
     return {
-    
-      
+      list:[],
+      page:1,
+      pagesize:12
     }
   },
 
   onShow(){
-    
+    this.list = []
+    this.getList()
   },
   methods: {
+    getList(){
+      post('User/MemberCollectionsList',{
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token"),
+        Page:this.page,
+        PageSize:this.pagesize,
+        Type:0
+      }).then(res=>{
+        if(res.code===0){
+          this.list.push(...res.data)
+
+        }
+      })
+    },
     goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
-        wx.navigateTo({
-          url:url+'?id='+param
-        })
-      }, 100);
+      wx.navigateTo({
+        url:url+'?id='+param
+      })
     },
     
   },
@@ -72,6 +84,7 @@ export default {
   .or_item{
     .or_left{
       height:100%;
+      width: 500rpx;
     }
     .line_through{
       text-decoration: line-through;

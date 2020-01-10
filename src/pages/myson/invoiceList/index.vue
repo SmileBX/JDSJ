@@ -35,8 +35,8 @@
     </div>
     <div v-if="list.length==0&&navIndex===0" class="nodata_log flex flexColumn flexAlignCenter">
          <img src="/static/images/icons/vibg.png" alt="" class="site_log">
-          <span class="cg mt2">还没有收货地址哦~</span>
-          <span class="add_new" @tap="gotoAddInvoice(-1)">新建地址</span>
+          <span class="cg mt2">您还没有发票抬头哦~</span>
+          <span class="add_new" @tap="gotoAddInvoice(-1)">新建发票抬头</span>
     </div>
     <div class="invoiceList" v-if="navIndex===1" style="margin-top:20rpx">
       <div class="item" v-for="(item,index) in invList" :key="index">
@@ -134,27 +134,27 @@
 </template>
 <script>
 //引用成成拼租
-// import { post, toLogin, getCurrentPageUrlWithArgs, trim } from "@/utils";
+import { post, toLogin, trim } from "@/utils";
 export default {
   onLoad() {
     this.setBarTitle();
   },
   onShow() {
-    // this.userId = wx.getStorageSync("userId");
-    // this.token = wx.getStorageSync("token");
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
     // this.curPage = getCurrentPageUrlWithArgs();
-    // this.pramas = ''
-    // if(this.$root.$mp.query.invoiceType && this.$root.$mp.query.invoiceType !==""){
-    //     this.invoiceType = this.$root.$mp.query.invoiceType
-    // }
-    // if(this.$root.$mp.query.url && this.$root.$mp.query.url !==""){
-    //     this.pramas = this.$root.$mp.query.url
-    // }
+    this.pramas = ''
+    if(this.$root.$mp.query.invoiceType && this.$root.$mp.query.invoiceType !==""){
+        this.invoiceType = this.$root.$mp.query.invoiceType
+    }
+    if(this.$root.$mp.query.url && this.$root.$mp.query.url !==""){
+        this.pramas = this.$root.$mp.query.url
+    }
     
     this.list = [{id:1,HeaderName:"哈哈哈",InvoiceTitlestr:"个人",TaxNumber:"3667964979656895659598"},{id:1,HeaderName:"哈哈哈",InvoiceTitlestr:"个人",TaxNumber:"3667964979656895659598"},{id:1,HeaderName:"哈哈哈",InvoiceTitlestr:"个人",TaxNumber:"3667964979656895659598"}];
-    // this.hasDataList = "";
-    // this.getInvoiceList();
-    // this.FeesOrderList();
+    this.hasDataList = "";
+    this.getInvoiceList();
+    this.FeesOrderList();
   },
   data() {
     return {
@@ -489,9 +489,9 @@ export default {
       console.log(id);
       let objUrl = "";
       if (id !==-1) {
-        objUrl = "/pages/member2/addInvoice/main?id=" + id;
+        objUrl = "/pages/myson/addInvoice/main?id=" + id;
       } else {
-        objUrl = "/pages/member2/addInvoice/main";
+        objUrl = "/pages/myson/addInvoice/main";
       }
       wx.navigateTo({
         url: objUrl
