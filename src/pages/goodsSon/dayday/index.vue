@@ -1,50 +1,130 @@
 <template>
   <div>
       <img class="top" src="/static/images/index/tehui.png" alt="">
-      <div class="list-box">
-        <div class="list ali-c jus-b">
-          <img class="left" src="/static/images/index/goods.png" alt="">
+      <div class="list-box" v-if="hasData">
+        <div class="list ali-c jus-b" v-for="(item, index) in goodsList" :key="index" @click="goUrl('/pages/goodsSon/goodsDetail/main',item.Id)">
+          <img class="left" :src="item.Pic" :alt="item.Name">
           <div class="right">
-            <p class="tit oneline">短袜浅口女士棉袜</p>
+            <p class="tit oneline">{{item.Name}}</p>
             <p class="price">
-              <span>￥</span><span>25.00</span><span>￥30.00</span>
+              <span>￥</span><span>{{item.Price}}</span><span>￥{{item.MarketPrice}}</span>
             </p>
             <div class="rob ali-c jus-b">
-              <span>已抢1235</span>
+              <span>已抢{{item.SalesVolume}}</span>
               <p class="flexc">去购买</p>
             </div>
           </div>
         </div>
       </div>
+      <noData :isShow="noDataIsShow"></noData>
+      <view class="loading" v-if="hasData">
+        <load-more :loadingType="loadingType"></load-more>
+      </view>
   </div>
 </template>
 
 <script>
-import {switchPath,isJump} from '@/utils'
+import {post,get} from '@/utils'
+import noData from "@/components/noData"; //没有数据的通用提示
+import LoadMore from '@/components/load-more';
 export default {
-
+  components: {
+		noData,
+		LoadMore
+  },
   data () {
     return {
-     showEdit:false,
-      
+      userId: "",
+			token: "",
+      shopid:"",
+      hasData:false,
+			noDataIsShow: false,//没有数据的提示是否显示
+			page: 1,
+      pageSize: 8,
+      allPage: 0,
+			count: 0,
+			isLoad: false,
+			isOved:false,       //显示已经到底了
+			loadingType: 0, //0加载前，1加载中，2没有更多了
+      goodsList:{}
     }
   },
-
+  onLoad(){
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+  },
   onShow(){
-    
+    this.shopid = wx.getStorageSync("shopid");
+    this.GetProductList();
   },
   methods: {
     goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
-        wx.navigateTo({
-          url:url+'?id='+param
-        })
-      }, 100);
+      wx.navigateTo({
+        url:url+'?id='+param
+      })
     },
-    
+    //列表
+    async GetProductList(){
+      let res=await post("Goods/GetDiscountProductList",{
+        PageIndex: this.page,
+        PageSize: this.pageSize,
+        ShopId: this.shopid
+      })
+      if(res.code==0){
+          let _this=this;
+					if (res.data.length > 0) {
+						this.hasData = true;
+						this.noDataIsShow = false;
+					}
+					this.count = res.count;
+					if (this.count == 0) {
+						this.noDataIsShow = true;
+						this.hasData = false;
+					}
+					if (parseInt(this.count) % this.pageSize === 0) {
+						this.allPage = this.count / this.pageSize;
+					} else {
+						this.allPage = parseInt(this.count / this.pageSize) + 1;
+					}
+					if (this.page === 1) {
+						this.goodsList = res.data;
+					}
+					if (this.page > 1) {
+						this.goodsList = this.goodsList.concat(
+							res.data
+						);
+					}
+					if (this.allPage <= this.page) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
+       }else{
+				 wx.showToast({
+          title: res.msg,
+          icon: "none",
+          duration: 1000
+        });
+			 }
+    },
   },
+  onReachBottom: function() {
+    if (this.isLoad) {
+			this.loadingType = 1;
+      this.isOved = false;
+      this.page++;
+      this.GetProductList();
+    } else {
+			this.loadingType = 2;
+      if (this.page > 1) {
+        this.isOved = true;
+      } else {
+        this.isOved = false;
+      }
+    }
+  }
 }
 </script>
 

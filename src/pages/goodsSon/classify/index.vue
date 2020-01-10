@@ -38,9 +38,10 @@ export default {
     }
   },
   onLoad(){
-    this.shopid = wx.getStorageSync("shopid");
+    
   },
   onShow(){
+    this.shopid = wx.getStorageSync("shopid");
     this.GetMerchantDetail();
     this.GetProductType();
   },

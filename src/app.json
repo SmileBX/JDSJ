@@ -88,8 +88,8 @@
     {
       "text": "导购",
       "pagePath": "pages/service/chatRoom/main",
-      "iconPath": "static/tabs/3.png",
-      "selectedIconPath": "static/tabs/3a.png"
+      "iconPath": "static/tabs/5.png",
+      "selectedIconPath": "static/tabs/5a.png"
     },
      {
       "text": "我的",

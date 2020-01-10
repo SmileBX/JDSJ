@@ -31,8 +31,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import './style/common.scss';
-@import './style/lz';
-@import './style/bb';
-@import './style/ans-self.scss';
+  @import './style/common.scss';
+  @import './style/lz';
+  @import './style/bb';
+  @import './style/ans-self.scss';
 </style>

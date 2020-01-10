@@ -203,7 +203,7 @@ export default {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.shopid = wx.getStorageSync("shopid");
-    this.proId=this.$root.$mp.query.id||15;
+    this.proId=this.$root.$mp.query.id;
   },
   onShow(){
     this.ProductInfo();
@@ -246,7 +246,7 @@ export default {
         ShopId:this.shopid
       })
       if(res.code==0){
-        this.CartNumber=res.data;
+        this.CartNumber=res.data.AllNumber;
       }
     },
     //添加取消收藏
