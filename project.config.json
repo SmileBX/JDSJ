@@ -259,8 +259,8 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/goodsSon/goodsDetail/main",
-					"pathName": "pages/goodsSon/goodsDetail/main",
+					"name": "下单",
+					"pathName": "pages/goodsSon/confirmOrder/main",
 					"scene": null
 				}
 			]
