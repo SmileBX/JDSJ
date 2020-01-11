@@ -39,7 +39,7 @@ export default {
 			count: 0,
 			isLoad: false,
 			isOved:false,       //显示已经到底了
-			loadingType: 0, //0加载前，1加载中，2没有更多了
+			loadingType: 0, //0加载前，1加载中，2没有更多了。
       shopid:"",
       list:[],
     }
