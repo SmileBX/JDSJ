@@ -16,6 +16,7 @@
       "root":"pages/myson/",
       "pages":[
         "ticket/main",
+        "ticketcenter/main",
         "address/main",
         "foot/main",
         "collect/main",

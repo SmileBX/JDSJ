@@ -115,20 +115,20 @@
   </div>
 </template>
 <script>
-// import { post, toLogin, getCurrentPageUrlWithArgs, trim } from "@/utils";
+import { post, toLogin, trim } from "@/utils";
 export default {
   onLoad() {
     this.setBarTitle();
   },
   onShow() {
-    // this.curPage = getCurrentPageUrlWithArgs();
-    // this.userId = wx.getStorageSync("userId");
-    // this.token = wx.getStorageSync("token");
-    // this.initData();
-    // if (this.$root.$mp.query.id !== "" && this.$root.$mp.query.id) {
-    //   this.invoiceId = this.$root.$mp.query.id;
-    //   this.getInvoiceInfo();
-    // }
+    this.curPage = getCurrentPageUrlWithArgs();
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+    this.initData();
+    if (this.$root.$mp.query.id !== "" && this.$root.$mp.query.id) {
+      this.invoiceId = this.$root.$mp.query.id;
+      this.getInvoiceInfo();
+    }
   },
   data() {
     return {
