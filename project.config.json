@@ -256,6 +256,12 @@
 					"pathName": "pages/goodsSon/goodsDetail/main",
 					"query": "proId=15",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/goodsSon/goodsDetail/main",
+					"pathName": "pages/goodsSon/goodsDetail/main",
+					"scene": null
 				}
 			]
 		}
