@@ -384,39 +384,39 @@ export default {
       }
     },
     //微信支付需参数
-    // async ConfirmWeiXinPay(){
-    //   let res = await post('Consult/ConfirmWeiXinPay',{
-    //   OrderNo:this.OrderNo,
-    //   PayType:0,//支付类型 0-微信支付 1-余额支付
-    //   userId:wx.getStorageSync('userId'),
-    //   token:wx.getStorageSync('token')
-    //   })
-    //   if(res.code==0){
-    //   let JsParam=JSON.parse(res.data.JsParam);console.log(JsParam)
-    //   this.payMoney(JsParam)
-    //   }
-    // },
-    // payMoney(JsParam){
-    //   let that=this;
-    //   wx.requestPayment({
-    //   timeStamp: JsParam.timeStamp,
-    //   nonceStr: JsParam.nonceStr,
-    //   package: JsParam.package,
-    //   signType: JsParam.signType,
-    //   paySign: JsParam.paySign,
-    //   success (res) {
-    //       console.log(res)
-    //       wx.showToast({
-    //           title:"充值成功！"
-    //       })
-    //       setTimeout(() => {
-    //           wx.navigateBack({})
-    //       }, 1500);
-    //   },
+    async ConfirmWeiXinPay(){
+      let res = await post('Consult/ConfirmWeiXinPay',{
+      OrderNo:this.OrderNo,
+      PayType:0,//支付类型 0-微信支付 1-余额支付
+      userId:wx.getStorageSync('userId'),
+      token:wx.getStorageSync('token')
+      })
+      if(res.code==0){
+      let JsParam=JSON.parse(res.data.JsParam);console.log(JsParam)
+      this.payMoney(JsParam)
+      }
+    },
+    payMoney(JsParam){
+      let that=this;
+      wx.requestPayment({
+      timeStamp: JsParam.timeStamp,
+      nonceStr: JsParam.nonceStr,
+      package: JsParam.package,
+      signType: JsParam.signType,
+      paySign: JsParam.paySign,
+      success (res) {
+          console.log(res)
+          wx.showToast({
+              title:"充值成功！"
+          })
+          setTimeout(() => {
+              wx.navigateBack({})
+          }, 1500);
+      },
       
-    //   fail (res) { }
-    //   })
-    // },
+      fail (res) { }
+      })
+    },
     
 
   }
