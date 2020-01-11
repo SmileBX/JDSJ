@@ -38,7 +38,7 @@
 <script>
 import {post} from '@/utils'
 export default {
-
+//
   data () {
     return {
       list:[],
