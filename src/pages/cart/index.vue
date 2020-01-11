@@ -10,7 +10,7 @@
                           <div class="left">
                             <span>{{cartList[0].ShopName}}</span>
                           </div>
-                          <div class="cr" @click="showCoupon">领券</div>
+                          <div class="cr" @click="openCoupon">领券</div>
                       </div>
                       <div class="shopcar_list" v-for="(item,index) in cartList" :key="index">
                           <div class="shopcart_item flex justifyContentBetween flexAlignCenter">
@@ -62,15 +62,48 @@
           <p class="cg">购物车空空如也~~~</p>
           <span class="go_shop" @click="goshop">去购物</span>
       </div>
+      <!-- 优惠券弹窗 -->
+		<uni-popup mode="fixed" :show="showCoupon" :h5Top="true" position="bottom" @hidePopup="closeCoupon">
+			<div class="couponbox" style="z-index: 10000;">
+				<div class="titlebox">
+					<div class="title">优惠券</div>
+          <div  @click="closeCoupon" class="close">×</div>
+				</div>
+        <div class="tips">可领优惠券<span>领取后可用于购物车商品</span></div>
+				<scroll-view scroll-y style="width: 100%;height: 560rpx;">
+					<div class="ticket">
+              <div class="list jus-b">
+                <div class="left flex">
+                  <div class="price">
+                    <span>元</span>
+                  </div>
+                  <div>
+                    <p>满50元减5元券</p>
+                    <span>有效期至</span>
+                  </div>
+                  <div class="flexc back_col">减满券</div>
+                </div>
+                <div class="right flexc back_col">
+                  <div>
+                    <p>立即领取</p>
+                  </div>
+                </div>
+              </div>
+          </div>
+				</scroll-view>
+			</div>
+		</uni-popup>
   </div>
 </template>
 
 <script>
 import {post,get} from '@/utils'
 import NumberBox from '@/components/number-box.vue';
+import uniPopup from '@/components/uni-popup.vue';
 export default {
   components: {
-    NumberBox
+    NumberBox,
+    uniPopup
   },
   data () {
     return {
@@ -84,6 +117,7 @@ export default {
       checklen:0,//有效产品数量
       selectlen:0,//累计选中的产品
       allPrice:0,//累计选中产品的金额
+      showCoupon:false
     }
   },
   onLoad(){
@@ -348,8 +382,11 @@ export default {
       }
     },
     //弹出优惠券
-    showCoupon(){
-      //this.shopid;
+    openCoupon(){
+      this.showCoupon=true;
+    },
+    closeCoupon(){
+      this.showCoupon=false;
     },
     //点击结算
     settle(){
@@ -446,6 +483,116 @@ export default {
     }
   }
 }
-
+ /* 优惠券弹窗 */
+.couponbox{
+	background-color: #f5f5f5;
+	width: 100%;
+  .titlebox{
+    width: 100%;
+    height: 100rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .title{
+      font-size: 34rpx;
+    }
+    .close{
+      height: 50rpx;
+      width: 50rpx;
+      text-align: center;
+      position:absolute;
+      right:20rpx;
+      top:20rpx;
+      font-size:40rpx;
+      line-height: 46rpx;
+      border:#ccc solid 2rpx;
+      color:#ccc;
+      border-radius:50%;
+    }
+  }
+  .tips{ padding: 30rem 0; text-align: left}
+  .list::after{
+  content:'';
+  display: inline-block;
+  position: absolute;
+  top: -20rpx;
+  left: 440rpx;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+}
+.list::before{
+  content:'';
+  display: inline-block;
+  position: absolute;
+  bottom: -20rpx;
+  left: 440rpx;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+}
+.list{
+  width: 690rpx;
+  height: 180rpx;
+  border-radius: 15rpx;
+  margin: 30rpx;
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+  .use{
+    background-color: #d4d5d6!important
+  }
+  .left{
+    width: 460rpx;
+    padding: 60rpx 0 0 35rpx;
+    position: relative;
+    .price{
+      color: #f00;
+      font-size: 48rpx;
+      margin-right: 20rpx;
+      span{
+        font-size: 36rpx!important;
+        color: #f00;
+      }
+    }
+    span{
+      font-size: 20rpx;
+      color: #999;
+    }
+    .back_col{
+      width: 128rpx;
+	    height: 40rpx;
+      border-radius: 0 0 24px 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 24rpx;
+      color: #fff
+    }
+  }
+  .right{
+    width: 230rpx;
+    background-color: #d4d5d6;
+    text-align: center;
+    p{
+      color: #fff;
+      font-size: 38rpx;
+      font-weight: bold;
+      span{
+        font-size: 20rpx
+      }
+    }
+    span{
+      font-size: 20rpx;
+      color: #fff;
+    }
+  }
+}
+.back_col{
+  background-color: #ff3333!important;
+}
+}
 
 </style>
