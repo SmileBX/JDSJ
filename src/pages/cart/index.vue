@@ -10,7 +10,7 @@
                           <div class="left">
                             <span>{{cartList[0].ShopName}}</span>
                           </div>
-                          <div class="cr" @click="openCoupon">领券</div>
+                          <div class="cr" v-if="couponlist.length" @click="openCoupon">领券</div>
                       </div>
                       <div class="shopcar_list" v-for="(item,index) in cartList" :key="index">
                           <div class="shopcart_item flex justifyContentBetween flexAlignCenter">
@@ -63,36 +63,37 @@
           <span class="go_shop" @click="goshop">去购物</span>
       </div>
       <!-- 优惠券弹窗 -->
-		<uni-popup mode="fixed" :show="showCoupon" :h5Top="true" position="bottom" @hidePopup="closeCoupon">
-			<div class="couponbox" style="z-index: 10000;">
-				<div class="titlebox">
-					<div class="title">优惠券</div>
-          <div  @click="closeCoupon" class="close">×</div>
-				</div>
-        <div class="tips">可领优惠券<span>领取后可用于购物车商品</span></div>
-				<scroll-view scroll-y style="width: 100%;height: 560rpx;">
-					<div class="ticket">
-              <div class="list jus-b">
-                <div class="left flex">
-                  <div class="price">
-                    <span>元</span>
-                  </div>
-                  <div>
-                    <p>满50元减5元券</p>
-                    <span>有效期至</span>
-                  </div>
-                  <div class="flexc back_col">减满券</div>
-                </div>
-                <div class="right flexc back_col">
-                  <div>
-                    <p>立即领取</p>
-                  </div>
-                </div>
-              </div>
+      <uni-popup mode="fixed" :show="showCoupon" :h5Top="true" position="bottom" @hidePopup="closeCoupon">
+        <div class="couponbox" style="z-index: 10000;">
+          <div class="titlebox">
+            <div class="title">优惠券</div>
+            <div  @click="closeCoupon" class="close">×</div>
           </div>
-				</scroll-view>
-			</div>
-		</uni-popup>
+          <div class="tips">可领优惠券<span>领取后可用于购物车商品</span></div>
+          <scroll-view scroll-y style="width: 100%;height: 560rpx;">
+            <div class="ticket" >
+                <div class="list jus-b" v-for="(item,index) in couponlist" :key="index">
+                  <div class="left flex">
+                    <div class="price">
+                      {{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span>
+                    </div>
+                    <div class="info">
+                      <p v-if="item.DiscountType==1">满{{item.MeetConditions}}元减{{item.Denomination}}元券</p>
+                      <p v-else>满{{item.MeetConditions}}元打{{item.Denomination*10}}折券</p>
+                      <span>有效期至{{item.EndTime}}</span>
+                    </div>
+                    <div class="flexc back_col">{{item.DiscountType==1?'减满券':'折扣券'}}</div>
+                  </div>
+                  <div class="right flexc back_col" @click="ReceiveCoupon(item.Id)">
+                    <div>
+                      <p>立即领取</p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </scroll-view>
+        </div>
+      </uni-popup>
   </div>
 </template>
 
@@ -117,7 +118,8 @@ export default {
       checklen:0,//有效产品数量
       selectlen:0,//累计选中的产品
       allPrice:0,//累计选中产品的金额
-      showCoupon:false
+      showCoupon:false,
+      couponlist:{},//优惠券列表
     }
   },
   onLoad(){
@@ -128,6 +130,7 @@ export default {
     this.token = wx.getStorageSync("token");
     this.shopid = wx.getStorageSync("shopid");
     this.getCartList();
+    this.getCouponShop();
   },
   methods: {
     goshop(){
@@ -385,8 +388,38 @@ export default {
     openCoupon(){
       this.showCoupon=true;
     },
+    //获取可领取优惠券
+    async getCouponShop(){
+      let res=await post("Coupon/CouponCenter",{
+        UserId: this.userId,
+        Token: this.token,
+        ShopId:this.shopid,
+        page: 1,
+        pageSize: 100
+      })
+      if(res.code==0){
+        if(res.data.length){
+          res.data.forEach(item=>{
+            item.EndTime=item.EndTime.split(" ")[0];
+          })
+          this.couponlist=res.data;
+        }
+      }
+    },
     closeCoupon(){
       this.showCoupon=false;
+    },
+    //领券
+    async ReceiveCoupon(id){
+      let res=await post("Coupon/ReceiveCoupon",{
+        UserId: this.userId,
+        Token: this.token,
+        CouponId: id
+      })
+      wx.showToast({
+        title: res.msg,
+        icon: 'none',
+      })
     },
     //点击结算
     settle(){
@@ -510,7 +543,12 @@ export default {
       border-radius:50%;
     }
   }
-  .tips{ padding: 30rem 0; text-align: left}
+  .tips{ padding: 0 30rpx; text-align: left;line-height: 1.2;font-size: 32rpx;
+      span{
+        font-size: 24rpx;
+        margin-left: 10rpx;
+      }
+  }
   .list::after{
   content:'';
   display: inline-block;
@@ -552,13 +590,19 @@ export default {
       color: #f00;
       font-size: 48rpx;
       margin-right: 20rpx;
+      min-width: 100rpx;
       span{
-        font-size: 36rpx!important;
+        font-size: 30rpx!important;
         color: #f00;
       }
     }
+    .info{
+      line-height: 1.2;
+      text-align: left;
+      p{margin-bottom: .1rem}
+    }
     span{
-      font-size: 20rpx;
+      font-size: 24rpx;
       color: #999;
     }
     .back_col{
