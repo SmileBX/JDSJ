@@ -94,7 +94,7 @@
                 <p>店铺列表</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main')">
+            <div class="icon flexc" @click="switchPath('/pages/shop/join/main')">
               <div>
                 <img src="/static/images/icons/11.png" alt="">
                 <p>申请店铺</p>

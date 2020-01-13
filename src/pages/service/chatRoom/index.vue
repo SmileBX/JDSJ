@@ -91,14 +91,14 @@
     <!--底部按钮 输入框 下拉按钮-->
     <div class="bottomicon" v-if="showModule!=='manySelect'">
       <!--常用语按钮-->
-      <div class="borderTop usedMes">
+      <!-- <div class="borderTop usedMes">
         <span
           class="bg_fff"
           @click="getMessage(item.Id)"
           v-for="(item,tindex) in messageType"
           :key="tindex"
         >{{item.Name}}</span>
-      </div>
+      </div> -->
       <div class="inputbtn flex flexAlignCenter bg_fff">
         <div
           class="blur flex1"
@@ -343,28 +343,6 @@ export default {
       }
 
       return len;
-    },
-    // 判断是否会员
-    async isVip() {
-      const res = await post("User/QueryVipInfo", {
-        UserId: this.userId,
-        Token: this.token
-      });
-      const data = res.data;
-      // 没开通会员
-      if (!data.IsVip) {
-        wx.showModal({
-          title: "开通会员",
-          content: "此功能需要开通会员，是否跳转开通会员页面?",
-          confirmColor: "#ff952e",
-          cancelColor: "#999",
-          success(res) {
-            if (res.confirm) {
-              wx.navigateTo({ url: "/pages/member2/buyFunction/main?type=3" });
-            }
-          }
-        });
-      }
     },
     // 打开webSocket链接
     async connectSocket() {
@@ -1259,10 +1237,10 @@ export default {
   padding: 10rpx 20rpx;
   border-radius: 10rpx;
   background: #f4f4f4;
-  height: 58rpx;
-  line-height: 58rpx;
+  height: 80rpx;
+  line-height: 60rpx;
   text-align: left;
-  width: 500rpx;
+  width: 520rpx;
   overflow: hidden;
   white-space: nowrap;
 }

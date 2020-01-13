@@ -230,7 +230,7 @@ export default {
    padding:30rpx;
   }
   .sear_iner{
-    border:1rpx solid #f5f5f5;border-radius: 30rpx;
+    border:1rpx solid #ececec;border-radius: 30rpx;
     padding-left:30rpx;
     height:70rpx;
   }
@@ -249,9 +249,9 @@ export default {
   }
   .goods-box{
     background-color: #fff;
-    margin-top: 20rpx;
     .goods{
       padding: 30rpx;
+      background: #f2f2f2;
     .list{
       width: 335rpx;
       height: 525rpx;
@@ -259,6 +259,7 @@ export default {
       overflow: hidden;
       margin-bottom: 20rpx;
       box-shadow: 0rpx 2rpx 5rpx 0rpx rgba(0, 0, 0, 0.1);
+      background: #fff;
       .text-box{
         padding: 0 20rpx;
       }
@@ -342,5 +343,8 @@ export default {
 	    height: 32rpx;
     }
   }
+}
+.loading{
+  background: #f2f2f2!important
 }
 </style>

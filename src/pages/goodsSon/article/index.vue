@@ -8,7 +8,8 @@
           <div class="ali-c">
             <img class="one" src="/static/images/index/look.png" alt="">
             <span>{{item.BrowseNum}}</span>
-            <img class="two" src="/static/images/index/good_n.png" alt="">
+            <img class="two" src="/static/images/index/good_y.png" alt="" v-if="item.IsLike==1">
+            <img class="two" src="/static/images/index/good_n.png" alt="" v-else>
             <span>{{item.LikeNum}}</span>
           </div>
         </div>
@@ -31,6 +32,8 @@ export default {
   },
   data () {
     return {
+      userId: "",
+			token: "",
       hasData:false,
 			noDataIsShow: false,//没有数据的提示是否显示
 			page: 1,
@@ -47,6 +50,8 @@ export default {
   onShow(){
     this.page=1;
     this.list=[];
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
     this.shopid=wx.getStorageSync("shopid");
     this.GetArticleList()
   },
@@ -60,6 +65,8 @@ export default {
       let res=await post("Find/GetArticleList",{
         PageIndex: this.page,
         PageSize: this.pageSize,
+        "UserId": this.userId,
+        "Token": this.token,
         ShopId:this.shopid
       })
       if(res.code==0){
