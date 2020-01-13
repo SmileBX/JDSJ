@@ -1,13 +1,10 @@
 <template>
-<div>
   <div
     class="page borderTop charRoom"
     id="charRoom"
     :class="showModule==='emotion'?'showEmotion':showModule==='message'?'showMessage':showModule==='imgage'?'showBtn':showModule==='manySelect'?'showManySelect':''"
     @click="hidePopWin"
-    v-if="ShopMessageList.IsShopServie==0"
   >
-    <!--聊天列表-->
     <div class="padwid" @click="isShowMask=false">
       <div v-for="(msg,msgIndex) in chatList" :key="msgIndex" :id="msg.class">
         <div class="time">{{msg.AddTime}}</div>
@@ -15,33 +12,48 @@
         <label class="flex flexAlignCenter boxSize p2 justifyContentEnd plr20" v-if="msg.MsgId=='a'&&(msg.Info||msg.Pic)"
          @click="onSelectStatus(msg)">
           <div class="flex flexAlignEnd justifyContentEnd mrr2">
-            <div class="tagmsg" v-if="msg.Info" @longpress="gotouchstart(msg)">
+            <div class="tagmsg" v-if="msg.Info" 
+                @longpress="gotouchstart(msg)">
               <text class="boxSize" v-html="msg.Info"></text>
               <div class="popWin popWin_r" v-if="msg.popWinStatus">
                 <p @click="copy(msg)">复制</p>
-                <p @click="deleteMsg(msg,msgIndex)">删除</p>
+                <!-- <p @click="deleteMsg(msg,msgIndex)">删除</p>
                 <p @click="withdrawMsg(msg,msgIndex)">撤回</p>
-                <p @click="showModule = 'manySelect'">多选</p>
+                <p @click="showModule = 'manySelect'">多选</p> -->
               </div>
               <span class="sj rsj"></span>
             </div>
-            <img class="sendImg" mode="widthFix" v-if="msg.Pic" :src="msg.Pic" @click="previewImg(msg.Pic)" />
+            <img
+              class="sendImg"
+              mode="widthFix"
+              v-if="msg.Pic"
+              :src="msg.Pic"
+              alt
+              @click="previewImg(msg.Pic)"
+            />
           </div>
-          <div class="avatarbox mr0" v-if="chatStatu.a">
-            <img :src="chatStatu.a.Headimgurl" alt class="avatar"/>
+          <div class="avatarbox mr0">
+            <img :src="msg.Headimgurl" alt class="avatar"/>
           </div>
-          <input type="checkbox" class="checkbox" v-if="showModule==='manySelect'"  :checked="msg.selectStatus"/>
+          <input type="checkbox" class="checkbox" v-if="showModule==='manySelect'"  
+          :checked="msg.selectStatus"/>
         </label>
         <!-- b -->
         <label class="flex flexAlignCenter boxSize plr20 justifyContentStart" v-if="msg.MsgId=='b'&&(msg.Info||msg.Pic)"  
           @click="onSelectStatus(msg)">
+          
               <input type="checkbox" class="checkbox" v-if="showModule==='manySelect'"  
               :checked="msg.selectStatus"/>
-              <div class="avatarbox mr0" v-if="chatStatu.b">
-                <img :src="chatStatu.b.Headimgurl" class="avatar"/>
+              <div class="avatarbox mr0">
+                <img
+                  :src="msg.Headimgurl"
+                  alt
+                  class="avatar"
+                />
               </div>
               <div class="flex flexAlignEnd mrl2">
-                <div class="tagmsg bg_fff black" v-if="msg.Info" @longpress.stop="gotouchstart(msg)">
+                <div class="tagmsg bg_fff black" v-if="msg.Info" 
+                    @longpress.stop="gotouchstart(msg)">
                   <div class="popWin popWin_l" v-if="msg.popWinStatus">
                     <p @click="copy(msg)">复制</p>
                     <!-- <p @click="deleteMsg(msg,msgIndex)">删除</p>
@@ -49,9 +61,19 @@
                     <p @click="showModule = 'manySelect'">多选</p> -->
                   </div>
                   <span class="sj lsj"></span>
-                  <text class="boxSize" v-html="msg.Info" ></text>
+                  <text
+                    class="boxSize"
+                    v-html="msg.Info"
+                  ></text>
                 </div>
-                <img class="sendImg" mode="widthFix" v-if="msg.Pic" :src="msg.Pic" @click="previewImg(msg.Pic)"/>
+                <img
+                  class="sendImg"
+                  mode="widthFix"
+                  v-if="msg.Pic"
+                  :src="msg.Pic"
+                  alt
+                  @click="previewImg(msg.Pic)"
+                />
               </div>
         </label>
       </div>
@@ -79,8 +101,19 @@
           :cursor-spacing="10"
         />
         <div class="flex flexAlignCenter">
-          <img src="/static/images/service/smile.jpg" class="logimg" @click="onShowModule('emotion')" />
-          <img src="/static/images/service/add.jpg" class="logimg" @click="onShowModule('imgage')" v-if="!sendInfo" />
+          <img
+            src="/static/images/service/smile.jpg"
+            alt
+            class="logimg"
+            @click="onShowModule('emotion')"
+          />
+          <img
+            src="/static/images/service/add.jpg"
+            alt
+            class="logimg"
+            @click="onShowModule('imgage')"
+            v-if="!sendInfo"
+          />
           <img src="/static/images/service/send.png" alt class="logimg" @click="sendMessage()" v-else />
         </div>
       </div>
@@ -102,10 +135,15 @@
         </div>
       </div>
       <!-- 表情 -->
-      <div class="emotion" v-if="showModule==='emotion'"> 
+      <div class="emotion" v-if="showModule==='emotion'">
         <scroll-view scroll-y class="emotion-pack-item">
           <div class="emotion-box">
-            <div class="emotion-box-line" v-for="(line, i) in emotionArr" :key="i" @click="handEmotion(line)" >
+            <div
+              class="emotion-box-line"
+              v-for="(line, i) in emotionArr"
+              :key="i"
+              @click="handEmotion(line)"
+            >
               <div v-html="line.url"></div>
             </div>
           </div>
@@ -125,22 +163,6 @@
     <!--弹层-->
     <div class="mask" v-if="isShowMask" catchtouchmove="true" @click="isShowMask=false"></div>
   </div>
-  <div v-else>
-    <div class="itembox" v-for="(item,index) in ShopMessageList.DataTable" :key="index" @click="goUrl(item.FriendId)">
-      <div class="leftbox">
-        <img :src="item.Headimgurl" alt="">
-        <!-- <span>2</span> -->
-      </div>
-      <div class="rightbox">
-        <div class="nickname">
-          <p>{{item.NickName}}</p>
-          <p>{{item.AddTime}}</p>
-        </div>
-        <p class="info text_space">{{item.Info}}</p>
-      </div>
-    </div>
-  </div>
-</div>
 </template>
 
 <script>
@@ -166,11 +188,11 @@ export default {
       emotionArr: [],
       socketStatus: false, //socket状态
       inputFocusStatus: false, //input对焦状态
+      editTermId : '',//是否编辑常用语的id
       hasPopWinShow:false,//是否有操作框显示，减少hidePopWin遍历，增加性能
       page: 1,
       pageSize: 20,
       selectAll:false,//全选状态
-      ShopMessageList:{}
     };
   },
   onLoad() {
@@ -183,14 +205,14 @@ export default {
     this.page = 1;
     this.chatList=[];
     this.chatStatu = {};
+    this.FriendId = this.$root.$mp.query.id;
     this.TempId = this.$root.$mp.query.TempId;
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.shopid=wx.getStorageSync("shopid");
-    this.getShopMessageList()
-    // this.getFriendMessage("scrollBottom").then(() => {
-    //   this.connectSocket();
-    // });
+    this.getFriendMessage("scrollBottom").then(() => {
+      this.connectSocket();
+    });
   },
   onUnload() {
     wx.closeSocket({
@@ -230,27 +252,6 @@ export default {
       this.inputFocusStatus = false;
       this.showModule = "";
     },
-    async getShopMessageList(){
-      let res=await post(
-        "WebSocket/GetShopMessageList",
-        {
-          UserId: this.userId,
-          Token: this.token,
-          ShopId: this.shopid
-        }
-      );
-      if(res.code==0){
-        var list=res.data.DataTable;
-        list.map(item=>{
-          item.AddTime=item.AddTime.replace(/T/,' ').substring(0,19)
-        })
-        if(res.data.IsShopServie==0){//不是客服，直接显示聊天室
-          this.FriendId=res.data.DataTable[0].FriendId
-        }
-        this.ShopMessageList=res.data;
-        console.log(this.ShopMessageList)
-      }
-    },
     // 返回字符串长度，中文2，英文1
     strlength(str) {
       let len = 0;
@@ -270,7 +271,7 @@ export default {
     async connectSocket() {
       const that = this;
       const ress = await post(
-        "User/GetWebSocketId",
+        "WebSocket/GetWebSocketId",
         {
           UserId: this.userId,
           Token: this.token,
@@ -357,7 +358,7 @@ export default {
             if (res.code === 0) {
               let info = [];
               // 处理发送时间
-              let times = res.data[0] &&new Date(res.data[0].AddTime);
+              let times =new Date(res.data[0].AddTime);
               res.data.reverse(); //数组翻转
               res.data.map((item, i) => {
                 let date = new Date(item.AddTime);
@@ -372,7 +373,7 @@ export default {
                   if (year && Month && dates && Hours && Minutes) {
                     item.AddTime = "";
                   } else {
-                    item.AddTime=item.AddTime.replace(/T/,' ')
+                    item.AddTime=item.AddTime.replace(/T/,' ').substring(0,19)
                     times = date;
                   }
                 }else{
@@ -397,34 +398,35 @@ export default {
                 // info.unshift(item);
                 info.push(item);
               });
-              // res.data = info;
+              // res.data.info = info;
               if (that.page === 1) {
                 that.chatList = info;
               } else {
                 that.chatList = info.concat(that.chatList);
               }
+              console.log(that.chatList)
               that.chatStatu = res.data;
-              // if (
-              //   scrollBottom === "scrollBottom" ||
-              //   (res.data.length < that.pageSize && that.page === 1)
-              // ) {
-              //   that.scrollBottom();
-              // }
-              if (scrollPosition) {
-                setTimeout(() => {
-                  wx
-                    .createSelectorQuery()
-                    .select("#" + scrollPosition)
-                    .boundingClientRect(function(rect) {
-                      // 使页面滚动到底部
-                      wx.pageScrollTo({
-                        scrollTop: rect.top,
-                        duration: 0
-                      });
-                    })
-                    .exec();
-                }, 100);
+              if (
+                scrollBottom === "scrollBottom" ||
+                (res.data.length < that.pageSize && that.page === 1)
+              ) {
+                that.scrollBottom();
               }
+              // if (scrollPosition) {
+              //   setTimeout(() => {
+              //     wx
+              //       .createSelectorQuery()
+              //       .select("#" + scrollPosition)
+              //       .boundingClientRect(function(rect) {
+              //         // 使页面滚动到底部
+              //         wx.pageScrollTo({
+              //           scrollTop: rect.top,
+              //           duration: 0
+              //         });
+              //       })
+              //       .exec();
+              //   }, 100);
+              // }
               resolve();
             }else {
               wx.showToast({ title: res.msg, icon: "none" });
@@ -468,7 +470,7 @@ export default {
       }
       const that = this;
       wx.request({
-        url: host+"User/Sendfriend_new",
+        url: host+"WebSocket/Sendfriend_new",
         data: {
           UserId: this.userId,
           Token: this.token,
@@ -581,24 +583,20 @@ export default {
       this.comment[this.showComment].commentContent += i;
     },
     // 滚动到底部
-    // scrollBottom() {
-    //   setTimeout(() => {
-    //     wx
-    //       .createSelectorQuery()
-    //       .select("#charRoom")
-    //       .boundingClientRect(function(rect) {
-    //         // 使页面滚动到底部
-    //         wx.pageScrollTo({
-    //           scrollTop: rect.height,
-    //           duration: 0
-    //         });
-    //       })
-    //       .exec();
-    //   }, 100);
-    // },
-    // 客服聊天页
-    goUrl(id) {
-      wx.navigateTo({ url: "/pages/service/chatRoomSon/main?id="+id });
+    scrollBottom() {
+      setTimeout(() => {
+        wx
+          .createSelectorQuery()
+          .select("#charRoom")
+          .boundingClientRect(function(rect) {
+            // 使页面滚动到底部
+            wx.pageScrollTo({
+              scrollTop: rect.height,
+              duration: 0
+            });
+          })
+          .exec();
+      }, 100);
     },
     // ******************长按复制***************
     // 长按内容，显示操作框
@@ -1029,57 +1027,6 @@ export default {
   .closeSelect{
     color:#999;
     padding:0 20rpx;
-  }
-}
-.itembox{
-  width: 100%;
-  padding: 20rpx 30rpx;
-  background: #fff;
-  border-bottom: 1px #ececec solid;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  .leftbox{
-    margin-right: 20rpx;
-    position: relative;
-    img{
-      width: 80rpx;
-      height: 80rpx;
-      border-radius: 50%
-    }
-    span{
-      display: block;
-      background: #ff3333;
-      color: #fff;
-      font-size: 18rpx;
-      padding:0 4rpx;
-      height: 32rpx;
-      line-height: 32rpx;
-      border-radius: 16rpx;
-      position: absolute;
-      top: -16rpx;
-      right: -16rpx;
-      box-sizing: border-box;
-      min-width: 32rpx;
-      text-align: center;
-    }
-  }
-  .rightbox{
-    // flex: 1;
-    width: 590rpx;
-    .nickname{
-      font-size: 32rpx;
-      display: flex;
-      justify-content: space-between;
-      p:nth-child(2){
-        font-size: 24rpx;
-        color: #999
-      }
-    }
-    .info{
-      font-size: 26rpx;
-      color: #666;
-    }
   }
 }
 </style>

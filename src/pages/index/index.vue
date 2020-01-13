@@ -145,6 +145,7 @@ export default {
       this.shopid = decodeURIComponent(e.shopid);
       wx.setStorageSync("shopid", this.shopid);
     }
+    wx.setStorageSync("shopid", "50FB070743F1853A");
   },
   onShow(){
     if(wx.getStorageSync("shopid")){
