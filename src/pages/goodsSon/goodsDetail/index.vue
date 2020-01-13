@@ -249,6 +249,7 @@ export default {
       SpecInfo:{},//当前选择规格的信息--图片，价钱
       showbtntype:0,
       isMatch:false,//是否已匹配sku
+      ShareMemberid:"",//分享的会员id
     }
   },
   onLoad(){
@@ -346,7 +347,7 @@ export default {
           Count: this.goodsNum,
           SpecText: this.SpecText,
           IsFlashSale: this.isLimint,
-          ShareMemberId: ""
+          ShareMemberId: this.ShareMemberid
         })
         if(res.code==0){
           this.GetAllCartNumber();
@@ -378,7 +379,7 @@ export default {
 
         }else{
           wx.navigateTo({
-            url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&price='+money+'&orderSType=0'+'&ShareMemberId='+this.userId,
+            url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&ShareMemberId='+this.ShareMemberid,
           })
         }
       }else{
