@@ -16,41 +16,48 @@
         <div class="card">
           <p class="flex justifyContentBetween less_bb">
               <span>我的订单</span>
-              <span class="flex cg flexAlignCenter" @click="switchPath('/pages/myson2/order/main')">
+              <span class="flex cg flexAlignCenter" @click="switchPath('/pages/myson2/order/main',0)">
                 <span class="font24">全部订单</span>
                 <img src="/static/images/icons/right.png" alt="" class="icon_right mr1">
               </span>
           </p>
           <div class="icon-box flex-wrap ali-c">
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main')">
+            <!-- <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main')" v-for="(item, index) in orderList" :key="index">
+              <div>
+                <img :src="'/static/images/icons/'+(index+1)+'.png'" alt="">
+                <p>{{item}}</p>
+                <span class="flexc">2</span>
+              </div>
+            </div> -->
+            <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',1)">
               <div>
                 <img src="/static/images/icons/1.png" alt="">
                 <p>待付款</p>
                 <span class="flexc">2</span>
               </div>
             </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main')">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',2)">
               <div>
                 <img src="/static/images/icons/2.png" alt="">
                 <p>待发货</p>
                 <span class="flexc">2</span>
               </div>
             </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main')">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',3)">
               <div>
                 <img src="/static/images/icons/3.png" alt="">
                 <p>待收货</p>
                 <span class="flexc">2</span>
               </div>
             </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main')">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',4)">
               <div>
                 <img src="/static/images/icons/4.png" alt="">
                 <p>评价</p>
                 <span class="flexc">2</span>
               </div>
             </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson/focus/main')">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main')">
               <div>
                 <img src="/static/images/icons/5.png" alt="">
                 <p>退款/售后</p>
@@ -142,7 +149,8 @@ export default {
 
   data () {
     return {
-      info:{}
+      info:{},
+      // orderList:['待付款','待发货','待收货','待评价','退款/售后']
     }
   },
   onShow(){
@@ -164,10 +172,10 @@ export default {
         }
       })
     },
-    switchPath(path){
+    switchPath(path,type){
       setTimeout(() => {
         wx.navigateTo({
-          url:path
+          url:path+'?type='+type
         })
       }, 0);
     }

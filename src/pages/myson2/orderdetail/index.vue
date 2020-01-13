@@ -1,7 +1,7 @@
 <template>
   <div class="ticket">
       <div class="or_list">
-        <div class="bg_statu">交易成功</div>
+        <div class="bg_statu">{{info.StatusName}}</div>
         <div class="pp2 flex justifyContentBetween  bg_fff bor_tit flexAlignEnd">
             <img src="/static/images/icons/kc.png" alt="" class="kc_icon">
             <div class="flex flex1 flexAlignCenter">
@@ -18,20 +18,20 @@
             <img src="/static/images/icons/lc.png" alt="" class="icon_lc">
             <div class="flex1">
                 <p>
-                    <span>张三</span><span class="mr5">131****2626</span>
+                    <span>{{info.ContactName}}</span><span class="mr5">{{info.TelephoneNumber}}</span>
                 </p>
-                <p class="font24 cg mt1">广东省 深圳市 龙岗区 坂田街道 雅兰新洲社区学府花园 5期12栋</p>
+                <p class="font24 cg mt1">{{info.Address}}</p>
             </div>
         </div>
         <div class="or_item bg_fff ">
-            <div class="pp3 flex bor_tit">
-                <img src="/static/images/shop.png" alt="" class="shop">
+            <div class="pp3 flex bor_tit" v-for="(item, index) in info.orderDetails" :key="index">
+                <img :src="item.ProductImg" alt="" class="shop">
                 <div class="flex1 flex flexAlignCenter mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
-                      <p>精华液面部精华雪域滋润保湿补水提亮肤色官</p>
-                      <p class="cr font30">￥199</p>
+                      <p>{{item.ProductName}}</p>
+                      <p class="cr font30">￥{{item.UnitPrice}}</p>
                     </div>
-                    <div class="mr3">x1</div>
+                    <div class="mr3">x{{item.ProductCount}}</div>
                 </div>
             </div>
             <div class="bor_tit pp2">
@@ -41,12 +41,12 @@
                 </p>
                 <p class="flex justifyContentBetween mt1">
                     <span>订单总价</span>
-                    <span>¥99.00</span>
+                    <span>¥{{info.TotalPrice}}</span>
                 </p>
             </div>
             <div class="flex justifyContentBetween mt1 pp2">
                 <span>需付款</span>
-                <span class="cr">¥99.00</span>
+                <span class="cr">¥{{info.TotalAmount}}</span>
             </div>
         </div>
       </div>
@@ -56,15 +56,15 @@
               <span class="order_title">订单信息</span>
           </div>
           <div class="cg mt2 order_info font24">
-              <p>订单编号：20000054115841 <span class="copy">复制</span> </p>
-              <p>创建时间：2019-12-20 09:18:30</p>
-              <p>取消时间：2019-12-20 09:18:30</p>
-              <p>发货时间：2019-12-20 09:18:30</p>
-              <p>成交时间：2019-12-20 09:18:30</p>
+              <p>订单编号：{{info.OrderNumber}} <span class="copy" @click="copy(info.OrderNumber)">复制</span> </p>
+              <p>创建时间：{{info.AddTime}}</p>
+              <p v-if="info.StatusId>0">支付时间：{{info.PayTime}}</p>
+              <p v-if="info.StatusId>1">发货时间：{{info.FaHuoTime}}</p>
+              <p v-if="info.StatusId>2">成交时间：{{info.CompleteTime}}</p>
           </div>
       </div>
       <div class="bg_fff flex justifyContentBetween">
-          <p class="flex btn_menu justifyContentCenter flexAlignCenter">
+          <p class="flex btn_menu justifyContentCenter flexAlignCenter" @click="call(info.ShopMobile)">
               <img src="/static/images/icons/ch.png" alt="" class="icon_ch"><span>拨打电话</span>
           </p>
           <p class="flex btn_menu justifyContentCenter flexAlignCenter">
@@ -79,31 +79,48 @@
 </template>
 
 <script>
-import {switchPath,isJump} from '@/utils'
+import {post} from '@/utils'
 export default {
 
   data () {
     return {
-      tabList:['全部','待付款','待发货','待收货','待评价'],
-      tabIndex:0,
-      isJump:false
-      
+      info:{}
     }
   },
   onShow(){
-    
+    console.log(this.$mp.query.id)
+    this.getDetail()
   },
   methods: {
-    goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
-        wx.navigateTo({
-          url:url+'?id='+param
-        })
-      }, 100);
+    copy(str){
+      wx.setClipboardData({
+        data: str,
+        success (res) {
+          // wx.getClipboardData({
+            
+          // })
+        }
+      })
     },
-    
+    call(phone){
+      wx.makePhoneCall({
+        phoneNumber: phone
+      })
+    },
+    goUrl(url,param){
+      wx.navigateTo({
+        url:url+'?id='+param
+      })
+    },
+    getDetail(){
+      post('Order/OrderDetails',{
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token"),
+        OrderNo:this.$mp.query.id
+      }).then(res=>{
+        this.info = res.data
+      })
+    }
   },
 }
 </script>
