@@ -8,7 +8,7 @@
         <div class="or_item bg_fff" v-for="(item,index) in list" :key="index">
             <div class="flex pp2 justifyContentBetween">
                 <p class="flex flexAlignCenter">
-                    <img src="/static/images/icons/shop_logo.png" alt="" class="shop_logo">
+                    <img src="http://jd.wtvxin.com/images/images/icons/shop_logo.png" alt="" class="shop_logo">
                     <span class="ml1">{{shopName}}</span>
                 </p>
                 <p class="cr">{{item.StatusName}}</p>

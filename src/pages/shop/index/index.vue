@@ -1,6 +1,6 @@
 <template>
   <div class="p30">
-      <img class="shopImg" src="/static/images/shop/joinShop.png" alt="" @click="joinShop">
+      <img class="shopImg" src="http://jd.wtvxin.com/images/images/shop/joinShop.png" alt="" @click="joinShop">
       <h3>为你收集港澳台心意店铺</h3>
       <div class="list">
         <block v-for="(item,index) in ShopList" :key="index">

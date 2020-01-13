@@ -4,7 +4,7 @@
       <div class="search ali-c">
         <p class="oneline">{{shopName}}</p>
         <div class="right flexc" @click="goUrl('/pages/goodsSon/goodsSearch/main')">
-          <img src="/static/images/index/search.png" alt="">
+          <img src="http://jd.wtvxin.com/images/images/index/search.png" alt="">
           <span>搜索</span>
         </div>
       </div>
@@ -18,37 +18,37 @@
     <div class="icon flex">
       <div class="flex1 flexc" @click="goUrl('/pages/goodsSon/dayday/main')">
         <div>
-          <img src="/static/images/index/icon1.png" alt="">
+          <img src="http://jd.wtvxin.com/images/images/index/icon1.png" alt="">
           <p>天天特惠</p>
         </div>
       </div>
       <div class="flex1 flexc" @click="goUrl('/pages/goodsSon/article/main')">
         <div>
-          <img src="/static/images/index/icon2.png" alt="">
+          <img src="http://jd.wtvxin.com/images/images/index/icon2.png" alt="">
           <p>动态文章</p>
         </div>
       </div>
       <div class="flex1 flexc" @click="goUrl('/pages/myson/ticketcenter/main')">
         <div>
-          <img src="/static/images/index/icon3.png" alt="">
+          <img src="http://jd.wtvxin.com/images/images/index/icon3.png" alt="">
           <p>优惠券</p>
         </div>
       </div>
       <div class="flex1 flexc" @click="goUrl('/pages/goodsSon/classify/main')">
         <div>
-          <img src="/static/images/index/icon4.png" alt="">
+          <img src="http://jd.wtvxin.com/images/images/index/icon4.png" alt="">
           <p>商品分类</p>
         </div>
       </div>
     </div>
     <div class="youhui ali-c jus-b">
-      <img @click="goUrl('/pages/goodsSon/rob/main')" src="/static/images/index/qianggou.png" alt="">
-      <img @click="goUrl('/pages/team/goods/main')" src="/static/images/index/pintuan.png" alt="">
+      <img @click="goUrl('/pages/goodsSon/rob/main')" src="http://jd.wtvxin.com/images/images/index/qianggou.png" alt="">
+      <img @click="goUrl('/pages/team/goods/main')" src="http://jd.wtvxin.com/images/images/index/pintuan.png" alt="">
     </div>
     <div class="goods-box" id="goods-box">
       <div class="xd">
         <div class="all flexc">
-          <img src="/static/images/index/title.png" alt="">
+          <img src="http://jd.wtvxin.com/images/images/index/title.png" alt="">
         </div>
         <div class="shai flex">
           <div :class="['flex1 flexc',item.active?'active':'']" @click="filter(index)" v-for="(item,index) in filterTab" :key="index">
@@ -67,7 +67,7 @@
             </div>
             <div class="carda ali-c jus-b">
               <span>已售{{item.SalesVolume}}</span>
-              <img src="/static/images/index/shop_card.png" alt="">
+              <img src="http://jd.wtvxin.com/images/images/index/shop_card.png" alt="">
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@
     </div>
     <movable-area class="move-box-fa">
       <movable-view class="move-box" direction='all' inertia x='10000' y='0' damping='1000000' friction='1'>
-        <img class="car" src="/static/images/index/card.png" alt="" @click="goCart">
+        <img class="car" src="http://jd.wtvxin.com/images/images/index/card.png" alt="" @click="goCart">
       </movable-view>
     </movable-area>
     
@@ -145,7 +145,7 @@ export default {
       this.shopid = decodeURIComponent(e.shopid);
       wx.setStorageSync("shopid", this.shopid);
     }
-    //wx.setStorageSync("shopid", "50FB070743F1853A");
+    wx.setStorageSync("shopid", "50FB070743F1853A");
   },
   onShow(){
     if(wx.getStorageSync("shopid")){

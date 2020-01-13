@@ -13,7 +13,7 @@
           <span>所在地区</span>
           <div class="ali-c flex1">
             <input type="text" placeholder="请选择地区" class="flex1" disabled v-model="address">
-            <img src="/static/images/icons/right.png" alt="" class="icon_right">
+            <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
           </div>
         </div>
         <div class="list ali-c">

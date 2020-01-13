@@ -24,17 +24,17 @@
           </label>
           <div class="flexItem flex1 flex justifyContentEnd">
             <div class="iconText inline-block" @click="gotoAddInvoice(item.Id)">
-              <img src="/static/images/icons/write.png" class="write" alt>编辑
+              <img src="http://jd.wtvxin.com/images/images/icons/write.png" class="write" alt>编辑
             </div>
             <div class="iconText inline-block" @click="deleteBtn(index,item.Id)">
-              <img src="/static/images/icons/delete.png" class="delete" alt>删除
+              <img src="http://jd.wtvxin.com/images/images/icons/delete.png" class="delete" alt>删除
             </div>
           </div>
         </div>
       </div>
     </div>
     <div v-if="list.length==0&&navIndex===0" class="nodata_log flex flexColumn flexAlignCenter">
-         <img src="/static/images/icons/vibg.png" alt="" class="site_log">
+         <img src="http://jd.wtvxin.com/images/images/icons/vibg.png" alt="" class="site_log">
           <span class="cg mt2">您还没有发票抬头哦~</span>
           <span class="add_new" @tap="gotoAddInvoice(-1)">新建发票抬头</span>
     </div>
@@ -67,7 +67,7 @@
       <div class="inner fixed bm0">
         <div class="btns">
           <div class="btn center bg_ff952e" @click="gotoAddInvoice(-1)">
-            <img src="/static/images/icons/add3.png" class="icon-add" alt> 新增发票信息
+            <img src="http://jd.wtvxin.com/images/images/icons/add3.png" class="icon-add" alt> 新增发票信息
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@
       <div class="or_list">
         <div class="bg_statu">{{info.StatusName}}</div>
         <div class="pp2 flex justifyContentBetween  bg_fff bor_tit flexAlignEnd">
-            <img src="/static/images/icons/kc.png" alt="" class="kc_icon">
+            <img src="http://jd.wtvxin.com/images/images/icons/kc.png" alt="" class="kc_icon">
             <div class="flex flex1 flexAlignCenter">
                 <div class="flex1">
                     <p class="cr">
@@ -11,11 +11,11 @@
                     </p>
                     <p class=" cg mt1">2019-09-26 18:52:10</p>
                 </div>
-                <img src="/static/images/icons/right.png" alt="" class="icon_right mr2">
+                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right mr2">
             </div>
         </div>
         <div class="pp2 flex justifyContentBetween flexWrap flexAlignEnd bg_fff">
-            <img src="/static/images/icons/lc.png" alt="" class="icon_lc">
+            <img src="http://jd.wtvxin.com/images/images/icons/lc.png" alt="" class="icon_lc">
             <div class="flex1">
                 <p>
                     <span>{{info.ContactName}}</span><span class="mr5">{{info.TelephoneNumber}}</span>
@@ -65,10 +65,10 @@
       </div>
       <div class="bg_fff flex justifyContentBetween">
           <p class="flex btn_menu justifyContentCenter flexAlignCenter" @click="call(info.ShopMobile)">
-              <img src="/static/images/icons/ch.png" alt="" class="icon_ch"><span>拨打电话</span>
+              <img src="http://jd.wtvxin.com/images/images/icons/ch.png" alt="" class="icon_ch"><span>拨打电话</span>
           </p>
           <p class="flex btn_menu justifyContentCenter flexAlignCenter">
-              <img src="/static/images/icons/er.png" alt="" class="icon_ch"><span>在线客服</span>
+              <img src="http://jd.wtvxin.com/images/images/icons/er.png" alt="" class="icon_ch"><span>在线客服</span>
           </p>
       </div>
       <div class="flex justifyContentEnd pp2 bg_fff mt2 bb_fix">

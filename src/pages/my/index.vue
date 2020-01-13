@@ -10,7 +10,7 @@
             <p class="two">{{info.Mobile}}</p>
           </div>
         </div>
-        <img class="bg" mode='aspectFill' src="/static/images/mine_bg.png" alt="">
+        <img class="bg" mode='aspectFill' src="http://jd.wtvxin.com/images/images/mine_bg.png" alt="">
       </div>
       <div class="card-box">
         <div class="card">
@@ -18,48 +18,48 @@
               <span>我的订单</span>
               <span class="flex cg flexAlignCenter" @click="switchPath('/pages/myson2/order/main',0)">
                 <span class="font24">全部订单</span>
-                <img src="/static/images/icons/right.png" alt="" class="icon_right mr1">
+                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right mr1">
               </span>
           </p>
           <div class="icon-box flex-wrap ali-c">
             <!-- <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main')" v-for="(item, index) in orderList" :key="index">
               <div>
-                <img :src="'/static/images/icons/'+(index+1)+'.png'" alt="">
+                <img :src="'http://jd.wtvxin.com/images/images/icons/'+(index+1)+'.png'" alt="">
                 <p>{{item}}</p>
                 <span class="flexc">2</span>
               </div>
             </div> -->
             <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',1)">
               <div>
-                <img src="/static/images/icons/1.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/1.png" alt="">
                 <p>待付款</p>
                 <span class="flexc">2</span>
               </div>
             </div>
             <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',2)">
               <div>
-                <img src="/static/images/icons/2.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/2.png" alt="">
                 <p>待发货</p>
                 <span class="flexc">2</span>
               </div>
             </div>
             <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',3)">
               <div>
-                <img src="/static/images/icons/3.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/3.png" alt="">
                 <p>待收货</p>
                 <span class="flexc">2</span>
               </div>
             </div>
             <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',4)">
               <div>
-                <img src="/static/images/icons/4.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/4.png" alt="">
                 <p>评价</p>
                 <span class="flexc">2</span>
               </div>
             </div>
             <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main')">
               <div>
-                <img src="/static/images/icons/5.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/5.png" alt="">
                 <p>退款/售后</p>
                 <span class="flexc">2</span>
               </div>
@@ -73,37 +73,37 @@
           <div class="icon-box icon-boxb flex-wrap ali-c">
             <div class="icon flexc"  @click="switchPath('/pages/myson/ticket/main')">
               <div>
-                <img src="/static/images/icons/6.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/6.png" alt="">
                 <p>优惠劵</p>
               </div>
             </div>
             <div class="icon flexc" @click="switchPath('/pages/myson/collect/main')">
               <div>
-                <img src="/static/images/icons/7.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/7.png" alt="">
                 <p>我的收藏</p>
               </div>
             </div>
             <div class="icon flexc" @click="switchPath('/pages/myson/foot/main')">
               <div>
-                <img src="/static/images/icons/8.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/8.png" alt="">
                 <p>浏览记录</p>
               </div>
             </div>
             <div class="icon flexc" @click="switchPath('/pages/myson/address/main')">
               <div>
-                <img src="/static/images/icons/9.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/9.png" alt="">
                 <p>地址管理</p>
               </div>
             </div>
             <div class="icon flexc" @click="switchPath('/pages/shop/index/main')">
               <div>
-                <img src="/static/images/icons/10.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/10.png" alt="">
                 <p>店铺列表</p>
               </div>
             </div>
             <div class="icon flexc" @click="switchPath('/pages/shop/join/main')">
               <div>
-                <img src="/static/images/icons/11.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/11.png" alt="">
                 <p>申请店铺</p>
               </div>
             </div>
@@ -115,25 +115,25 @@
           <div class="icon-box icon-boxb flex-wrap ali-c">
             <div class="icon flexc" @click="switchPath('/pages/myson/mytuan/main')">
               <div>
-                <img src="/static/images/icons/12.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/12.png" alt="">
                 <p>我的拼团</p>
               </div>
             </div>
             <div class="icon flexc" @click="switchPath('/pages/myson/mycomment/main')">
               <div>
-                <img src="/static/images/icons/13.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/13.png" alt="">
                 <p>我的评价</p>
               </div>
             </div>
             <div class="icon flexc" @click="switchPath('/pages/myson/invoiceList/main')">
               <div>
-                <img src="/static/images/icons/14.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/14.png" alt="">
                 <p>我的发票</p>
               </div>
             </div>
             <div class="icon flexc" @click="switchPath('/pages/myson/kefu/main')">
               <div>
-                <img src="/static/images/icons/15.png" alt="">
+                <img src="http://jd.wtvxin.com/images/images/icons/15.png" alt="">
                 <p>在线客服</p>
               </div>
             </div>

@@ -7,11 +7,11 @@
                 <p class="font24 cg">2019.09.15</p>
                 <p class="mt1">这款茶深得我心，茶泡出来很香又爽口，入喉回甘。好茶就 是这样，顺滑，蜜香型浓郁，下次可以尝试其他口味。</p>
                 <p class="flex flexWrap">
-                    <img src="/static/images/shop.png" alt="" class="shop_pic" v-for="(item,key) in 3" :key="key">
+                    <img src="http://jd.wtvxin.com/images/images/shop.png" alt="" class="shop_pic" v-for="(item,key) in 3" :key="key">
                 </p>
             </div>
             <div class="flex or_main bg_gray">
-                <img src="/static/images/shop.png" alt="" class="shop">
+                <img src="http://jd.wtvxin.com/images/images/shop.png" alt="" class="shop">
                 <div class="flex1 flex flexAlignCenter mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
                       <div>

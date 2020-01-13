@@ -1,12 +1,12 @@
 <template>
   <div>
       <div class="list ali-c jus-b">
-        <img class="left" src="/static/images/index/icon4.png" alt="">
+        <img class="left" src="http://jd.wtvxin.com/images/images/index/icon4.png" alt="">
         <div class="right">
           <p class="tit oneline">动感单车 运动 女家用型</p>
           <div class="ali-c jus-b hot">
             <div class="one flexc">
-              <img src="/static/images/index/hot.png" alt="">
+              <img src="http://jd.wtvxin.com/images/images/index/hot.png" alt="">
               <span>已拼1623件</span>
             </div>
             <p class="flexc">3人团</p>

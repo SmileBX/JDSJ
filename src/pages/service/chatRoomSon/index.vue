@@ -102,34 +102,34 @@
         />
         <div class="flex flexAlignCenter">
           <img
-            src="/static/images/service/smile.jpg"
+            src="http://jd.wtvxin.com/images/images/service/smile.jpg"
             alt
             class="logimg"
             @click="onShowModule('emotion')"
           />
           <img
-            src="/static/images/service/add.jpg"
+            src="http://jd.wtvxin.com/images/images/service/add.jpg"
             alt
             class="logimg"
             @click="onShowModule('imgage')"
             v-if="!sendInfo"
           />
-          <img src="/static/images/service/send.png" alt class="logimg" @click="sendMessage()" v-else />
+          <img src="http://jd.wtvxin.com/images/images/service/send.png" alt class="logimg" @click="sendMessage()" v-else />
         </div>
       </div>
       <!--按钮组-->
       <div v-if="showModule==='imgage'">
         <div class="icon_box flex">
           <div class="flex flexAlignCenter flexColumn" @click="chosseImg('camera')">
-            <img src="/static/images/service/photo.jpg" alt class="icon_put" />
+            <img src="http://jd.wtvxin.com/images/images/service/photo.jpg" alt class="icon_put" />
             <p class="fontColor">拍照</p>
           </div>
           <div class="flex flexAlignCenter flexColumn" @click="chosseImg('album')">
-            <img src="/static/images/service/albrem.jpg" alt class="icon_put" />
+            <img src="http://jd.wtvxin.com/images/images/service/albrem.jpg" alt class="icon_put" />
             <p class="fontColor">相册</p>
           </div>
           <div class="flex flexAlignCenter flexColumn" @click="copyLink()">
-            <img src="/static/images/service/link.png" alt class="icon_put" />
+            <img src="http://jd.wtvxin.com/images/images/service/link.png" alt class="icon_put" />
             <p class="fontColor">复制链接</p>
           </div>
         </div>

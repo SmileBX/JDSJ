@@ -6,7 +6,7 @@
     <div class="p30 content">
       <div class="address p30">
           <div class="flex-column-center-center notAddress" v-if="false">
-              <img src="/static/images/goods/address-icon.png" alt="">
+              <img src="http://jd.wtvxin.com/images/images/goods/address-icon.png" alt="">
               <p>暂无收货地址，点击添加</p>
           </div>
           <div class="addressShow flex-center-between">
@@ -22,7 +22,7 @@
       <div class="pro plr30">
         <h3 class="flex-center-start">炫宝迪旗舰店<span class="icon"><van-icon name="arrow" color="#999"/></span></h3>
         <div class="item flex-center-between">
-          <img src="/static/images/shop.png" alt="">
+          <img src="http://jd.wtvxin.com/images/images/shop.png" alt="">
           <div class="right">
             <h4 class="ellipsis2">床头灯智能家用卧室宿舍阳台书桌装饰氛围LED小台灯家用卧室宿舍阳台书桌装饰氛围LED小台灯</h4>
             <div class="sku">白色</div>

@@ -4,43 +4,43 @@
             <div class="font30 fb k_item k_bor">常见问题</div>
             <div class="flex justifyContentBetween k_item flexAlignCenter">
                 <p>如何查看商品尺码</p>
-                <img src="/static/images/icons/right.png" alt="" class="icon_right">
+                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
             </div>
             <div class="flex justifyContentBetween k_item flexAlignCenter">
                 <p>我要申请退款</p>
-                <img src="/static/images/icons/right.png" alt="" class="icon_right">
+                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
             </div>
             <div class="flex justifyContentBetween k_item flexAlignCenter">
                 <p>退款申请被拒绝</p>
-                <img src="/static/images/icons/right.png" alt="" class="icon_right">
+                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
             </div>
             <div class="flex justifyContentBetween k_item flexAlignCenter">
                 <p>如何换绑手机号</p>
-                <img src="/static/images/icons/right.png" alt="" class="icon_right">
+                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
             </div>
             <div class="flex justifyContentBetween k_item flexAlignCenter">
                 <p>我要修改地址</p>
-                <img src="/static/images/icons/right.png" alt="" class="icon_right">
+                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
             </div>
         </div>
         <div class="bg_fff pp3 flex justifyContentBetween mt2 flexAlignCenter">
           <div class="flex flexAlignCenter">
-            <img src="/static/images/icons/k_f.png" alt="" class="sign">
+            <img src="http://jd.wtvxin.com/images/images/icons/k_f.png" alt="" class="sign">
             <span class="ml1">意见反馈</span>
           </div>
-          <img src="/static/images/icons/right.png" alt="" class="icon_right">
+          <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
         </div>
         <div class="kf_bottom bg_fff flex justifyContentAround">
             <div class="cell_kf cell_left">
                 <p class="flex flexAlignCenter">
-                    <img src="/static/images/icons/call.png" alt="" class="call">
+                    <img src="http://jd.wtvxin.com/images/images/icons/call.png" alt="" class="call">
                     <span class="font24 ml1">400-8523-555</span>
                 </p>
                 <p class="font20 cg">09:00-22:00</p>
             </div>
             <div class="cell_kf cell_right">
                 <p class="flex flexAlignCenter">
-                    <img src="/static/images/icons/mess.png" alt="" class="call">
+                    <img src="http://jd.wtvxin.com/images/images/icons/mess.png" alt="" class="call">
                     <span class="font24 ml1">在线客服</span>
                 </p>
                 <p class="font20">09:00-22:00</p>

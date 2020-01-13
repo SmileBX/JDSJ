@@ -15,7 +15,7 @@
             </div>
           </div>
           <div class="flex-column-center-center notAddress" v-else @click="goUrl('/pages/myson/address/main')">
-              <img src="/static/images/goods/address-icon.png" alt="">
+              <img src="http://jd.wtvxin.com/images/images/goods/address-icon.png" alt="">
               <p>暂无收货地址，点击添加</p>
           </div>
       </div>

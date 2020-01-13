@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="list ali-c jus-b">
-        <img class="left" src="/static/images/index/goods.png" alt="">
+        <img class="left" src="http://jd.wtvxin.com/images/images/index/goods.png" alt="">
         <div class="right">
           <p class="tit oneline">短袜浅口女士棉袜</p>
           <p class="price">

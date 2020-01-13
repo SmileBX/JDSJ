@@ -5,7 +5,7 @@
                 <p>问题类型</p>
                 <p class="flex flexAlignCenter">
                   <span>请选择</span>
-                  <img src="/static/images/icons/right.png" alt="" class="icon_right ml1">
+                  <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right ml1">
                 </p>
             </div>
             <textarea name="" id="" cols="30" rows="10" class="fed_text" placeholder="请输入您的问题或意见"></textarea>
@@ -14,10 +14,10 @@
             <div>上传凭证（不超过5张）</div>
             <div class="fed_pic flex flexWrap">
               <div v-for="(item,index) in 5" :key="index" class="picbox">
-                <img src="/static/images/icons/add2.png" alt="" class="pic_itim">
+                <img src="http://jd.wtvxin.com/images/images/icons/add2.png" alt="" class="pic_itim">
               </div>
               <div class="picbox upBtnImg">
-                <img src="/static/images/icons/add2.png" alt="" class="pic_itim">
+                <img src="http://jd.wtvxin.com/images/images/icons/add2.png" alt="" class="pic_itim">
               </div>
             </div>
         </div>

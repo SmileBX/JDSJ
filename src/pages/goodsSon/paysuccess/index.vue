@@ -2,7 +2,7 @@
   <div>
       <div class="tit_red flex flexColumn flexAlignCenter justifyContentCenter">
           <div class="flex flexAlignCenter">
-              <img src="/static/images/icons/gou_w.png" alt="" class="gou_w">
+              <img src="http://jd.wtvxin.com/images/images/icons/gou_w.png" alt="" class="gou_w">
               <span class="font30 mr2">支付成功</span>
           </div>
           <div class="mt2"><span class="font20">￥</span><span class="font30 fb">56.33</span></div>
@@ -12,9 +12,9 @@
           </div>
       </div>
       <div class="pp2 flex justifyContentCenter flexAlignCenter">
-          <img src="/static/images/icons/ll_left.png" alt="" class="mm_ll">
+          <img src="http://jd.wtvxin.com/images/images/icons/ll_left.png" alt="" class="mm_ll">
           <span class="mm_cc fb">为你推荐</span>
-          <img src="/static/images/icons/ll_right.png" alt="" class="mm_ll">
+          <img src="http://jd.wtvxin.com/images/images/icons/ll_right.png" alt="" class="mm_ll">
       </div>
       <div class="goods-box">
       <div class="xd">
@@ -24,17 +24,17 @@
           </div>
           <div class="flex1 flexc">
             <span>销量</span>
-            <img src="/static/images/index/shai.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/index/shai.png" alt="">
           </div>
           <div class="flex1 flexc">
             <span>价格</span>
-            <img src="/static/images/index/shai.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/index/shai.png" alt="">
           </div>
         </div>
       </div>
       <div class="goods jus-b flex-wrap">
         <div class="list" v-for="(item, index) in 5" :key="index" @click="goUrl('/pages/goodsSon/goodsDetail/main')">
-          <img class="img" src="/static/images/index/goods.png" alt="">
+          <img class="img" src="http://jd.wtvxin.com/images/images/index/goods.png" alt="">
           <div class="text-box">
             <p class="tit oneline">至本舒颜修护氨基酸洁至本舒颜修护氨基酸洁</p>
             <div class="price">
@@ -42,7 +42,7 @@
             </div>
             <div class="carda ali-c jus-b">
               <span>已售1235</span>
-              <img src="/static/images/index/shop_card.png" alt="">
+              <img src="http://jd.wtvxin.com/images/images/index/shop_card.png" alt="">
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@
     <div class="route-box">
       <div class="list-box ali-c" v-for="(item, index) in msg.data" :key="index">
         <div class="list ali-c">
-          <img :src="index==0?'/static/images/icons/l_active.png':'/static/images/icons/ll.png'" alt="">
+          <img :src="index==0?'http://jd.wtvxin.com/images/images/icons/l_active.png':'http://jd.wtvxin.com/images/images/icons/ll.png'" alt="">
           <div>
             <span>{{item.time}}</span>
             <p>{{item.context}}</p>

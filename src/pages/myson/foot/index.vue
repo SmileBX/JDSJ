@@ -7,7 +7,7 @@
               <input type="checkbox" class="checkbox-cart">
             </label>
             <div class="flex or_main">
-                <img src="/static/images/shop.png" alt="" class="shop">
+                <img src="http://jd.wtvxin.com/images/images/shop.png" alt="" class="shop">
                 <div class="flex1 flex flexAlignCenter mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
                       <p>精华液面部精华雪域滋润保湿补水提亮肤色官</p>

@@ -4,7 +4,7 @@
         <div class="sear_iner flex flexAlignCenter">
             <input type="text" :focus="true" placeholder="请输入要搜索的商品" class="flex1" v-model="keyword">
             <span class="sear_btn" @click="GetProductList()">
-                <img src="/static/images/index/search.png" alt="" class="search">
+                <img src="http://jd.wtvxin.com/images/images/index/search.png" alt="" class="search">
             </span>
         </div>
       </div> 
@@ -12,7 +12,7 @@
       <div class="pw3" style="display:none">
           <div class="flex justifyContentBetween flexAlignCenter">
               <span>搜索历史</span>
-              <img src="/static/images/icons/delete.png" alt="" class="del">
+              <img src="http://jd.wtvxin.com/images/images/icons/delete.png" alt="" class="del">
           </div>
           <div class="flex flexWrap">
               <span class="mt2 ser_iitem" v-for="(item,index) in 34" :key="index">煲仔饭</span>
@@ -38,7 +38,7 @@
             </div>
             <div class="carda ali-c jus-b">
               <span>已售{{item.SalesVolume}}</span>
-              <img src="/static/images/index/shop_card.png" alt="">
+              <img src="http://jd.wtvxin.com/images/images/index/shop_card.png" alt="">
             </div>
           </div>
         </div>
