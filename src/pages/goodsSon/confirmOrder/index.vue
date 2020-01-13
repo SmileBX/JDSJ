@@ -161,7 +161,7 @@ export default {
     this.WxOpenid=wx.getStorageSync("openId");
     this.sourceType=this.$root.$mp.query.orderSType;
     this.cartids=this.$root.$mp.query.cartItem;
-    this.isLimint=this.$root.$mp.query.isLimint||0;
+    
   },
   onShow(){
     this.shopid = wx.getStorageSync("shopid");
@@ -346,6 +346,8 @@ export default {
     //立即购买产品信息
     async BuyNowGoodsInfo(){
       this.buynum=this.$root.$mp.query.number;
+      this.isLimint=this.$root.$mp.query.isLimint||0;
+      this.SpecText=this.$root.$mp.query.SpecText||"";
       let protype=0;//0普通产品，1限时，2一元购
       if(this.isLimit==1){
 				protype=1;
