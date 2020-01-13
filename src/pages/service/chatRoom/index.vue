@@ -1,9 +1,11 @@
 <template>
+<div>
   <div
     class="page borderTop charRoom"
     id="charRoom"
     :class="showModule==='emotion'?'showEmotion':showModule==='message'?'showMessage':showModule==='imgage'?'showBtn':showModule==='manySelect'?'showManySelect':''"
     @click="hidePopWin"
+    v-if="true"
   >
     <!-- :class="{'showMessage':showModule,'showBtn':showBtn,'showEmotion':showEmotion}" -->
     <!--聊天列表-->
@@ -233,6 +235,18 @@
       </div>
     </div>
   </div>
+  <div v-else>
+    <div class="itembox">
+      <div class="leftbox">
+        <img src="" alt="">
+        <span>2</span>
+      </div>
+      <div class="rightbox">
+        
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -1273,6 +1287,43 @@ export default {
   .closeSelect{
     color:#999;
     padding:0 20rpx;
+  }
+}
+.itembox{
+  width: 100%;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  border-bottom: 1px #ececec solid;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  .leftbox{
+    margin-right: 20rpx;
+    position: relative;
+    img{
+      width: 80rpx;
+      height: 80rpx;
+      border-radius: 50%
+    }
+    span{
+      display: block;
+      background: #ff3333;
+      color: #fff;
+      font-size: 18rpx;
+      padding:0 4rpx;
+      height: 32rpx;
+      line-height: 32rpx;
+      border-radius: 16rpx;
+      position: absolute;
+      top: -16rpx;
+      right: -16rpx;
+      box-sizing: border-box;
+      min-width: 32rpx;
+      text-align: center;
+    }
+  }
+  .rightbox{
+    flex: 1;
   }
 }
 </style>

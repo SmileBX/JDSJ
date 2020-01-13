@@ -70,13 +70,13 @@
                 <p>优惠劵</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/ticket/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/collect/main')">
               <div>
                 <img src="/static/images/icons/7.png" alt="">
                 <p>我的收藏</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/invite/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/foot/main')">
               <div>
                 <img src="/static/images/icons/8.png" alt="">
                 <p>浏览记录</p>
@@ -112,19 +112,19 @@
                 <p>我的拼团</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/ticket/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/mycomment/main')">
               <div>
                 <img src="/static/images/icons/13.png" alt="">
                 <p>我的评价</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/invite/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/invoiceList/main')">
               <div>
                 <img src="/static/images/icons/14.png" alt="">
                 <p>我的发票</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/kefu/main')">
               <div>
                 <img src="/static/images/icons/15.png" alt="">
                 <p>在线客服</p>
