@@ -120,7 +120,7 @@
             <img src="/static/images/index/more_r.png" alt="">
           </div>
         </div>
-        <div class="main" v-if="proInfo.EvaluateCount>0">
+        <div class="commentlist" v-if="proInfo.EvaluateCount>0">
           <block v-for="(item,index) in proInfo.EvaluateList" :key="index">
             <div v-if="index<1">
               <div class="name ali-c jus-b">
@@ -129,7 +129,7 @@
                   <p>{{item.MemberName}}</p>
                 </div>
                 <div>
-                  <img class="right" src="/static/images/index/star.png" alt="">
+                  <img :key="index" class="right" src="/static/images/index/star.png" alt="">
                 </div>
               </div>
               <p class="detail">
@@ -139,7 +139,7 @@
             </div>
           </block>
         </div>
-        <div class="main" v-else>
+        <div class="commentlist" v-else>
           <p style="padding: 20rpx; color: #999; text-align: center;">
             暂无评论
           </p>
@@ -250,7 +250,7 @@ export default {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.shopid = wx.getStorageSync("shopid");
-    this.proId=this.$root.$mp.query.id;
+    this.proId=this.$root.$mp.query.id||3;
   },
   onShow(){
     console.log(this.showCat == undefined)
@@ -533,7 +533,7 @@ export default {
 .comment{
   background-color: #fff;
   margin-top: 20rpx;
-  .main{
+  .commentlist{
     padding: 0 30rpx;
     .time{
       font-size: 26rpx;
@@ -551,7 +551,8 @@ export default {
         width: 68rpx;
         height: 68rpx;
         border-radius: 50%;
-        margin-right: 20rpx
+        margin-right: 20rpx;
+        background: #eee;
       }
       .right{
         width: 24rpx;
