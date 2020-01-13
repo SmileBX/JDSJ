@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import {post,get} from '@/utils'
+import {post,get,getUrlParam} from '@/utils'
 import uniPopup from '@/components/uni-popup.vue';
 export default {
   components: {
@@ -149,14 +149,18 @@ export default {
       Freight:0,//运费
       totalMoney:0,//实付金额
       ShareMemberId:0,
-      OrderNo:""
+      OrderNo:"",
+      WxOpenid:"",
+			WxCode:"",
     }
   },
   onLoad(){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    this.sourceType=this.$root.$mp.query.orderSType||1;
-    this.cartids=this.$root.$mp.query.cartItem||'62';
+    this.WxCode=wx.getStorageSync("wxCode");
+    this.WxOpenid=wx.getStorageSync("openId");
+    this.sourceType=this.$root.$mp.query.orderSType;
+    this.cartids=this.$root.$mp.query.cartItem;
     this.isLimint=this.$root.$mp.query.isLimint||0;
   },
   onShow(){
@@ -240,7 +244,8 @@ export default {
             }
           }
         }else{
-          this.coupontxt="暂无可用优惠券"
+          this.coupontxt="暂无可用优惠券";
+          this.couponid=0;
         }
         if(this.sourceType==1){
           this.BuyCartShopMoney();
@@ -393,7 +398,7 @@ export default {
       })
       if(res.code==0){
         this.OrderNo=res.data;
-        console.log(res);
+        this.ConfirmWeiXinSmallPay();
       }else if(res.code==200){
         wx.navigateTo({ 
           url: "/pages/goodsSon/paysuccess/main?orderNo=" + res.data+'&status='+res.code+'&price=0'
@@ -427,7 +432,7 @@ export default {
       })
       if(res.code==0){
         this.OrderNo=res.data;
-        console.log(res);
+        this.ConfirmWeiXinSmallPay();
       }else if(res.code==200){
         wx.navigateTo({ 
           url: "/pages/goodsSon/paysuccess/main?orderNo=" + res.data+'&status='+res.code+'&price=0'
@@ -447,7 +452,7 @@ export default {
       }
       if (this.addressId) {
         if(this.sourceType==1){
-          this.BuyCart(RemarksArr);
+         this.BuyCart(RemarksArr);
         }else{
           this.NowSubmitOrder();
         }
@@ -459,40 +464,35 @@ export default {
         });
       }
     },
+    
     //微信支付需参数
-    async ConfirmWeiXinPay(){
-      let res = await post('Order/GetWeChatParam',{
+    async ConfirmWeiXinSmallPay(){
+      let result = await post('Pay/WeiXinSmallPayByOrder',{
         OrderNo:this.OrderNo,
         UserId: this.userId,
         Token: this.token,
+        WxCode:this.WxCode,
+				WxOpenid:this.WxOpenid,
       })
-      if(res.code==0){
-      let JsParam=JSON.parse(res.data.JsParam);
-      this.payMoney(JsParam)
+      let payData=JSON.parse(result.data.JsParam)
+      if(result.code==0){
+        let _this=this;
+        wx.requestPayment({
+          timeStamp: payData.timeStamp,
+          nonceStr: payData.nonceStr,
+          package: payData.package,
+          signType: payData.signType,
+          paySign: payData.paySign,
+          success(res) {
+              wx.navigateTo({
+                url: "/pages/goodsSon/paysuccess/main?orderNo="+_this.OrderNo
+              })
+            },
+          fail(res) {
+          }
+        })
       }
     },
-    payMoney(JsParam){
-      let that=this;
-      wx.requestPayment({
-      timeStamp: JsParam.timeStamp,
-      nonceStr: JsParam.nonceStr,
-      package: JsParam.package,
-      signType: JsParam.signType,
-      paySign: JsParam.paySign,
-      success (res) {
-          console.log(res)
-          wx.showToast({
-              title:"充值成功！"
-          })
-          setTimeout(() => {
-              wx.navigateBack({})
-          }, 1500);
-      },
-      
-      fail (res) { }
-      })
-    },
-    
 
   }
 }

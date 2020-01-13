@@ -1,22 +1,21 @@
 <template>
   <div class="foot_list">
-      <scroll-view class="filterContent bg_fff mt10" scroll-y="true">  
+      <!-- <scroll-view class="filterContent bg_fff mt10" scroll-y="true">   -->
         <div class="or_list">
           <block v-for="(item,index) in list" :key="index">
           <van-swipe-cell
             :right-width="65"
-            async-close
-            @close="ReCollections($event,item.Id,index)"
             class="swipe-cell"
+            @click="deleteC()"
           >
-            <van-cell-group>
+            <van-cell-group @click="deleteC()">
               <van-cell class="item" @click="goDetail(item)">
                 <div class="or_item bg_fff flex justifyContentBetween flexAlignCenter pw3">
                     <div class="flex or_main">
                         <img :src="item.PicFrist" alt="" class="shop">
                         <div class="flex1 flex flexAlignCenter mr2 text_left">
                             <div class="or_left flex flexColumn justifyContentBetween">
-                              <p>{{item.AssociationName}}111111111111111111111</p>
+                              <p @click="goDetail()">{{item.AssociationName}}111111111111111111111</p>
                               <p class="cr font30 jus-b"><span>￥{{item.Price}} </span><span class="font22 cg">{{item.AddTime}}</span> </p>
                             </div>
                         </div>
@@ -24,14 +23,14 @@
                 </div>
               </van-cell>
             </van-cell-group>
-              <span
+              <span 
                 slot="right"
                 class="van-swipe-cell__right flex flexAlignCenter justifyContentCenter"
-              >删除</span>
+              >删除1</span>
             </van-swipe-cell>
           </block>
         </div>
-      </scroll-view>
+      <!-- </scroll-view> -->
   </div>
 </template>
 
@@ -52,6 +51,17 @@ export default {
     this.getList()
   },
   methods: {
+    goDetail(){
+      console.log('去详情')
+    },
+    deleteC(){
+      console.log('1111111111111111')
+      // post('User/DeleteCollections',{
+      //   UserId:wx.getStorageSync("userId"),
+      //   Token:wx.getStorageSync("token"),
+      //   Id:id
+      // })
+    },
     getList(){
       post('User/MemberCollectionsList',{
         UserId:wx.getStorageSync("userId"),
