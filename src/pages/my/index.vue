@@ -16,7 +16,7 @@
         <div class="card">
           <p class="flex justifyContentBetween less_bb">
               <span>我的订单</span>
-              <span class="flex cg flexAlignCenter">
+              <span class="flex cg flexAlignCenter" @click="switchPath('/pages/myson2/order/main')">
                 <span class="font24">全部订单</span>
                 <img src="/static/images/icons/right.png" alt="" class="icon_right mr1">
               </span>
@@ -94,7 +94,7 @@
                 <p>店铺列表</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main')">
+            <div class="icon flexc" @click="switchPath('/pages/shop/join/main')">
               <div>
                 <img src="/static/images/icons/11.png" alt="">
                 <p>申请店铺</p>
@@ -106,25 +106,25 @@
         <div class="card">
           <p class="tit ali-c">更多工具</p>
           <div class="icon-box icon-boxb flex-wrap ali-c">
-            <div class="icon flexc" @click="switchPath('/pages/home/card/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/mytuan/main')">
               <div>
                 <img src="/static/images/icons/12.png" alt="">
                 <p>我的拼团</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/ticket/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/mycomment/main')">
               <div>
                 <img src="/static/images/icons/13.png" alt="">
                 <p>我的评价</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/invite/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/invoiceList/main')">
               <div>
                 <img src="/static/images/icons/14.png" alt="">
                 <p>我的发票</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/focus/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/kefu/main')">
               <div>
                 <img src="/static/images/icons/15.png" alt="">
                 <p>在线客服</p>
