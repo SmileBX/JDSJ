@@ -244,10 +244,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 28,
 					"name": "详情",
 					"pathName": "pages/goodsSon/goodsDetail/main",
-					"query": "proId=15",
+					"query": "proId=3",
 					"scene": null
 				},
 				{
@@ -261,6 +261,14 @@
 					"id": -1,
 					"name": "下单",
 					"pathName": "pages/goodsSon/confirmOrder/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/goodsSon/goodsDetail/main",
+					"pathName": "pages/goodsSon/goodsDetail/main",
+					"query": "id =3",
 					"scene": null
 				}
 			]

@@ -1,9 +1,11 @@
 <template>
+<div>
   <div
     class="page borderTop charRoom"
     id="charRoom"
     :class="showModule==='emotion'?'showEmotion':showModule==='message'?'showMessage':showModule==='imgage'?'showBtn':showModule==='manySelect'?'showManySelect':''"
     @click="hidePopWin"
+    v-if="true"
   >
     <!-- :class="{'showMessage':showModule,'showBtn':showBtn,'showEmotion':showEmotion}" -->
     <!--聊天列表-->
@@ -91,14 +93,14 @@
     <!--底部按钮 输入框 下拉按钮-->
     <div class="bottomicon" v-if="showModule!=='manySelect'">
       <!--常用语按钮-->
-      <div class="borderTop usedMes">
+      <!-- <div class="borderTop usedMes">
         <span
           class="bg_fff"
           @click="getMessage(item.Id)"
           v-for="(item,tindex) in messageType"
           :key="tindex"
         >{{item.Name}}</span>
-      </div>
+      </div> -->
       <div class="inputbtn flex flexAlignCenter bg_fff">
         <div
           class="blur flex1"
@@ -233,6 +235,18 @@
       </div>
     </div>
   </div>
+  <div v-else>
+    <div class="itembox">
+      <div class="leftbox">
+        <img src="" alt="">
+        <span>2</span>
+      </div>
+      <div class="rightbox">
+        
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -343,28 +357,6 @@ export default {
       }
 
       return len;
-    },
-    // 判断是否会员
-    async isVip() {
-      const res = await post("User/QueryVipInfo", {
-        UserId: this.userId,
-        Token: this.token
-      });
-      const data = res.data;
-      // 没开通会员
-      if (!data.IsVip) {
-        wx.showModal({
-          title: "开通会员",
-          content: "此功能需要开通会员，是否跳转开通会员页面?",
-          confirmColor: "#ff952e",
-          cancelColor: "#999",
-          success(res) {
-            if (res.confirm) {
-              wx.navigateTo({ url: "/pages/member2/buyFunction/main?type=3" });
-            }
-          }
-        });
-      }
     },
     // 打开webSocket链接
     async connectSocket() {
@@ -1259,10 +1251,10 @@ export default {
   padding: 10rpx 20rpx;
   border-radius: 10rpx;
   background: #f4f4f4;
-  height: 58rpx;
-  line-height: 58rpx;
+  height: 80rpx;
+  line-height: 60rpx;
   text-align: left;
-  width: 500rpx;
+  width: 520rpx;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -1295,6 +1287,43 @@ export default {
   .closeSelect{
     color:#999;
     padding:0 20rpx;
+  }
+}
+.itembox{
+  width: 100%;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  border-bottom: 1px #ececec solid;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  .leftbox{
+    margin-right: 20rpx;
+    position: relative;
+    img{
+      width: 80rpx;
+      height: 80rpx;
+      border-radius: 50%
+    }
+    span{
+      display: block;
+      background: #ff3333;
+      color: #fff;
+      font-size: 18rpx;
+      padding:0 4rpx;
+      height: 32rpx;
+      line-height: 32rpx;
+      border-radius: 16rpx;
+      position: absolute;
+      top: -16rpx;
+      right: -16rpx;
+      box-sizing: border-box;
+      min-width: 32rpx;
+      text-align: center;
+    }
+  }
+  .rightbox{
+    flex: 1;
   }
 }
 </style>

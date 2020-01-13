@@ -76,7 +76,7 @@
                 <p>我的收藏</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/invite/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/foot/main')">
               <div>
                 <img src="/static/images/icons/8.png" alt="">
                 <p>浏览记录</p>

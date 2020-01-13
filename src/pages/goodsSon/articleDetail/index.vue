@@ -13,9 +13,10 @@
       </div>
       <div class="foot ali-c jus-b">
         <div class="ali-c">
-          <img class="one" src="/static/images/index/good_n.png" alt="">
+          <img class="one" src="/static/images/index/good_n.png" alt="" @click="FindlikeOperation(0)" v-if='list.IsLike==0'>
+          <img class="one" src="/static/images/index/good_y.png" alt="" @click="FindlikeOperation(1)" v-else>
           <span>{{list.LikeNum}}</span>
-          <img class="two" src="/static/images/index/zhuanfa.png" alt="">
+          <button open-type='share' class="button"><img class="two" src="/static/images/index/zhuanfa.png" alt=""></button>
         </div>
         <p class="flexc mai" @click="goUrl('/pages/goodsSon/goodsDetail/main',list.ProductInfo[0].Id)">立即购买</p>
       </div>
@@ -28,12 +29,16 @@ export default {
 
   data () {
     return {
+      userId: "",
+			token: "",
       ArticleId:"",
       list:{}
     }
   },
 
   onShow(){
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
     this.ArticleId=this.$root.$mp.query.id;
     this.GetArticleInfo()
   },
@@ -45,14 +50,40 @@ export default {
     },
     async GetArticleInfo(){
       let res=await post("Find/GetArticleInfo",{
+        "UserId": this.userId,
+        "Token": this.token,
         ArticleId :this.ArticleId
       })
       if(res.code==0){
         this.list = res.data;
       }
     },
-    
+    async FindlikeOperation(index){
+      let res=await post("Find/FindlikeOperation",{
+        "UserId": this.userId,
+        "Token": this.token,
+        "FindId": this.ArticleId,
+        "TypeStatu": 0
+      })
+      if(res.code==0){
+         wx.showToast({
+          title: res.msg,
+          icon: 'none',
+        })
+        if(index==0){
+          this.$set(this.list,'IsLike',1)
+        }else{
+          this.$set(this.list,'IsLike',0)
+        }
+      }
+    },
   },
+  onShareAppMessage: function() {
+    return {
+      title: '集店', //转发页面的标题
+      path: '/pages/goodsSon/articleDetail/main?id='+this.ArticleId
+    }
+  }
 }
 </script>
 
@@ -86,6 +117,12 @@ export default {
     .one{
       width: 36rpx;
 	    height: 36rpx;
+    }
+    .button{
+      background: #fff!important;
+    }
+    .button::after{
+      border: none!important;
     }
     .two{
       width: 41rpx;
