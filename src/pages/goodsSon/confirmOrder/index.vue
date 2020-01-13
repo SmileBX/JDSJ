@@ -155,13 +155,19 @@ export default {
   onLoad(){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    this.sourceType=this.$root.$mp.query.orderSType;
-    this.cartids=this.$root.$mp.query.cartItem;
-    
+    this.sourceType=this.$root.$mp.query.orderSType||1;
+    this.cartids=this.$root.$mp.query.cartItem||'62';
+    this.isLimint=this.$root.$mp.query.isLimint||0;
   },
   onShow(){
     this.shopid = wx.getStorageSync("shopid");
-    this.getAdress();
+    if(this.$root.$mp.query.addrInfo){
+      this.addressinfo=JSON.parse(this.$root.$mp.query.addrInfo);
+      this.hasaddress=true;
+      this.addressId=this.addressinfo.id;
+    }else{
+      this.getAdress();
+    }
     if(this.sourceType==1){//购物车
       this.GetConfirmOrderGoods();
     }else{//详情页
@@ -455,14 +461,13 @@ export default {
     },
     //微信支付需参数
     async ConfirmWeiXinPay(){
-      let res = await post('Consult/ConfirmWeiXinPay',{
-      OrderNo:this.OrderNo,
-      PayType:0,//支付类型 0-微信支付 1-余额支付
-      userId:wx.getStorageSync('userId'),
-      token:wx.getStorageSync('token')
+      let res = await post('Order/GetWeChatParam',{
+        OrderNo:this.OrderNo,
+        UserId: this.userId,
+        Token: this.token,
       })
       if(res.code==0){
-      let JsParam=JSON.parse(res.data.JsParam);console.log(JsParam)
+      let JsParam=JSON.parse(res.data.JsParam);
       this.payMoney(JsParam)
       }
     },
