@@ -19,16 +19,16 @@
               <text class="boxSize" v-html="msg.Info"></text>
               <div class="popWin popWin_r" v-if="msg.popWinStatus">
                 <p @click="copy(msg)">复制</p>
-                <p @click="deleteMsg(msg,msgIndex)">删除</p>
+                <!-- <p @click="deleteMsg(msg,msgIndex)">删除</p>
                 <p @click="withdrawMsg(msg,msgIndex)">撤回</p>
-                <p @click="showModule = 'manySelect'">多选</p>
+                <p @click="showModule = 'manySelect'">多选</p> -->
               </div>
               <span class="sj rsj"></span>
             </div>
             <img class="sendImg" mode="widthFix" v-if="msg.Pic" :src="msg.Pic" @click="previewImg(msg.Pic)" />
           </div>
-          <div class="avatarbox mr0" v-if="chatStatu.a">
-            <img :src="chatStatu.a.Headimgurl" alt class="avatar"/>
+          <div class="avatarbox mr0">
+            <img :src="msg.Headimgurl" alt class="avatar"/>
           </div>
           <input type="checkbox" class="checkbox" v-if="showModule==='manySelect'"  :checked="msg.selectStatus"/>
         </label>
@@ -37,8 +37,8 @@
           @click="onSelectStatus(msg)">
               <input type="checkbox" class="checkbox" v-if="showModule==='manySelect'"  
               :checked="msg.selectStatus"/>
-              <div class="avatarbox mr0" v-if="chatStatu.b">
-                <img :src="chatStatu.b.Headimgurl" class="avatar"/>
+              <div class="avatarbox mr0">
+                <img :src="msg.Headimgurl" class="avatar"/>
               </div>
               <div class="flex flexAlignEnd mrl2">
                 <div class="tagmsg bg_fff black" v-if="msg.Info" @longpress.stop="gotouchstart(msg)">
@@ -468,7 +468,7 @@ export default {
       }
       const that = this;
       wx.request({
-        url: host+"User/Sendfriend_new",
+        url: host+"WebSocket/Sendfriend_new",
         data: {
           UserId: this.userId,
           Token: this.token,
