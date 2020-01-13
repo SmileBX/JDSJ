@@ -188,9 +188,6 @@ export default {
     this.token = wx.getStorageSync("token");
     this.shopid=wx.getStorageSync("shopid");
     this.getShopMessageList()
-    // this.getFriendMessage("scrollBottom").then(() => {
-    //   this.connectSocket();
-    // });
   },
   onUnload() {
     wx.closeSocket({
@@ -246,6 +243,9 @@ export default {
         })
         if(res.data.IsShopServie==0){//不是客服，直接显示聊天室
           this.FriendId=res.data.DataTable[0].FriendId
+          this.getFriendMessage("scrollBottom").then(() => {
+            this.connectSocket();
+          });
         }
         this.ShopMessageList=res.data;
         console.log(this.ShopMessageList)
@@ -404,12 +404,12 @@ export default {
                 that.chatList = info.concat(that.chatList);
               }
               that.chatStatu = res.data;
-              // if (
-              //   scrollBottom === "scrollBottom" ||
-              //   (res.data.length < that.pageSize && that.page === 1)
-              // ) {
-              //   that.scrollBottom();
-              // }
+              if (
+                scrollBottom === "scrollBottom" ||
+                (res.data.length < that.pageSize && that.page === 1)
+              ) {
+                that.scrollBottom();
+              }
               if (scrollPosition) {
                 setTimeout(() => {
                   wx
@@ -581,21 +581,21 @@ export default {
       this.comment[this.showComment].commentContent += i;
     },
     // 滚动到底部
-    // scrollBottom() {
-    //   setTimeout(() => {
-    //     wx
-    //       .createSelectorQuery()
-    //       .select("#charRoom")
-    //       .boundingClientRect(function(rect) {
-    //         // 使页面滚动到底部
-    //         wx.pageScrollTo({
-    //           scrollTop: rect.height,
-    //           duration: 0
-    //         });
-    //       })
-    //       .exec();
-    //   }, 100);
-    // },
+    scrollBottom() {
+      setTimeout(() => {
+        wx
+          .createSelectorQuery()
+          .select("#charRoom")
+          .boundingClientRect(function(rect) {
+            // 使页面滚动到底部
+            wx.pageScrollTo({
+              scrollTop: rect.height,
+              duration: 0
+            });
+          })
+          .exec();
+      }, 100);
+    },
     // 客服聊天页
     goUrl(id) {
       wx.navigateTo({ url: "/pages/service/chatRoomSon/main?id="+id });
