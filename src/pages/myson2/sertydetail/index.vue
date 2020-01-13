@@ -1,7 +1,7 @@
 <template>
   <div class="sertype">
       <div class="mt2 bg_fff pp3 flex justifyContentBetween">
-          <img src="/static/images/shop.png" alt="" class="shop">
+          <img src="http://jd.wtvxin.com/images/images/shop.png" alt="" class="shop">
           <div class="flex1 mr2">
               <p>SKG颈椎按摩器治疗仪经络电脉 冲针灸护冲针灸护</p>
               <p class="cg font24 mt1">白色  L</p>
@@ -13,7 +13,7 @@
               <p>货物状态</p>
               <p class="flex flex1 flexAlignCenter">
                   <input type="text" placeholder="请选择" disabled class="flex1 text_right">
-                  <img src="/static/images/icons/right.png" alt="" class="icon_right mr2">
+                  <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right mr2">
               </p>
           </div>
           <!--仅退款才有的 end     !!!!!-->
@@ -21,7 +21,7 @@
               <p>退款原因</p>
               <p class="flex flex1 flexAlignCenter">
                   <input type="text" placeholder="请选择" disabled class="flex1 text_right">
-                  <img src="/static/images/icons/right.png" alt="" class="icon_right mr2">
+                  <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right mr2">
               </p>
           </div>
           <div class="menu_item flex justifyContentBetween flexAlignCenter">
@@ -37,10 +37,10 @@
         <div>上传凭证（不超过5张）</div>
         <div class="fed_pic flex flexWrap">
           <div v-for="(item,index) in 5" :key="index" class="picbox">
-            <img src="/static/images/icons/add2.png" alt="" class="pic_itim">
+            <img src="http://jd.wtvxin.com/images/images/icons/add2.png" alt="" class="pic_itim">
           </div>
           <div class="picbox upBtnImg">
-            <img src="/static/images/icons/add2.png" alt="" class="pic_itim">
+            <img src="http://jd.wtvxin.com/images/images/icons/add2.png" alt="" class="pic_itim">
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@
           <span><span>￥</span>{{info.Price}}</span>
         </div>
         <!-- <div class="right">
-          <img src="http://hxjp.wtvxin.com/static/images/my/zhuanfa.png" alt="">
+          <img src="http://hxjp.wtvxin.comhttp://jd.wtvxin.com/images/images/my/zhuanfa.png" alt="">
           <p>分享</p>
           <p>邮费￥0</p>
         </div> -->
@@ -21,13 +21,13 @@
     </div>
     <div class="bpm-box jus-b ali-c change" @click="toCat()">
       <span>请选择 颜色 规格 款式</span>
-      <img src="http://hxjp.wtvxin.com/static/images/my/more.png" alt="">
+      <img src="http://hxjp.wtvxin.comhttp://jd.wtvxin.com/images/images/my/more.png" alt="">
     </div>
     <div class="bpm-box jus-b ali-c change">
       <span>商品评价</span>
       <div class="ali-c" @click="goPingjia()">
         <span class="all">查看全部</span>
-        <img src="http://hxjp.wtvxin.com/static/images/my/more.png" alt="">
+        <img src="http://hxjp.wtvxin.comhttp://jd.wtvxin.com/images/images/my/more.png" alt="">
       </div>
     </div>
     <div class="com-box" v-if="evaluate!=null">
@@ -37,8 +37,8 @@
           <p>{{evaluate.MemberName}}</p>
         </div>
         <div class="ali-c star-box">
-          <img v-for="(item, index) in evaluate.ServiceRank" :key="index" src="http://hxjp.wtvxin.com/static/images/my/star_lig.png" alt="">
-          <img v-for="(item, index) in 5-evaluate.ServiceRank" :key="index" src="http://hxjp.wtvxin.com/static/images/my/noColl.png" alt="">
+          <img v-for="(item, index) in evaluate.ServiceRank" :key="index" src="http://hxjp.wtvxin.comhttp://jd.wtvxin.com/images/images/my/star_lig.png" alt="">
+          <img v-for="(item, index) in 5-evaluate.ServiceRank" :key="index" src="http://hxjp.wtvxin.comhttp://jd.wtvxin.com/images/images/my/noColl.png" alt="">
         </div>
       </div>
       <p class="detail">{{evaluate.ContentText}}</p>
@@ -57,8 +57,8 @@
       <div class="flex left">
         <div class="ali-c jus-c" @click="collection()">
           <div>
-            <img v-if="!info.IsCollection" src="http://hxjp.wtvxin.com/static/images/my/noColl.png" alt="">
-            <img v-else src="http://hxjp.wtvxin.com/static/images/my/star_lig.png" alt="">
+            <img v-if="!info.IsCollection" src="http://hxjp.wtvxin.comhttp://jd.wtvxin.com/images/images/my/noColl.png" alt="">
+            <img v-else src="http://hxjp.wtvxin.comhttp://jd.wtvxin.com/images/images/my/star_lig.png" alt="">
 			<p>客服</p>
           </div>
         </div>

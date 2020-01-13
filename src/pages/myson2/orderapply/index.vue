@@ -4,7 +4,7 @@
           <div>退款原因</div>
           <div class="flex reason_in flexAlignCenter mt2">
               <input type="text" placeholder="请选择退款原因" class="flex1">
-              <img src="/static/images/icons/down.png" alt="" class="icon_down">
+              <img src="http://jd.wtvxin.com/images/images/icons/down.png" alt="" class="icon_down">
           </div>
           <div class="mt3">退款金额 <span class="cr mr2">¥ 1980</span> </div>
           <div class="mt3">退款说明 <span class="font22 cg">(选填)</span> </div>

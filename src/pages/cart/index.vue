@@ -1,7 +1,7 @@
 <template>
   <div>
       <div class="pw3" v-if="hasData">
-          <img src="/static/images/red_bg.png" alt="" class="mine_red">
+          <img src="http://jd.wtvxin.com/images/images/red_bg.png" alt="" class="mine_red">
           <div class="cart_main">
               <div class="text_right cf p3"  @click="EditCart">{{isEdit?'完成':'编辑'}}</div>
               <div class="cart_list">
@@ -23,7 +23,7 @@
                                     <div class="twoline" @click="goUrl('/pages/goodsSon/goodsDetail/main?id='+item.ProductId)">{{item.ProductName}}</div>
                                     <span class="mt1 spec" v-if="item.SpecText" @click="showSKU(item.Id)">
                                         <span class="cg font24">{{item.SpecText}}</span>
-                                        <img src="/static/images/icons/down.png" alt="" class="down">
+                                        <img src="http://jd.wtvxin.com/images/images/icons/down.png" alt="" class="down">
                                     </span>
                                     <div class="flex justifyContentBetween mt1">
                                         <p class="cr font30 flex ali-c">￥{{item.SalePrice}}</p>
@@ -58,7 +58,7 @@
       </div>
       <!--空-->
       <div class="flex flexAlignCenter flexColumn" v-if="noDataIsShow">
-          <img src="/static/images/icons/box.png" alt="" class="box">
+          <img src="http://jd.wtvxin.com/images/images/icons/box.png" alt="" class="box">
           <p class="cg">购物车空空如也~~~</p>
           <span class="go_shop" @click="goshop">去购物</span>
       </div>

@@ -19,7 +19,7 @@
             </div>
             <div class="carda ali-c jus-b">
               <span>已售{{item.SalesVolume}}</span>
-              <img src="/static/images/index/shop_card.png" alt="">
+              <img src="http://jd.wtvxin.com/images/images/index/shop_card.png" alt="">
             </div>
           </div>
         </div>

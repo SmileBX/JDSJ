@@ -6,10 +6,10 @@
         <div class="foot jus-b ali-c">
           <span>{{item.AddTime}}</span>
           <div class="ali-c">
-            <img class="one" src="/static/images/index/look.png" alt="">
+            <img class="one" src="http://jd.wtvxin.com/images/images/index/look.png" alt="">
             <span>{{item.BrowseNum}}</span>
-            <img class="two" src="/static/images/index/good_y.png" alt="" v-if="item.IsLike==1">
-            <img class="two" src="/static/images/index/good_n.png" alt="" v-else>
+            <img class="two" src="http://jd.wtvxin.com/images/images/index/good_y.png" alt="" v-if="item.IsLike==1">
+            <img class="two" src="http://jd.wtvxin.com/images/images/index/good_n.png" alt="" v-else>
             <span>{{item.LikeNum}}</span>
           </div>
         </div>

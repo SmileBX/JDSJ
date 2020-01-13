@@ -9,14 +9,14 @@
             <span><span>¥</span>{{item.Price}}</span>
           </div>
         </div>
-        <img class="right" src="/static/images/index/go.png" alt="">
+        <img class="right" src="http://jd.wtvxin.com/images/images/index/go.png" alt="">
       </div>
       <div class="foot ali-c jus-b">
         <div class="ali-c">
-          <img class="one" src="/static/images/index/good_n.png" alt="" @click="FindlikeOperation(0)" v-if='list.IsLike==0'>
-          <img class="one" src="/static/images/index/good_y.png" alt="" @click="FindlikeOperation(1)" v-else>
+          <img class="one" src="http://jd.wtvxin.com/images/images/index/good_n.png" alt="" @click="FindlikeOperation(0)" v-if='list.IsLike==0'>
+          <img class="one" src="http://jd.wtvxin.com/images/images/index/good_y.png" alt="" @click="FindlikeOperation(1)" v-else>
           <span>{{list.LikeNum}}</span>
-          <button open-type='share' class="button"><img class="two" src="/static/images/index/zhuanfa.png" alt=""></button>
+          <button open-type='share' class="button"><img class="two" src="http://jd.wtvxin.com/images/images/index/zhuanfa.png" alt=""></button>
         </div>
         <p class="flexc mai" @click="goUrl('/pages/goodsSon/goodsDetail/main',list.ProductInfo[0].Id)">立即购买</p>
       </div>

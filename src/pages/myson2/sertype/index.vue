@@ -1,7 +1,7 @@
 <template>
   <div class="sertype">
       <div class="mt2 bg_fff pp3 flex justifyContentBetween">
-          <img src="/static/images/shop.png" alt="" class="shop">
+          <img src="http://jd.wtvxin.com/images/images/shop.png" alt="" class="shop">
           <div class="flex1 mr2">
               <p>SKG颈椎按摩器治疗仪经络电脉 冲针灸护冲针灸护</p>
               <p class="cg font24 mt1">白色  L</p>
@@ -10,24 +10,24 @@
       <div class="pw3 mt2 bg_fff">
           <div class="menu_item flex justifyContentBetween flexAlignCenter">
               <p class="flex">
-                  <img src="/static/images/icons/huan.png" alt="" class="huan">
+                  <img src="http://jd.wtvxin.com/images/images/icons/huan.png" alt="" class="huan">
                   <span class="mr2">申请换货</span>
               </p>
-              <img src="/static/images/icons/right.png" alt="" class="icon_right">
+              <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
           </div>
           <div class="menu_item flex justifyContentBetween flexAlignCenter">
               <p class="flex">
-                  <img src="/static/images/icons/tui.png" alt="" class="huan">
+                  <img src="http://jd.wtvxin.com/images/images/icons/tui.png" alt="" class="huan">
                   <span class="mr2">申请退货退款</span>
               </p>
-              <img src="/static/images/icons/right.png" alt="" class="icon_right">
+              <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
           </div>
           <div class="menu_item flex justifyContentBetween flexAlignCenter">
               <p class="flex">
-                  <img src="/static/images/icons/tuiq.png" alt="" class="huan">
+                  <img src="http://jd.wtvxin.com/images/images/icons/tuiq.png" alt="" class="huan">
                   <span class="mr2">仅退款（无需退货）</span>
               </p>
-              <img src="/static/images/icons/right.png" alt="" class="icon_right">
+              <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
           </div>
       </div>
   </div>

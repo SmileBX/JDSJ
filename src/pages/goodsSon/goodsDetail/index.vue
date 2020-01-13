@@ -15,7 +15,7 @@
             <p class="tit">{{proInfo.ProductName}}</p>
           </div>
           <div class="right">
-            <img src="/static/images/index/fenxiang.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/index/fenxiang.png" alt="">
           </div>
         </div>
         <div class="jus-b ali-c">
@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="right ali-c">
-            <img src="/static/images/icons/right.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
           </div>
         </div>
         <div class="list ali-c jus-b" @click="showSku(0)">
@@ -61,7 +61,7 @@
             <p class="quan">{{SpecText||'请选择规格数量'}}</p>
           </div>
           <div class="right ali-c">
-            <img src="/static/images/icons/right.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
           </div>
         </div>
         <div class="list ali-c jus-b" v-if="false">
@@ -71,17 +71,17 @@
           </div>
           <div class="right ali-c">
             <span>包邮</span>
-            <img src="/static/images/icons/right.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
           </div>
         </div>
         <div class="list ali-c jus-b">
           <div class="left ali-c">
             <span>服务</span>
-            <img src="/static/images/index/ok.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/index/ok.png" alt="">
             <p>品质保证</p>
-            <img src="/static/images/index/ok.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/index/ok.png" alt="">
             <p>破损补寄</p>
-            <img src="/static/images/index/ok.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/index/ok.png" alt="">
             <p>及时发货</p>
           </div>
         </div>
@@ -91,18 +91,18 @@
           <p>拼团玩法</p>
           <div class="ali-c">
             <span>详细规则</span>
-            <img src="/static/images/icons/right.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
           </div>
         </div>
         <div class="flexc img">
-          <img src="/static/images/index/play.png" alt="">
+          <img src="http://jd.wtvxin.com/images/images/index/play.png" alt="">
         </div>
       </div>
       <div class="pin" v-if="isPin==1">
         <div class="tit ali-c">他们都在拼，可直接参团</div>
         <div class="list ali-c jus-b">
           <div class="left ali-c">
-            <img src="/static/images/index/ok.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/index/ok.png" alt="">
             <div>
               <span>如果</span>
               <p>还差1人成团，剩余<span>02:54:03</span>结束</p>
@@ -117,7 +117,7 @@
           <p class="left">商品评价<span>({{proInfo.EvaluateCount}})</span></p>
           <div class="right" v-if="proInfo.EvaluateCount>0">
             <span>查看全部</span>
-            <img src="/static/images/index/more_r.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/index/more_r.png" alt="">
           </div>
         </div>
         <div class="commentlist" v-if="proInfo.EvaluateCount>0">
@@ -125,11 +125,11 @@
             <div v-if="index<1">
               <div class="name ali-c jus-b">
                 <div class="ali-c">
-                  <img class="left" :src="item.MemberAvatar||'/static/images/ava.png'" alt="">
+                  <img class="left" :src="item.MemberAvatar||'http://jd.wtvxin.com/images/images/ava.png'" alt="">
                   <p>{{item.MemberName}}</p>
                 </div>
                 <div>
-                  <img v-for="(i,e) in item.Star" :key="e" class="right" src="/static/images/index/star.png" alt="">
+                  <img v-for="(i,e) in item.Star" :key="e" class="right" src="http://jd.wtvxin.com/images/images/index/star.png" alt="">
                 </div>
               </div>
               <p class="detail">
@@ -156,16 +156,16 @@
       <div class="foot ali-c jus-b">
         <div class="left ali-c">
           <div>
-            <img src="/static/images/index/ans.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/index/ans.png" alt="">
             <p>客服</p>
           </div>
           <div @click="collect"> 
-            <img v-if="IsCollect" src="/static/images/index/collect_y.png" alt="">
-            <img v-else src="/static/images/index/collect_n.png" alt="">
+            <img v-if="IsCollect" src="http://jd.wtvxin.com/images/images/index/collect_y.png" alt="">
+            <img v-else src="http://jd.wtvxin.com/images/images/index/collect_n.png" alt="">
             <p>收藏</p>
           </div>
           <div @click="goCart">
-            <img src="/static/images/index/cart.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/index/cart.png" alt="">
             <p>购物车</p>
             <span class="num flexc" v-if="CartNumber>0">{{CartNumber}}</span>
           </div>

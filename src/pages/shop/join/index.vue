@@ -3,7 +3,7 @@
     <div class="bgf220"></div>
     <div class="plr30 bfff">
       <img class="upLogo" v-if="logoUrl" :src="logoUrl" alt="" @click="uplLoadImg(1)">
-      <img class="upLogo" v-else src="/static/images/shop/upLogo.png" alt="" @click="uplLoadImg(1)">
+      <img class="upLogo" v-else src="http://jd.wtvxin.com/images/images/shop/upLogo.png" alt="" @click="uplLoadImg(1)">
       <div class="cell bb1">
         <h4>名称：</h4>
         <div class="right">
@@ -41,9 +41,9 @@
         <h4>请上传身份证正反面照片</h4>
         <div class="upBox flex-center-between">
           <img :src="IdcardPositiveUrl" v-if="IdcardPositiveUrl" alt="" @click="uplLoadImg(2)">
-          <img src="/static/images/shop/upIDcard2.png" v-else alt="" @click="uplLoadImg(2)">
+          <img src="http://jd.wtvxin.com/images/images/shop/upIDcard2.png" v-else alt="" @click="uplLoadImg(2)">
           <img :src="IdcardNegativeUrl" v-if="IdcardNegativeUrl" alt="" @click="uplLoadImg(3)">
-          <img src="/static/images/shop/upIDcard1.png" v-else alt="" @click="uplLoadImg(3)">
+          <img src="http://jd.wtvxin.com/images/images/shop/upIDcard1.png" v-else alt="" @click="uplLoadImg(3)">
         </div>
         <p>拍摄时请确保身份证<span>边框完整  字体清晰</span></p>
     </div>

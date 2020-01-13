@@ -3,7 +3,7 @@
       <div class="or_list mt2">
         <div class="or_item bg_fff mt2 pw3">
             <div class="flex or_main">
-                <img src="/static/images/shop.png" alt="" class="shop">
+                <img src="http://jd.wtvxin.com/images/images/shop.png" alt="" class="shop">
                 <div class="flex1 flex flexAlignCenter mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
                       <div>
@@ -17,8 +17,8 @@
             <div class="flex flexAlignCenter mt2">
               <span class="mb1">评分</span>
               <span class="ml1">
-                  <img src="/static/images/icons/xh.png" alt="" v-for="(item,index) in score" :key="index" class="xing">
-                  <img src="/static/images/icons/xg.png" alt="" v-for="(item2,key) in 5-score" :key="key" class="xing">
+                  <img src="http://jd.wtvxin.com/images/images/icons/xh.png" alt="" v-for="(item,index) in score" :key="index" class="xing">
+                  <img src="http://jd.wtvxin.com/images/images/icons/xg.png" alt="" v-for="(item2,key) in 5-score" :key="key" class="xing">
               </span>
               <span class="mb1">{{score==5?'非常满意':score==4?'满意':score==3?'一般':score==2?'差':'很差'}}</span>
             </div>
@@ -34,10 +34,10 @@
             <!-- <div>上传图片（不超过5张）</div> -->
                 <div class="fed_pic flex flexWrap">
                   <!-- <div v-for="(item,index) in 5" :key="index" class="picbox">
-                    <img src="/static/images/icons/add2.png" alt="" class="pic_itim">
+                    <img src="http://jd.wtvxin.com/images/images/icons/add2.png" alt="" class="pic_itim">
                   </div> -->
                   <div class="picbox upBtnImg">
-                    <img src="/static/images/icons/add2.png" alt="" class="pic_itim">
+                    <img src="http://jd.wtvxin.com/images/images/icons/add2.png" alt="" class="pic_itim">
                   </div>
                 </div>
             </div>

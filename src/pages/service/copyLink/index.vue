@@ -3,7 +3,7 @@
       <div class="bgf220"></div>
       <div class="addImg p30">
           <div class="flex-column-center-center">
-            <img src="/static/images/service/addImg.png" alt="">
+            <img src="http://jd.wtvxin.com/images/images/service/addImg.png" alt="">
             <p>点击上传商品图片</p>
           </div>
       </div>

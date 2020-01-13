@@ -1,6 +1,6 @@
 <template>
   <div>
-      <img class="top" src="/static/images/index/tehui.png" alt="">
+      <img class="top" src="http://jd.wtvxin.com/images/images/index/tehui.png" alt="">
       <div class="list-box" v-if="hasData">
         <div class="list ali-c jus-b" v-for="(item, index) in goodsList" :key="index" @click="goUrl('/pages/goodsSon/goodsDetail/main',item.Id)">
           <img class="left" :src="item.Pic" :alt="item.Name">

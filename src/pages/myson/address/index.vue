@@ -12,11 +12,11 @@
           </label>
           <div class="ali-c">
             <div class="ali-c btt" @tap="editSite(item.id)">
-              <img class="write" src="/static/images/icons/write.png" alt="">
+              <img class="write" src="http://jd.wtvxin.com/images/images/icons/write.png" alt="">
               <span>编辑</span>
             </div>
             <div class="ali-c btt" @tap="Delete(item.id,index)">
-              <img class="delete" src="/static/images/icons/delete.png" alt="">
+              <img class="delete" src="http://jd.wtvxin.com/images/images/icons/delete.png" alt="">
               <span>删除</span>
             </div>
           </div>
@@ -24,7 +24,7 @@
       </div>
       </radio-group>
       <p  class="nodata_log flex flexColumn flexAlignCenter" v-else>
-          <img src="/static/images/icons/nosite.png" alt="" class="site_log">
+          <img src="http://jd.wtvxin.com/images/images/icons/nosite.png" alt="" class="site_log">
           <span class="cg mt2">还没有收货地址哦~</span>
           <span class="add_new" @tap="toAddSite()">新建地址</span>
       </p>

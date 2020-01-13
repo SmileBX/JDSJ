@@ -2,7 +2,7 @@
   <div>
       <div class="pin-box">
         <div class="goods ali-c">
-          <img src="/static/images/index/shop.png" alt="">
+          <img src="http://jd.wtvxin.com/images/images/index/shop.png" alt="">
           <div>
             <p class="flexc status">拼团进行中</p>
             <p class="tit oneline">动感单车 运动 女家用型...</p>
@@ -18,7 +18,7 @@
           <p class="two flexc">剩余<span>4天23小时</span>结束</p>
           <div class="flexc thr">
             <div v-for="(item, index) in 5" :key="index">
-              <img src="/static/images/index/defute.png" alt="">
+              <img src="http://jd.wtvxin.com/images/images/index/defute.png" alt="">
             </div>
           </div>
           <p class="fou flexc">邀请好友参团</p>
@@ -29,7 +29,7 @@
         <span>拼团规则</span>
         <div class="ali-c">
           <p>好友拼团 人满发货 人不满退款</p>
-          <img src="/static/images/icons/right.png" alt="">
+          <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
         </div>
       </div>
   </div>

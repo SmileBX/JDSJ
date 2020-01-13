@@ -5,7 +5,7 @@
         <div class="main">
           <div class="flexc search-box">
             <div class="search flexc">
-              <img src="/static/images/index/search_b.png" alt="">
+              <img src="http://jd.wtvxin.com/images/images/index/search_b.png" alt="">
               <span>搜索本店商品</span>
             </div>
           </div>

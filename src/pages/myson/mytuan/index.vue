@@ -3,7 +3,7 @@
       <div class="or_list pw3">
         <div class="or_item bg_fff flex flexColumn justifyContentBetween  pw3" v-for="(item,index) in 3" :key="index">
             <div class="flex or_main">
-                <img src="/static/images/shop.png" alt="" class="shop">
+                <img src="http://jd.wtvxin.com/images/images/shop.png" alt="" class="shop">
                 <div class="flex1 flex flexAlignCenter mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
                       <div>
