@@ -55,7 +55,7 @@
             <img src="/static/images/icons/right.png" alt="">
           </div>
         </div>
-        <div class="list ali-c jus-b">
+        <!-- <div class="list ali-c jus-b">
           <div class="left ali-c">
             <span>规格</span>
             <p class="quan">{{SpecText||'请选择规格数量'}}</p>
@@ -63,7 +63,7 @@
           <div class="right ali-c">
             <img src="/static/images/icons/right.png" alt="">
           </div>
-        </div>
+        </div> -->
         <div class="list ali-c jus-b" v-if="false">
           <div class="left ali-c">
             <span>送至</span>
@@ -172,10 +172,49 @@
         </div>
         <div class="right flex">
           <p class="flex1 flexc">加入购物车</p>
-          <p class="flex1 flexc">立即购买</p>
+          <p class="flex1 flexc" @click="buy()">立即购买</p>
         </div>
       </div>
       <div class="topbtn" @click="Top" v-if="isTop"></div>
+      <div v-if="showCat" @click="cancel()" class="mengban"></div>
+        <div class="main" id="main" :style="mainHeight" :class="showCat?'show':''">
+            <div class="top-box">
+                <div class="one jus-b">
+                    <div class="img-box jus-c ali-c">
+                        <img :src="SpecInfo.SpecImage||(proInfo.ProductImgList&&proInfo.ProductImgList[0].PicUrl)" alt="">
+                    </div>
+                    <div class="right jus-b">
+                        <div>
+                            <p class="tit">{{proInfo.ProductName}}</p>
+                            <span>
+                                <span class="fuhao">￥</span>{{SpecInfo.PunitPrice===undefined?proInfo.ProductPrice:SpecInfo.PunitPrice}}</span>
+                                <!-- :SpecInfo.PunitPrice -->
+                        </div>
+                        <span @click="cancel()" class="chacha">+</span>
+                    </div>
+                </div>
+                <div class="guige" v-for="(item, index) in specList" :key="index">
+                    <p>{{index}}</p>
+                    <div class="flex-wrap">
+                        <!-- 下面span选中绑定一个‘active类’ -->
+                        <span :class="{'active':ite.name==SpecValue[index]}" @click="cliTag(index,ite.name)" class="ali-c jus-c" v-for="(ite, ind) in item" :key="ind">{{ite.name}}</span>
+                    </div>
+                </div>
+                <div class="two jus-b ali-c">
+                    <span>购买数量</span>
+                    <!-- <span>x1</span> -->
+                    <div class="ali-c">
+                        <span @click="suan(1)">-</span>
+                        <input type="number" v-model="goodsNum">
+                        <span @click="suan(2)">+</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex bot">
+                <p class="flex1 jus-c ali-c" @click="pay(1)">加入购物车</p>
+                <p class="flex1 jus-c ali-c" @click="pay(2)">立即购买</p>
+            </div>
+        </div>
   </div>
 </template>
 
@@ -196,7 +235,15 @@ export default {
       bannerindex:0,//当前轮播图
       BannerNum:0,//轮播图数量
       CartNumber:0,//购物车数量
-      SpecText:""
+      showCat:false,//是否显示弹窗
+      goodsNum:1,//购买商品数量
+      // seachHeight:'',
+      // mainHeight:'',//弹框样式
+
+      specList:[],//规格总列表
+      SpecText:"",//当前选择规格的文本
+      SpecValue:{},//当前选择规格的对象
+      SpecInfo:{},//当前选择规格的信息--图片，价钱
     }
   },
   onLoad(){
@@ -206,10 +253,67 @@ export default {
     this.proId=this.$root.$mp.query.id;
   },
   onShow(){
+    console.log(this.showCat == undefined)
+    this.goodsNum = 1
+    this.specList=[]
+    this.SpecText=""
+    this.SpecValue={}
+    this.SpecInfo={}
+    this.showCat = false
     this.ProductInfo();
     this.GetAllCartNumber();
+    setTimeout(() => {
+      var query = wx.createSelectorQuery();
+      query.select("#main").boundingClientRect((rect)=> {
+        this.seachHeight = rect.height*2
+        this.mainHeight = 'height:'+this.seachHeight+'rpx;bottom:'+(-this.seachHeight-50)+'rpx'
+        console.log('gaodu',rect.height)
+      }).exec();
+    }, 200);
+  },
+  watch:{
+    goodsNum(e){
+      if(e<1){
+        this.goodsNum = 1
+      }
+    },
   },
   methods: {
+    cliTag(name,value){//点击选择规格标签--name:规格名称 value:所选规格值
+      this.$set(this.SpecValue,name,value)
+      this.SpecText = JSON.stringify(this.SpecValue)
+      this.proInfo.ProductSpecList.map((item,index)=>{
+        const please = JSON.parse(item.SpecValue)
+        if(this.isObjectValueEqual(please,this.SpecValue)){
+          this.SpecInfo = item//匹配到的sku
+        }
+      })
+    },
+    isObjectValueEqual(a, b) {//判断两个对象里面属性值是否相等
+        var aProps = Object.keys(a);
+        var bProps = Object.keys(b);
+        if (aProps.length != bProps.length) {return false;}
+        for (var i = 0; i < aProps.length; i++) {
+            var propName = aProps[i];
+            if (a[propName] !== b[propName]) {
+                return false;
+            }
+        }
+        return true;
+    },
+    buy(){
+      this.showCat = true
+    },
+    suan(tip){
+        if(tip==1&&this.goodsNum!=1){
+            this.goodsNum--
+        }else if(tip==2){
+            this.goodsNum++
+        }
+    },
+    cancel(){//隐藏弹窗
+      this.showCat = false
+    },
     goUrl(url,param){
       wx.navigateTo({
         url:url+'?id='+param
@@ -236,6 +340,7 @@ export default {
         this.proInfo=res.data;
         this.BannerNum=res.data.ProductImgList.length;
         this.IsCollect=res.data.IsCollectionPro;
+        this.specList = JSON.parse(res.data.SpecificationValue)
       }
     },
     //获取购物车数
@@ -610,5 +715,131 @@ export default {
     right: -8rpx;
     transform: rotate(-135deg);
   }
+}
+.main{
+    position: fixed;
+    bottom: -950rpx;
+    transition: all 0.3s;
+    width: 100vw;
+    // height: 900rpx;
+    z-index: 99;
+    background-color: #fff;
+    border-radius: 20rpx;
+    .guige{
+        p{
+            font-size: 28rpx;
+            color: #333;
+            line-height: 80rpx;
+        }
+        span{
+            background-color: #f5f5f5;
+            color: #666;
+            font-size: 24rpx;
+            padding: 10rpx 20rpx;
+            border-radius: 10rpx;
+            margin: 0 20rpx 20rpx 0;
+            border: 1rpx solid #f5f5f5;
+        }
+        .active{
+          background-color:#f3f8fc;
+          color: #3592ea;
+          border: 1rpx solid #3592ea;
+        }
+    }
+    .top-box{
+        padding: 30rpx 30rpx 130rpx;
+        .two{
+            height: 100rpx;
+            font-size: 28rpx;
+            color: #999;
+            .ali-c{
+                width: 200rpx;
+                span{
+                    font-size: 40rpx;
+                    font-weight: 900;
+                    color: #333
+                }
+                input{
+                   width: 80rpx;
+                    height: 44rpx;
+                    background-color: #eeeeee;
+                    border-radius: 8rpx; 
+                    margin: 0 30rpx;
+                    text-align: center;
+                    position: relative;
+                    top: 5rpx
+                }
+            }
+        }
+        .one{
+            border-bottom: 1rpx solid #ededed;
+            .img-box{
+                width: 200rpx;
+                height: 200rpx;
+                border-radius: 10rpx;
+                border:1rpx solid #ededed;
+                position: relative;
+                top: -50rpx;
+                background-color: #fff
+            }
+            img{
+                width: 180rpx;
+                height: 180rpx;
+            }
+            .right{
+                width: 475rpx;
+                .chacha{
+                    font-size: 50rpx;
+                    transform: rotate(45deg);
+                    width: 30rpx;
+                    height: 30rpx;
+                    position: relative;
+                    top: -20rpx;
+                    left: 20rpx;
+                }
+                div{
+                    width: 410rpx;
+                    p{
+                        font-size: 28rpx;
+                        color: #333;
+                        margin-bottom: 30rpx
+                    }
+                    span{
+                        color: #f0370b;
+                        font-size: 32rpx;
+                        .fuhao{
+                            font-size: 22rpx
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .bot{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 98rpx;
+        color: #fff;
+        font-size: 28rpx;
+        p:nth-child(1){
+            background-color: #fda33a;
+        }
+        p:nth-child(2){
+            background-color: #ff3333;
+        }
+    }
+}
+.mengban{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    z-index: 98;
+}
+
+.show{
+    bottom: 0!important
 }
 </style>
