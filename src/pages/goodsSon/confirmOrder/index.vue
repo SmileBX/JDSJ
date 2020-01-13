@@ -348,6 +348,7 @@ export default {
       this.buynum=this.$root.$mp.query.number;
       this.isLimint=this.$root.$mp.query.isLimint||0;
       this.SpecText=this.$root.$mp.query.SpecText||"";
+
       let protype=0;//0普通产品，1限时，2一元购
       if(this.isLimit==1){
 				protype=1;
