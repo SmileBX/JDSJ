@@ -35,4 +35,15 @@ export default {
   @import './style/lz';
   @import './style/bb';
   @import './style/ans-self.scss';
+  .avatarbox {
+    width: 80rpx;
+    height: 80rpx;
+    margin-right: 40rpx;
+  }
+  .avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
 </style>

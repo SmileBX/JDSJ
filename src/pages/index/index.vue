@@ -45,7 +45,7 @@
       <img @click="goUrl('/pages/goodsSon/rob/main')" src="/static/images/index/qianggou.png" alt="">
       <img @click="goUrl('/pages/team/goods/main')" src="/static/images/index/pintuan.png" alt="">
     </div>
-    <div class="goods-box">
+    <div class="goods-box" id="goods-box">
       <div class="xd">
         <div class="all flexc">
           <img src="/static/images/index/title.png" alt="">
@@ -145,6 +145,7 @@ export default {
       this.shopid = decodeURIComponent(e.shopid);
       wx.setStorageSync("shopid", this.shopid);
     }
+    wx.setStorageSync("shopid", "50FB070743F1853A");
   },
   onShow(){
     if(wx.getStorageSync("shopid")){
@@ -236,7 +237,17 @@ export default {
 			 }
     },
     filter(index){
+
+      // wx.pageScrollTo({
+      //   selector: '#goods-box',
+      //   duration: 300,
+      //   success(res){
+      //     console.log(res)
+      //   }
+      // })
+
       let _this=this;
+
       _this.filterTab.forEach(function(item, subIndex) {
         if (subIndex === index) {
           _this.$set(item, 'active', true);
@@ -275,7 +286,8 @@ export default {
 				_this.isLoad = false;
 				_this.isOved = false;
 				_this.loadingType = 0; //0加载前，1加载中，2没有更多了
-				_this.GetProductList();
+        _this.GetProductList();
+        
     },
   },
   onReachBottom: function() {

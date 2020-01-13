@@ -9,7 +9,8 @@
     "pages/shop/index/main",
     "pages/shop/join/main",
     "pages/login/main",
-    "pages/login/register/main"
+    "pages/login/register/main",
+    "pages/service/chatRoomSon/main"
   ],
   "subpackages":[
     {

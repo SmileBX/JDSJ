@@ -7,7 +7,7 @@ import logins from './login'
 // 线上后台地址
 // const filePath = 'http://xcx.gllgyz.com';
 const host = 'http://jdapi.wtvxin.com/api/';// 测试
-const wssPath = 'wss://hxapia.com/WebSocketServer.ashx';// wss地址
+const wssPath = 'ws://jdapi.wtvxin.com';// wss地址
 const filePath = 'http://www.jdapi.wtvxin.com/';// 测试后台地址
 const LoginPath = "/pages/login/main";//登录路径
 const RegisterPath = "/pages/login/register/main";//注册路径

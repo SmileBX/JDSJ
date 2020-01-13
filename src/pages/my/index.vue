@@ -16,7 +16,7 @@
         <div class="card">
           <p class="flex justifyContentBetween less_bb">
               <span>我的订单</span>
-              <span class="flex cg flexAlignCenter">
+              <span class="flex cg flexAlignCenter" @click="switchPath('/pages/myson2/order/main')">
                 <span class="font24">全部订单</span>
                 <img src="/static/images/icons/right.png" alt="" class="icon_right mr1">
               </span>
@@ -106,7 +106,7 @@
         <div class="card">
           <p class="tit ali-c">更多工具</p>
           <div class="icon-box icon-boxb flex-wrap ali-c">
-            <div class="icon flexc" @click="switchPath('/pages/home/card/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/mytuan/main')">
               <div>
                 <img src="/static/images/icons/12.png" alt="">
                 <p>我的拼团</p>
