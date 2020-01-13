@@ -144,14 +144,15 @@ export default {
           that.Mobile=res.data.tel;
           that.isDefault=res.data.is_def?true:false;
           //
-          that.ProvinceCode=res.data.ProvinceCode;
-          that.CityCode=res.data.CityCode;
-          that.DistrictCode =res.data.DistrictCode;
-          that.FullAddress=res.data.FullAddress;
+          that.ProvinceCode=res.data.province;
+          that.CityCode=res.data.city;
+          that.DistrictCode =res.data.district;
+          that.FullAddress=res.data.addressinfo;
           that.ProvinceName = res.data.ProvinceName
           that.CityName = res.data.CityName
           that.DistrictName = res.data.DistrictName
-          that.address=res.data.ProvinceName + res.data.CityName + res.data.DistrictName;
+          // that.address=res.data.ProvinceName + res.data.CityName + res.data.DistrictName;
+          that.address=res.data.addressstr;
       })
           
      

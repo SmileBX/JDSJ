@@ -70,7 +70,7 @@
                 <p>优惠劵</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/ticket/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/collect/main')">
               <div>
                 <img src="/static/images/icons/7.png" alt="">
                 <p>我的收藏</p>
