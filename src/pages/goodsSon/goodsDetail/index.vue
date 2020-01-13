@@ -55,7 +55,7 @@
             <img src="/static/images/icons/right.png" alt="">
           </div>
         </div>
-        <!-- <div class="list ali-c jus-b">
+        <div class="list ali-c jus-b" @click="showSku(0)">
           <div class="left ali-c">
             <span>规格</span>
             <p class="quan">{{SpecText||'请选择规格数量'}}</p>
@@ -63,7 +63,7 @@
           <div class="right ali-c">
             <img src="/static/images/icons/right.png" alt="">
           </div>
-        </div> -->
+        </div>
         <div class="list ali-c jus-b" v-if="false">
           <div class="left ali-c">
             <span>送至</span>
@@ -129,7 +129,7 @@
                   <p>{{item.MemberName}}</p>
                 </div>
                 <div>
-                  <img :key="index" class="right" src="/static/images/index/star.png" alt="">
+                  <img v-for="(i,e) in item.Star" :key="e" class="right" src="/static/images/index/star.png" alt="">
                 </div>
               </div>
               <p class="detail">
@@ -164,20 +164,20 @@
             <img v-else src="/static/images/index/collect_n.png" alt="">
             <p>收藏</p>
           </div>
-          <div>
+          <div @click="goCart">
             <img src="/static/images/index/cart.png" alt="">
             <p>购物车</p>
             <span class="num flexc" v-if="CartNumber>0">{{CartNumber}}</span>
           </div>
         </div>
         <div class="right flex">
-          <p class="flex1 flexc">加入购物车</p>
-          <p class="flex1 flexc" @click="buy()">立即购买</p>
+          <p class="flex1 flexc" @click="showSku(1)">加入购物车</p>
+          <p class="flex1 flexc" @click="showSku(2)">立即购买</p>
         </div>
       </div>
       <div class="topbtn" @click="Top" v-if="isTop"></div>
-      <div v-if="showCat" @click="cancel()" class="mengban"></div>
-        <div class="main" id="main" :style="mainHeight" :class="showCat?'show':''">
+      <div v-if="showPopupSku" @click="hidePopup" class="mengban"></div>
+        <div class="main" id="main" :style="mainHeight" :class="showPopupSku?'show':''">
             <div class="top-box">
                 <div class="one jus-b">
                     <div class="img-box jus-c ali-c">
@@ -190,7 +190,7 @@
                                 <span class="fuhao">￥</span>{{SpecInfo.PunitPrice===undefined?proInfo.ProductPrice:SpecInfo.PunitPrice}}</span>
                                 <!-- :SpecInfo.PunitPrice -->
                         </div>
-                        <span @click="cancel()" class="chacha">+</span>
+                        <span @click="hidePopup" class="chacha">+</span>
                     </div>
                 </div>
                 <div class="guige" v-for="(item, index) in specList" :key="index">
@@ -211,8 +211,11 @@
                 </div>
             </div>
             <div class="flex bot">
-                <p class="flex1 jus-c ali-c" @click="pay(1)">加入购物车</p>
-                <p class="flex1 jus-c ali-c" @click="pay(2)">立即购买</p>
+              <block v-if="showbtntype==0">
+                <p class="flex1 jus-c ali-c" @click="gocart">加入购物车</p>
+                <p class="flex1 jus-c ali-c" @click="gouBuy">立即购买</p>
+              </block>
+              <p v-else class="flex1 jus-c ali-c" @click="confirmBtn">确定</p>
             </div>
         </div>
   </div>
@@ -235,7 +238,7 @@ export default {
       bannerindex:0,//当前轮播图
       BannerNum:0,//轮播图数量
       CartNumber:0,//购物车数量
-      showCat:false,//是否显示弹窗
+      showPopupSku:false,//是否显示sku
       goodsNum:1,//购买商品数量
       // seachHeight:'',
       // mainHeight:'',//弹框样式
@@ -244,6 +247,8 @@ export default {
       SpecText:"",//当前选择规格的文本
       SpecValue:{},//当前选择规格的对象
       SpecInfo:{},//当前选择规格的信息--图片，价钱
+      showbtntype:0,
+      isMatch:false,//是否已匹配sku
     }
   },
   onLoad(){
@@ -253,13 +258,12 @@ export default {
     this.proId=this.$root.$mp.query.id||3;
   },
   onShow(){
-    console.log(this.showCat == undefined)
     this.goodsNum = 1
     this.specList=[]
     this.SpecText=""
     this.SpecValue={}
     this.SpecInfo={}
-    this.showCat = false
+    this.showPopupSku = false
     this.ProductInfo();
     this.GetAllCartNumber();
     setTimeout(() => {
@@ -279,13 +283,20 @@ export default {
     },
   },
   methods: {
+    goCart(){
+      wx.navigateTo({
+        url:'/pages/cart/main'
+      })
+    },
     cliTag(name,value){//点击选择规格标签--name:规格名称 value:所选规格值
       this.$set(this.SpecValue,name,value)
-      this.SpecText = JSON.stringify(this.SpecValue)
       this.proInfo.ProductSpecList.map((item,index)=>{
         const please = JSON.parse(item.SpecValue)
         if(this.isObjectValueEqual(please,this.SpecValue)){
           this.SpecInfo = item//匹配到的sku
+          this.SpecText = this.SpecInfo.SpecText;
+          this.isMatch=true;
+          console.log(this.SpecInfo)
         }
       })
     },
@@ -301,8 +312,10 @@ export default {
         }
         return true;
     },
-    buy(){
-      this.showCat = true
+    // 显示sku
+    showSku(type){
+      this.showPopupSku = true;
+      this.showbtntype=type;
     },
     suan(tip){
         if(tip==1&&this.goodsNum!=1){
@@ -311,8 +324,70 @@ export default {
             this.goodsNum++
         }
     },
-    cancel(){//隐藏弹窗
-      this.showCat = false
+    //统一的关闭弹窗方法
+    hidePopup() {
+      this.showPopupSku=false;
+    },
+    confirmBtn(){
+      if(this.showbtntype==1){
+        this.gocart();
+      }else if(this.showbtntype==2){
+        this.gouBuy();
+      }
+    },
+    //加入购物车
+    async gocart(){
+      if(this.isMatch){
+        let res=await post("Cart/AddCart",{    
+          userId: this.userId,
+          token: this.token,
+          ShopId:this.shopid,
+          proId: this.proId,
+          Count: this.goodsNum,
+          SpecText: this.SpecText,
+          IsFlashSale: this.isLimint,
+          ShareMemberId: ""
+        })
+        if(res.code==0){
+          this.GetAllCartNumber();
+           wx.showToast({
+            title: res.msg,
+            icon:"none",
+            duration: 1500
+          });
+          this.showPopupSku=false;
+        }else{
+          wx.showToast({
+            title: res.msg,
+            icon:"none",
+            duration: 1500
+          });
+        }
+      }else{
+        wx.showToast({
+          title: "请选择产品规格",
+          icon:"none",
+          duration: 1500
+        });
+      }
+    },
+    //立即购买
+    gouBuy(){
+      if(this.isMatch){
+        if(this.isLimint==1){
+
+        }else{
+          wx.navigateTo({
+            url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&price='+money+'&orderSType=0'+'&ShareMemberId='+this.userId,
+          })
+        }
+      }else{
+        wx.showToast({
+          title: "请选择产品规格",
+          icon:"none",
+          duration: 1500
+        });
+      }
     },
     goUrl(url,param){
       wx.navigateTo({
@@ -340,7 +415,10 @@ export default {
         this.proInfo=res.data;
         this.BannerNum=res.data.ProductImgList.length;
         this.IsCollect=res.data.IsCollectionPro;
-        this.specList = JSON.parse(res.data.SpecificationValue)
+        this.specList = JSON.parse(res.data.SpecificationValue);
+        if(!res.data.ProductSpecList.length){
+          this.isMatch=true;
+        }
       }
     },
     //获取购物车数
@@ -742,9 +820,9 @@ export default {
             border: 1rpx solid #f5f5f5;
         }
         .active{
-          background-color:#f3f8fc;
-          color: #3592ea;
-          border: 1rpx solid #3592ea;
+          background-color:#f9eeec;
+          color: #f0370b;
+          border: 1rpx solid #f0370b;
         }
     }
     .top-box{
