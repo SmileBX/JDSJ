@@ -33,35 +33,35 @@
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/1.png" alt="">
                 <p>待付款</p>
-                <span class="flexc">2</span>
+                <span class="flexc" v-if="orderNum.PendingPayment!=0">{{orderNum.PendingPayment}}</span>
               </div>
             </div>
             <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',2)">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/2.png" alt="">
                 <p>待发货</p>
-                <span class="flexc">2</span>
+                <span class="flexc" v-if="orderNum.PendingShipment!=0">{{orderNum.PendingShipment}}</span>
               </div>
             </div>
             <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',3)">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/3.png" alt="">
                 <p>待收货</p>
-                <span class="flexc">2</span>
+                <span class="flexc" v-if="orderNum.Shipped!=0">{{orderNum.Shipped}}</span>
               </div>
             </div>
             <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main',4)">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/4.png" alt="">
                 <p>评价</p>
-                <span class="flexc">2</span>
+                <span class="flexc" v-if="orderNum.Received!=0">{{orderNum.Received}}</span>
               </div>
             </div>
             <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main')">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/5.png" alt="">
                 <p>退款/售后</p>
-                <span class="flexc">2</span>
+                <span class="flexc" v-if="orderNum.ReturnsAfterSale!=0">{{orderNum.ReturnsAfterSale}}</span>
               </div>
             </div>
           </div>
@@ -150,6 +150,7 @@ export default {
   data () {
     return {
       info:{},
+      orderNum:{}
       // orderList:['待付款','待发货','待收货','待评价','退款/售后']
     }
   },
@@ -169,6 +170,14 @@ export default {
       }).then(res=>{
         if(res.code===0){
           this.info = res.data
+        }
+      }),
+      post('User/GetMemberOrder',{
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token")
+      }).then(res=>{
+        if(res.code===0){
+          this.orderNum = res.data
         }
       })
     },

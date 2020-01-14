@@ -8,7 +8,7 @@ import logins from './login'
 // const filePath = 'http://xcx.gllgyz.com';
 const host = 'http://jdapi.wtvxin.com/api/';// 测试
 const wssPath = 'ws://jdapi.wtvxin.com';// wss地址
-const filePath = 'http://www.jdapi.wtvxin.com/';// 测试后台地址
+const filePath = 'http://jd.wtvxin.com/';// 测试后台地址
 const LoginPath = "/pages/login/main";//登录路径
 const RegisterPath = "/pages/login/register/main";//注册路径
 const emotionPath = 'https://res.wx.qq.com'; //替换表情

@@ -95,10 +95,6 @@
             <img src="http://jd.wtvxin.com/images/images/service/albrem.jpg" alt class="icon_put" />
             <p class="fontColor">相册</p>
           </div>
-          <div class="flex flexAlignCenter flexColumn" @click="copyLink()">
-            <img src="http://jd.wtvxin.com/images/images/service/link.png" alt class="icon_put" />
-            <p class="fontColor">复制链接</p>
-          </div>
         </div>
       </div>
       <!-- 表情 -->
@@ -129,7 +125,7 @@
     <div class="itembox" v-for="(item,index) in ShopMessageList.DataTable" :key="index" @click="goUrl(item.FriendId)">
       <div class="leftbox">
         <img :src="item.Headimgurl" alt="">
-        <!-- <span>2</span> -->
+        <span v-if="item.Count>0">{{item.Count}}</span>
       </div>
       <div class="rightbox">
         <div class="nickname">
@@ -144,7 +140,7 @@
 </template>
 
 <script>
-import { post,host,wssPath,emotionPath } from "@/utils";
+import { post,host,wssPath,emotionPath,filePath } from "@/utils";
 import emotionList from "@/utils/emotionList";
 export default {
   data() {
@@ -360,6 +356,9 @@ export default {
               let times = res.data[0] &&new Date(res.data[0].AddTime);
               res.data.reverse(); //数组翻转
               res.data.map((item, i) => {
+                if(item.Pic!=""){
+                  item.Pic=filePath+item.Pic
+                }
                 let date = new Date(item.AddTime);
                 item.time = date.getTime();
                 item.class = "class" + date.getTime(); //时间戳类，用户下拉聊天记录滑动对应位置
@@ -368,7 +367,7 @@ export default {
                   const Month = date.getMonth() === times.getMonth();
                   const dates = date.getDate() === times.getDate();
                   const Hours = date.getHours() === times.getHours();
-                  const Minutes = date.getMinutes() - times.getMinutes() < 5;
+                  const Minutes = date.getMinutes() - times.getMinutes() < 10;
                   if (year && Month && dates && Hours && Minutes) {
                     item.AddTime = "";
                   } else {
@@ -551,13 +550,6 @@ export default {
       });
     },
     //**************************拍照，图片End************************** */
-    // copyLink
-
-    copyLink(){
-      wx.navigateTo({
-        url:'/pages/service/copyLink/main'
-      })
-    },
     // 初始化表情
     initEmotion() {
       const list = this.emotionList;

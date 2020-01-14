@@ -3,10 +3,12 @@
 	"setting": {
 		"urlCheck": false,
 		"es6": true,
+		"enhance": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
+		"nodeModules": true,
 		"autoAudits": false,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
@@ -15,7 +17,8 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-		}
+		},
+		"bundle": false
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
@@ -23,6 +26,7 @@
 	"projectname": "%E9%9B%86%E5%BA%97",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
+	"libVersion": "2.10.0",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -269,6 +273,13 @@
 					"name": "pages/goodsSon/goodsDetail/main",
 					"pathName": "pages/goodsSon/goodsDetail/main",
 					"query": "id =3",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/myson/collect/main",
+					"pathName": "pages/myson/collect/main",
+					"query": "",
 					"scene": null
 				}
 			]

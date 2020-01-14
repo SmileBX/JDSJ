@@ -1,21 +1,16 @@
 <template>
   <div class="foot_list">
-      <!-- <scroll-view class="filterContent bg_fff mt10" scroll-y="true">   -->
         <div class="or_list">
           <block v-for="(item,index) in list" :key="index">
-          <van-swipe-cell
-            :right-width="65"
-            class="swipe-cell"
-            @click="deleteC()"
-          >
-            <van-cell-group @click="deleteC()">
-              <van-cell class="item" @click="goDetail(item)">
-                <div class="or_item bg_fff flex justifyContentBetween flexAlignCenter pw3">
+          <van-swipe-cell :right-width="65" class="swipe-cell" async-close @close="shanwwchu($event,item.Id)">
+            <van-cell-group>
+              <van-cell class="item">
+                <div class="or_item bg_fff flex justifyContentBetween flexAlignCenter pw3" @click="goDetail()">
                     <div class="flex or_main">
                         <img :src="item.PicFrist" alt="" class="shop">
                         <div class="flex1 flex flexAlignCenter mr2 text_left">
                             <div class="or_left flex flexColumn justifyContentBetween">
-                              <p @click="goDetail()">{{item.AssociationName}}111111111111111111111</p>
+                              <p>{{item.AssociationName}}</p>
                               <p class="cr font30 jus-b"><span>￥{{item.Price}} </span><span class="font22 cg">{{item.AddTime}}</span> </p>
                             </div>
                         </div>
@@ -23,21 +18,20 @@
                 </div>
               </van-cell>
             </van-cell-group>
-              <span 
-                slot="right"
-                class="van-swipe-cell__right flex flexAlignCenter justifyContentCenter"
-              >删除1</span>
-            </van-swipe-cell>
+            <span 
+              slot="right"
+              class="van-swipe-cell__right flex flexAlignCenter justifyContentCenter"
+            >删除</span>
+          </van-swipe-cell>
           </block>
         </div>
-      <!-- </scroll-view> -->
   </div>
 </template>
 
 <script>
 import {post} from '@/utils'
 export default {
-//
+
   data () {
     return {
       list:[],
@@ -54,14 +48,6 @@ export default {
     goDetail(){
       console.log('去详情')
     },
-    deleteC(){
-      console.log('1111111111111111')
-      // post('User/DeleteCollections',{
-      //   UserId:wx.getStorageSync("userId"),
-      //   Token:wx.getStorageSync("token"),
-      //   Id:id
-      // })
-    },
     getList(){
       post('User/MemberCollectionsList',{
         UserId:wx.getStorageSync("userId"),
@@ -76,12 +62,22 @@ export default {
         }
       })
     },
+    shanwwchu(e,id){console.log(e,id,'**********')
+      post('User/DeleteCollections',{
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token"),
+        Id:id
+      }).then(res=>{
+        if(res.code===0){
+         wx.showToast({ title: res.msg, icon: "none" });
+        }
+      })
+    },
     goUrl(url,param){
       wx.navigateTo({
         url:url+'?id='+param
       })
     },
-    
   },
 }
 </script>
