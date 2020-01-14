@@ -1,29 +1,16 @@
 <template>
     <div>
-        <div class="pw3 bg_fff mt2">
+        <div class="bg_fff bor20">
             <div class="font30 fb k_item k_bor">常见问题</div>
-            <div class="flex justifyContentBetween k_item flexAlignCenter">
-                <p>如何查看商品尺码</p>
-                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
-            </div>
-            <div class="flex justifyContentBetween k_item flexAlignCenter">
-                <p>我要申请退款</p>
-                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
-            </div>
-            <div class="flex justifyContentBetween k_item flexAlignCenter">
-                <p>退款申请被拒绝</p>
-                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
-            </div>
-            <div class="flex justifyContentBetween k_item flexAlignCenter">
-                <p>如何换绑手机号</p>
-                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
-            </div>
-            <div class="flex justifyContentBetween k_item flexAlignCenter">
-                <p>我要修改地址</p>
-                <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
+            <div class=" " v-for="(item,index) in list" :key="index" @click="showmore(item.showAll,index)">
+              <div class="flex justifyContentBetween k_item flexAlignCenter">
+                  <p class="text_space">{{item.Title}}</p>
+                  <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right" :class="{'active':item.showAll}">
+              </div>
+              <div class="neiyong" v-if="item.showAll"><div v-html="item.Contents"></div></div>
             </div>
         </div>
-        <div class="bg_fff pp3 flex justifyContentBetween mt2 flexAlignCenter">
+        <div class="bg_fff pp3 flex justifyContentBetween mt2 flexAlignCenter" @click="goUrl">
           <div class="flex flexAlignCenter">
             <img src="http://jd.wtvxin.com/images/images/icons/k_f.png" alt="" class="sign">
             <span class="ml1">意见反馈</span>
@@ -31,14 +18,14 @@
           <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
         </div>
         <div class="kf_bottom bg_fff flex justifyContentAround">
-            <div class="cell_kf cell_left">
+            <div class="cell_kf cell_left"  @click="gophone()">
                 <p class="flex flexAlignCenter">
                     <img src="http://jd.wtvxin.com/images/images/icons/call.png" alt="" class="call">
                     <span class="font24 ml1">400-8523-555</span>
                 </p>
                 <p class="font20 cg">09:00-22:00</p>
             </div>
-            <div class="cell_kf cell_right">
+            <div class="cell_kf cell_right" @click="gokefu">
                 <p class="flex flexAlignCenter">
                     <img src="http://jd.wtvxin.com/images/images/icons/mess.png" alt="" class="call">
                     <span class="font24 ml1">在线客服</span>
@@ -50,28 +37,66 @@
 </template>
 
 <script>
+import {post} from "@/utils";
 export default {
 
   data () {
     return {
-     showEdit:false,
-      
+      showEdit:false,
+      page: 1,
+      pageSize: 99,
+      list:[]
     }
   },
 
   onShow(){
-    
+    this.getHelpList()
   },
   methods: {
-    
-    
+    getHelpList(){
+      post('Help/HelpList',{
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token"),
+        page:this.page,
+        pagesize:this.pageSize,
+      }).then(res=>{
+        if(res.code===0){
+          res.data.map(item=>{
+            this.$set(item,'showAll',false)
+          })
+          this.list = res.data
+        }
+      })
+    },
+    showmore(show,index){
+      show=!show;
+      this.$set(this.list[index],'showAll',show)
+    },
+    goUrl(){
+      wx.navigateTo({
+        url:'/pages/myson/feedback/main'
+      })
+    },
+    gokefu(){
+      wx.switchTab({
+        url:"/pages/service/chatRoom/main"
+      });
+    },
+    gophone(phone){
+      wx.makePhoneCall({
+        phoneNumber: '1340000' //仅为示例，并非真实的电话号码
+      })
+    }
   },
 }
 </script>
 
 <style scoped lang='scss'>
+page{
+  min-height: auto!important
+}
   .k_item{
-    padding:20rpx 0;
+    padding:20rpx 30rpx;
   }
   .k_bor{
     border-bottom: 1rpx solid #f5f5f5;
@@ -97,5 +122,17 @@ export default {
   }
   .cell_right{
     background: #f00;color:#ffffff;
+  }
+  .neiyong{
+    background: #f5f5f5;
+    padding: 20rpx 30rpx;
+    line-height: 1.6;
+    color: #666
+  }
+  .active{
+    transform:rotate(90deg);
+  }
+  .bor20{
+    border-top: 20rpx #f2f2f2 solid
   }
 </style>
