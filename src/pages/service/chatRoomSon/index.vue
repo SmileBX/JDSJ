@@ -166,7 +166,7 @@
 </template>
 
 <script>
-import { post,host,wssPath,emotionPath } from "@/utils";
+import { post,host,wssPath,emotionPath,filePath } from "@/utils";
 import emotionList from "@/utils/emotionList";
 export default {
   data() {
@@ -361,6 +361,9 @@ export default {
               let times =new Date(res.data[0].AddTime);
               res.data.reverse(); //数组翻转
               res.data.map((item, i) => {
+                if(item.Pic!=""){
+                  item.Pic=filePath+item.Pic
+                }
                 let date = new Date(item.AddTime);
                 item.time = date.getTime();
                 item.class = "class" + date.getTime(); //时间戳类，用户下拉聊天记录滑动对应位置
