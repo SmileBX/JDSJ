@@ -1,29 +1,34 @@
 <template>
   <div style="padding-bottom:120rpx">
     <radio-group class="radio-group" @tap="radioChange" v-if="list.length>0">
-      <div class="list bpr-box" v-for="(item, index) in list" :key="index">
-        <p class="jus-b" @tap="choseAddress(index)"><span class="name">{{item.name}}</span><span>{{item.tel}}</span></p>
-        <p class="address" @tap="choseAddress(index)">{{item.addressinfo}}</p>
-        <div class="ali-c jus-b foot">
-          <label @tap="changeDefault(index)">
-              <radio class="radio" color="#f00000" :checked="item.is_def==1" :value="item.Id" >
-                <text>默认地址</text>
-              </radio>
-          </label>
-          <div class="ali-c">
-            <div class="ali-c btt" @tap="editSite(item.id)">
-              <img class="write" src="http://jd.wtvxin.com/images/images/icons/write.png" alt="">
-              <span>编辑</span>
-            </div>
-            <div class="ali-c btt" @tap="Delete(item.id,index)">
-              <img class="delete" src="http://jd.wtvxin.com/images/images/icons/delete.png" alt="">
-              <span>删除</span>
-            </div>
+      <div class="list bpr-box" v-for="(item, index) in list" :key="index" @tap="choseAddress(index)">
+        <div class="ali-c jus-b">
+          <span v-if="item.id==checkId" :class="['checkbox',item.id==checkId?'checked':'']"></span>
+          <div style="width:100%">
+            <p class="jus-b"><span class="name">{{item.name}}</span><span>{{item.tel}}</span></p>
+            <p class="address">{{item.addressinfo}}</p>
+            <div class="ali-c jus-b foot">
+              <label @tap.stop="changeDefault(index)">
+                  <radio class="radio" color="#f00000" :checked="item.is_def==1" :value="item.Id" >
+                    <text>默认地址</text>
+                  </radio>
+              </label>
+              <div class="ali-c">
+                <div class="ali-c btt" @tap.stop="editSite(item.id)">
+                  <img class="write" src="http://jd.wtvxin.com/images/images/icons/write.png" alt="">
+                  <span>编辑</span>
+                </div>
+                <div class="ali-c btt" @tap.stop="Delete(item.id,index)">
+                  <img class="delete" src="http://jd.wtvxin.com/images/images/icons/delete.png" alt="">
+                  <span>删除</span>
+                </div>
+              </div>
+            </div> 
           </div>
-        </div>    
+        </div>
       </div>
       </radio-group>
-      <p  class="nodata_log flex flexColumn flexAlignCenter" v-else>
+      <p  class="nodata_log flex flexColumn flexAlignCenter" v-if="isshownodata">
           <img src="http://jd.wtvxin.com/images/images/icons/nosite.png" alt="" class="site_log">
           <span class="cg mt2">还没有收货地址哦~</span>
           <span class="add_new" @tap="toAddSite()">新建地址</span>
@@ -51,14 +56,20 @@ export default {
       userId: "",
       token: "",
       isLoad:true,
-      list:[{Id:0,Consignee:'哈哈',Mobile:'13652415236',Address:'gsgag嘎嘎嘎噶沙司公司萨嘎是哥仨个撒'},{Id:0,Consignee:'哈哈',Mobile:'13652415236',Address:'gsgag嘎嘎嘎噶沙司公司萨嘎是哥仨个撒'}]
+      list:[],
+      checkId:"",//已选
+      pagetype:"",//页面来源
+      isshownodata:false
     }
   },
+  onLoad(){
+
+  },
   onShow(){
-    console.log('111111111111')
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    wx.setStorageSync("addressinfo",'');
+    this.checkId=this.$root.$mp.query.checkId||'';
+    this.pagetype=this.$root.$mp.query.pagetype||'';
     this.list = []
     this.page = 1
     this.geSiteList()
@@ -73,7 +84,12 @@ export default {
         PageSize: this.pageSize
       })
       if(res.code==0){
-        this.count = res.count
+        this.count = res.count;
+        if(this.count==0){
+          this.isshownodata=true
+        }else{
+          this.isshownodata=false
+        }
         if(this.page == 1){
           this.list = []
         }
@@ -103,7 +119,6 @@ export default {
         }
     },
     changeDefault(i) {
-      console.log('111111111111')
       //设置默认
       const params = {
         Id: this.list[i].id,
@@ -146,15 +161,24 @@ export default {
               wx.showToast({
                 title: "删除成功!",
                 success:()=>{
-                  this.list.splice(index, 1)
+                  this.list.splice(index, 1);
+                  if(this.list.length==0){
+                    this.isshownodata=true
+                  }
                 }
               });
             }
           });
     },
     editSite(id){
+      let ischecked=false;
+      if(id==this.checkId){
+        ischecked=true
+      }else{
+        ischecked=false;
+      }
        wx.navigateTo({
-        url:'/pages/myson/addaddress/main?id='+id
+        url:'/pages/myson/addaddress/main?id='+id+'&ischeck='+ischecked
       })
     },
     toAddSite(){
@@ -163,11 +187,9 @@ export default {
       })
     },
     choseAddress(i){
-      wx.setStorageSync("addressinfo",this.list[i]);
-      if(this.$mp.query.tip == 'takeout'){
-        wx.redirectTo({ url: "/pages/homepage/takeout/main?url=address" });
-      }else if(this.$mp.query.tip == 'cart'){
-        wx.redirectTo({ url: "/pages/proSon/confirm/main?url=address" });
+      if(this.pagetype == 'confirm'){
+        wx.setStorageSync("addressinfo",this.list[i]);
+        wx.navigateBack()
       }
     }
   },
@@ -219,6 +241,7 @@ export default {
 .list{
   margin: 20rpx 30rpx 0;
   padding: 40rpx 20rpx 0;
+  .checkbox{ margin-right: 10rpx}
   .btt{
     margin-left: 50rpx
   }

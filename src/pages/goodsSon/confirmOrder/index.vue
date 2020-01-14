@@ -5,16 +5,16 @@
     </div>
     <div class="p30 content">
       <div class="address p30">
-          <div class="addressShow flex-center-between" v-if="hasaddress" @click="goUrl('/pages/myson/address/main?checkId='+addressinfo.id)">
+          <div class="addressShow flex-center-between" v-if="hasaddress" @click="goUrl('/pages/myson/address/main?pagetype=confirm&checkId='+addressinfo.id)">
             <div class="left">
-              <div class="name flex-center-start" ><p>{{addressinfo.name}}</p><p>{{addressinfo.tel}}</p></div>
+              <div class="name flex-center-start" ><p>{{addressinfo.name}}</p><p>{{addressinfo.tel}}</p><span class="tag" v-if="addressinfo.is_def==1">默认</span></div>
               <div class="addressInfo ellipsis2">{{addressinfo.addressinfo}}</div>
             </div>
             <div class="right">
               <van-icon name="arrow" color="#999"/>
             </div>
           </div>
-          <div class="flex-column-center-center notAddress" v-else @click="goUrl('/pages/myson/address/main')">
+          <div class="flex-column-center-center notAddress" v-else @click="goUrl('/pages/myson/address/main?pagetype=confirm')">
               <img src="http://jd.wtvxin.com/images/images/goods/address-icon.png" alt="">
               <p>暂无收货地址，点击添加</p>
           </div>
@@ -148,7 +148,7 @@ export default {
       couponprice:0,//商品优惠金额
       Freight:0,//运费
       totalMoney:0,//实付金额
-      ShareMemberId:0,
+      ShareMemberId:"",
       OrderNo:"",
       WxOpenid:"",
 			WxCode:"",
@@ -165,8 +165,8 @@ export default {
   },
   onShow(){
     this.shopid = wx.getStorageSync("shopid");
-    if(this.$root.$mp.query.addrInfo){
-      this.addressinfo=JSON.parse(this.$root.$mp.query.addrInfo);
+    if(wx.getStorageSync("addressinfo")){
+      this.addressinfo=wx.getStorageSync("addressinfo");
       this.hasaddress=true;
       this.addressId=this.addressinfo.id;
     }else{
@@ -431,7 +431,8 @@ export default {
         SpecText:this.SpecText,
         Remark:this.orderRemarksArr,
         MemberCouponId:this.couponid,
-        ShareMemberId:this.ShareMemberId
+        ShareMemberId:this.ShareMemberId,
+        ShopId:this.shopid
       })
       if(res.code==0){
         this.OrderNo=res.data;
@@ -558,6 +559,14 @@ export default {
           p{
             font-size:32rpx;
             margin-right:35rpx;
+          }
+          .tag{ 
+            color: #fff;
+            font-size: 24rpx;
+            background: #ff3333;
+            border-radius: 6rpx;
+            padding: 0 10rpx;
+            line-height: 1.6;
           }
         }
         .addressInfo{
