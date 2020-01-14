@@ -430,10 +430,15 @@ export default {
     gouBuy(){
       if(this.isMatch){
         if(this.isLimint==1){
-
+          // 添加限时时间判断
+          // wx.setStorageSync("addressinfo",'');
+          // wx.navigateTo({
+          //   url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.goodsNum+'&orderSType=0'+'&isLimint='+this.isLimint+'&ShareMemberId='+this.ShareMemberid,
+          // })
         }else{
+          wx.setStorageSync("addressinfo",'');
           wx.navigateTo({
-            url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.goodsNum+'&orderSType=0'+'&ShareMemberId='+this.ShareMemberid,
+            url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.goodsNum+'&orderSType=0&ShareMemberId='+this.ShareMemberid,
           })
         }
       }else{

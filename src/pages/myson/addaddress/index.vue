@@ -20,11 +20,15 @@
           <span>详细地址</span>
           <input type="text" placeholder="请输入街道门牌等信息" v-model="FullAddress">
         </div>
-        <checkbox-group class="ddd" @tap="change">
+        <!-- <checkbox-group class="ddd" @tap="change">
           <label class="checkbox">
             <checkbox :checked="isDefault == 1" /><text>设为默认收货地址</text>
           </label>
-        </checkbox-group>
+        </checkbox-group> -->
+        <div class="ddd" @click="change">
+          <input type="checkbox" class="checkbox-cart" :checked="isDefault == 1">
+          <span>设为默认收货地址</span>
+        </div>
         <p class="btn" @tap="submit">{{buttonText}}</p>
       </div>
       <van-popup :show="showArea" position="bottom" :overlay="true" @close="showArea = false">
@@ -44,7 +48,8 @@ export default {
     return {
       token: "",
       userId: "",
-      buttonText:'保存',
+      headtxt:"",//头部标题
+      buttonText:'',//按钮文字
       Consignee:"",//收货人姓名
       Mobile:"",
       isDefault:0,
@@ -58,19 +63,28 @@ export default {
       address:"",
       areaList,
       showArea: false,
+      ischeck:false,//是否是已选地址
+      reInfo:{},
     }
   },
   onShow(){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    const Id = this.$mp.query.id
-    console.log(Id,"idiiiii")
+    this.ischeck=this.$mp.query.ischeck||false;
+    const Id = this.$mp.query.id;
+    
     this.initData()
     if(this.$mp.query.id){
         this.buttonText= '修改';
         this.getAddress(Id)
+        this.headtxt="编辑收货地址";
+      }else{
+        this.buttonText= '保存';
+         this.headtxt="添加收货地址";
       }
-    
+    wx.setNavigationBarTitle({
+      title: this.headtxt
+    });
   },
   methods:{
     initData(){
@@ -143,16 +157,17 @@ export default {
           that.Consignee=res.data.name;
           that.Mobile=res.data.tel;
           that.isDefault=res.data.is_def?true:false;
-          //
           that.ProvinceCode=res.data.province;
           that.CityCode=res.data.city;
           that.DistrictCode =res.data.district;
-          that.FullAddress=res.data.addressinfo;
+          that.FullAddress=res.data.address;
           that.ProvinceName = res.data.ProvinceName
           that.CityName = res.data.CityName
           that.DistrictName = res.data.DistrictName
-          // that.address=res.data.ProvinceName + res.data.CityName + res.data.DistrictName;
           that.address=res.data.addressstr;
+          if(this.ischeck){
+            wx.setStorageSync("addressinfo",res.data);
+          }
       })
           
      
@@ -209,12 +224,15 @@ export default {
             wx.showToast({
               title: res.msg
             });
+            if(this.ischeck){
+              this.getAddress(this.$mp.query.id)
+            }
             setTimeout(()=> {
-                wx.redirectTo({ url: "/pages/myson2/address/main"});
+              wx.navigateBack()
+               // wx.redirectTo({ url: "/pages/myson2/address/main"});
               },1500)
         })
-    
-      
+            
     },
   },
 }
@@ -222,10 +240,7 @@ export default {
 
 <style lang='scss' scoped>
 .ddd{
-  transform: scale(0.6);
-  position: relative;
-  left: -135rpx;
-  top: 20rpx
+  margin-top: 20rpx
 }
 .checkbox{
   font-size: 50rpx;

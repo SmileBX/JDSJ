@@ -431,6 +431,7 @@ export default {
         }
       });
       if(idString.length){
+        wx.setStorageSync("addressinfo",'');
         wx.navigateTo({ 
           url: "/pages/goodsSon/confirmOrder/main?cartItem=" + idString.join(",")+'&orderSType=1'
         });

@@ -76,7 +76,45 @@ page {
     transform: translate(-50%, -50%) scale(1);
     -webkit-transform: translate(-50%, -50%) scale(1);
 }
-
+.checkbox{
+    width: 38rpx;
+    height: 38rpx;
+    background-color: #ffffff;
+    border: solid 1px #dddddd;
+    border-radius: 50%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    display: block;
+    cursor: default;
+    -webkit-transition: background-color ease 0.1s;
+    transition: background-color ease 0.1s;
+}
+.checkbox.checked {
+    background-color: #ff3333;
+    border: solid 1px #ff3333;
+    text-align: center;
+    background-clip: padding-box;
+}
+.checkbox.checked::before{
+    content: '';
+    width: 16rpx;
+    height:8rpx;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -8rpx;
+    margin-top: -8rpx;
+    background: transparent;
+    border: 1px solid #ffffff;
+    border-top: none;
+    border-right: none;
+    z-index: 2;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
 .flex {
     display: -webkit-box;
     display: -webkit-flex;

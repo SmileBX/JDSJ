@@ -270,7 +270,7 @@ export default {
     async connectSocket() {
       const that = this;
       const ress = await post(
-        "User/GetWebSocketId",
+        "WebSocket/GetWebSocketId",
         {
           UserId: this.userId,
           Token: this.token,
