@@ -21,7 +21,7 @@
                                 <img :src="item.ProductImg" alt="" class="shop" @click="goUrl('/pages/goodsSon/goodsDetail/main?id='+item.ProductId)">
                                 <div class="flex1 mr2 txtbox">
                                     <div class="twoline" @click="goUrl('/pages/goodsSon/goodsDetail/main?id='+item.ProductId)">{{item.ProductName}}</div>
-                                    <span class="mt1 spec" v-if="item.SpecText" @click="showSKU(item.Id)">
+                                    <span class="mt1 spec" v-if="item.SpecText" @click="showSKU(item.Id,index)">
                                         <span class="cg font24">{{item.SpecText}}</span>
                                         <img src="http://jd.wtvxin.com/images/images/icons/down.png" alt="" class="down">
                                     </span>
@@ -63,11 +63,11 @@
           <span class="go_shop" @click="goshop">去购物</span>
       </div>
       <!-- 优惠券弹窗 -->
-      <uni-popup mode="fixed" :show="showCoupon" :h5Top="true" position="bottom" @hidePopup="closeCoupon">
+      <uni-popup mode="fixed" :show="showCoupon" :h5Top="true" position="bottom" @hidePopup="hidePopup">
         <div class="couponbox" style="z-index: 10000;">
           <div class="titlebox">
             <div class="title">优惠券</div>
-            <div  @click="closeCoupon" class="close">×</div>
+            <div  @click="hidePopup" class="close">×</div>
           </div>
           <div class="tips">可领优惠券<span>领取后可用于购物车商品</span></div>
           <scroll-view scroll-y style="width: 100%;height: 560rpx;">
@@ -94,6 +94,41 @@
           </scroll-view>
         </div>
       </uni-popup>
+      <!-- 弹出sku -->
+      <div v-if="showPopupSku" @click="hidePopup" class="mengban"></div>
+        <div class="main" id="main" :style="mainHeight" :class="showPopupSku?'show':''">
+            <div class="top-box">
+                <div class="one jus-b">
+                    <div class="img-box jus-c ali-c">
+                        <img :src="SpecInfo.SpecImage||proInfo.ProductImg" alt="">
+                    </div>
+                    <div class="right jus-b">
+                        <div>
+                            <p class="tit">{{proInfo.ProductName}}</p>
+                            <span><span class="fuhao">￥</span>{{SpecInfo.PunitPrice===undefined?proInfo.ProductPrice:SpecInfo.PunitPrice}}</span>
+                            <p class="font_four">库存：{{reStock}}</p>
+                                <!-- :SpecInfo.PunitPrice -->
+                        </div>
+                        <span @click="hidePopup" class="chacha">+</span>
+                    </div>
+                </div>
+                <div class="guige" v-for="(item, index) in specList" :key="index">
+                    <p>{{index}}</p>
+                    <div class="flex-wrap">
+                        <!-- 下面span选中绑定一个‘active类’ -->
+                        <span :class="{'active':ite.name==SpecValue[index]}" @click="cliTag(index,ite.name)" class="ali-c jus-c" v-for="(ite, ind) in item" :key="ind">{{ite.name}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex bot">
+              <block v-if="reStock>0">
+                <p class="flex1 jus-c ali-c btn_red" @click="confirmBtn">确定</p>
+              </block>
+              <block v-else>
+                <p class="flex1 jus-c ali-c">商家补货中</p>
+              </block>
+            </div>
+        </div>
   </div>
 </template>
 
@@ -120,6 +155,17 @@ export default {
       allPrice:0,//累计选中产品的金额
       showCoupon:false,
       couponlist:{},//优惠券列表
+      proInfo:{},//弹出商品信息
+      showPopupSku:false,//是否显示sku
+      mainHeight:'',//弹框样式
+      seachHeight:'',
+      specList:[],//规格总列表
+      SpecText:"",//当前选择规格的文本
+      SpecValue:{},//当前选择规格的对象
+      SpecInfo:{},//当前选择规格的信息--图片，价钱
+      isMatch:false,//是否已匹配sku
+      reStock:0,//弹出产品库存
+      editSkuIndex:0,//当前编辑sku的产品
     }
   },
   onLoad(){
@@ -325,17 +371,31 @@ export default {
       }
     },
     // 获取购物车sku
-    showSKU(id){
-      this.GetProductSpec(id)
-    },
-    async GetProductSpec(id){
+    async showSKU(id,index){
+      this.editSkuIndex=index;
+      this.specList=[];
+      this.SpecText="";
+      this.SpecValue={};
+      this.SpecInfo={};
       let res = await post("Cart/GetProductSpec", {
         UserId: this.userId,
         Token: this.token,
         CartId: id
       });
       if(res.code==0){
-
+        this.proInfo=res.data;
+        this.specList = JSON.parse(res.data.SpecificationValue);
+        this.reStock=res.data.ProductStock;
+        var query = wx.createSelectorQuery();
+        setTimeout(() => {
+          var query = wx.createSelectorQuery();
+          query.select("#main").boundingClientRect((rect)=> {
+            this.seachHeight = rect.height*2
+            this.mainHeight = 'height:'+this.seachHeight+'rpx;bottom:'+(-this.seachHeight-50)+'rpx'
+            console.log('gaodu',rect.height)
+          }).exec();
+        }, 200);
+        this.showPopupSku=true;
       }else{
         wx.showToast({
           title: res.msg,
@@ -343,6 +403,43 @@ export default {
           duration: 1500
         });
       }
+    },
+    cliTag(name,value){//点击选择规格标签--name:规格名称 value:所选规格值
+      this.$set(this.SpecValue,name,value)
+      this.proInfo.ProductSpecList.map((item,index)=>{
+        const please = JSON.parse(item.SpecValue)
+        if(this.isObjectValueEqual(please,this.SpecValue)){
+          this.SpecInfo = item//匹配到的sku
+          this.reStock=item.ProStock;
+          if(this.reStock==0){
+            console.log("库存不足")
+          }
+          this.SpecText = this.SpecInfo.SpecText;
+          this.isMatch=true;
+        }
+      })
+    },
+    isObjectValueEqual(a, b) {//判断两个对象里面属性值是否相等
+        var aProps = Object.keys(a);
+        var bProps = Object.keys(b);
+        if (aProps.length != bProps.length) {return false;}
+        for (var i = 0; i < aProps.length; i++) {
+            var propName = aProps[i];
+            if (a[propName] !== b[propName]) {
+                return false;
+            }
+        }
+        return true;
+    },
+    confirmBtn(){
+      let i=this.editSkuIndex;
+      let dataArr=[],json = {};
+        json["CartId"] = this.cartList[i].Id;
+        json["Total"] = this.cartList[i].Number;
+        json["SpecText"] = this.SpecText;
+        dataArr.push(json);
+        this.eaditCart(JSON.stringify(dataArr));
+        this.showPopupSku=false;
     },
     //删除购物车
     async DelCart(ids){
@@ -406,7 +503,9 @@ export default {
         }
       }
     },
-    closeCoupon(){
+    //统一的关闭弹窗方法
+    hidePopup() {
+      this.showPopupSku=false;
       this.showCoupon=false;
     },
     //领券
@@ -516,6 +615,132 @@ export default {
       background:#f00
     }
   }
+}
+.main{
+    position: fixed;
+    bottom: -950rpx;
+    transition: all 0.3s;
+    width: 100vw;
+    // height: 900rpx;
+    z-index: 99;
+    background-color: #fff;
+    border-radius: 20rpx;
+    .guige{
+        p{
+            font-size: 28rpx;
+            color: #333;
+            line-height: 80rpx;
+        }
+        span{
+            background-color: #f5f5f5;
+            color: #666;
+            font-size: 24rpx;
+            padding: 10rpx 20rpx;
+            border-radius: 10rpx;
+            margin: 0 20rpx 20rpx 0;
+            border: 1rpx solid #f5f5f5;
+        }
+        .active{
+          background-color:#f9eeec;
+          color: #f0370b;
+          border: 1rpx solid #f0370b;
+        }
+    }
+    .top-box{
+        padding: 30rpx 30rpx 130rpx;
+        .two{
+            height: 100rpx;
+            font-size: 28rpx;
+            color: #999;
+            .ali-c{
+                width: 200rpx;
+                span{
+                    font-size: 40rpx;
+                    font-weight: 900;
+                    color: #333
+                }
+                input{
+                   width: 80rpx;
+                    height: 44rpx;
+                    background-color: #eeeeee;
+                    border-radius: 8rpx; 
+                    margin: 0 30rpx;
+                    text-align: center;
+                    position: relative;
+                    top: 5rpx
+                }
+            }
+        }
+        .one{
+            border-bottom: 1rpx solid #ededed;
+            .img-box{
+                width: 200rpx;
+                height: 200rpx;
+                border-radius: 10rpx;
+                border:1rpx solid #ededed;
+                position: relative;
+                top: -50rpx;
+                background-color: #fff
+            }
+            img{
+                width: 180rpx;
+                height: 180rpx;
+            }
+            .right{
+                width: 475rpx;
+                .chacha{
+                    font-size: 50rpx;
+                    transform: rotate(45deg);
+                    width: 30rpx;
+                    height: 30rpx;
+                    position: relative;
+                    top: -20rpx;
+                    left: 20rpx;
+                }
+                div{
+                    width: 410rpx;
+                    p{
+                        font-size: 28rpx;
+                        color: #333;
+                        margin-bottom: 30rpx
+                    }
+                    span{
+                        color: #f0370b;
+                        font-size: 32rpx;
+                        .fuhao{
+                            font-size: 22rpx
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .bot{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 98rpx;
+        color: #fff;
+        font-size: 28rpx;
+        p{
+            background-color: #fda33a;
+        }
+        p.btn_red{
+            background-color: #ff3333;
+        }
+    }
+}
+.mengban{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    z-index: 98;
+}
+
+.show{
+    bottom: 0!important
 }
  /* 优惠券弹窗 */
 .couponbox{
