@@ -1,9 +1,5 @@
 import logins from './login'
 
-
-//API接口地址
-// 线上
-// const host = 'https://api.gllyz.com/api/';
 // 线上后台地址
 // const filePath = 'http://xcx.gllgyz.com';
 const host = 'http://jdapi.wtvxin.com/api/';// 测试

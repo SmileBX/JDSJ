@@ -256,29 +256,8 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/goodsSon/goodsDetail/main",
-					"pathName": "pages/goodsSon/goodsDetail/main",
-					"query": "proId=15",
-					"scene": null
-				},
-				{
-					"id": -1,
 					"name": "下单",
 					"pathName": "pages/goodsSon/confirmOrder/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/goodsSon/goodsDetail/main",
-					"pathName": "pages/goodsSon/goodsDetail/main",
-					"query": "id =3",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/myson/collect/main",
-					"pathName": "pages/myson/collect/main",
 					"query": "",
 					"scene": null
 				}

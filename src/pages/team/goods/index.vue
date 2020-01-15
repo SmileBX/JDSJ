@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div class="list ali-c jus-b">
+      <!-- <div class="list ali-c jus-b">
         <img class="left" src="http://jd.wtvxin.com/images/images/index/icon4.png" alt="">
         <div class="right">
           <p class="tit oneline">动感单车 运动 女家用型</p>
@@ -18,25 +18,106 @@
             <div class="flexc">去开团</div>
           </div>
         </div>
+      </div> -->
+      <div class="list ali-c jus-b" v-for="(item,index) in goodsList" :key="index">
+        <img class="left" :src="item.ProductImg" alt="">
+        <div class="right">
+          <p class="tit oneline">{{item.ProductName}}</p>
+          <div class="ali-c jus-b hot">
+            <div class="one flexc">
+              <img src="http://jd.wtvxin.com/images/images/index/hot.png" alt="">
+              <span>已拼{{item.SuccessGroup}}件</span>
+            </div>
+            <p class="flexc">{{item.MinPeopleNum}}人团</p>
+          </div>
+          <div class="price ali-c jus-b">
+            <p>
+              <span>￥</span><span>{{item.FightingPrice}}</span><span>￥{{item.OriginalPrice}}</span>
+            </p>
+            <div class="flexc">去开团</div>
+          </div>
+        </div>
       </div>
   </div>
 </template>
 
 <script>
-import {switchPath,isJump} from '@/utils'
+import {post,switchPath,isJump} from '@/utils'
 export default {
 
   data () {
     return {
-     showEdit:false,
-      
+      userId: "",
+			token: "",
+      shopid:"",
+      hasData:false,
+			noDataIsShow: false,//没有数据的提示是否显示
+			page: 1,
+      pageSize: 8,
+      allPage: 0,
+			count: 0,
+			isLoad: false,
+			isOved:false,       //显示已经到底了
+			loadingType: 0, //0加载前，1加载中，2没有更多了
+      goodsList:[],
     }
   },
 
   onShow(){
-    
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+    this.shopid=wx.getStorageSync("shopid");
+    this.GetProductList()
   },
   methods: {
+    async GetProductList(){
+      let res=await post("GroupBuy/GetGroupProductList",{
+        Page: this.page,
+        PageSize: this.pageSize,
+        ShopId: this.shopid,
+        // SalesVolumeFilter: this.sFilter,
+        // PriceFilter: this.pFilter,
+        // Key: ""
+      })
+      if(res.code==0){
+          let _this=this;
+					if (res.data.length > 0) {
+						this.hasData = true;
+						this.noDataIsShow = false;
+					}
+					this.count = res.count;
+					if (this.count == 0) {
+						this.noDataIsShow = true;
+						this.hasData = false;
+					}
+					if (parseInt(this.count) % this.pageSize === 0) {
+						this.allPage = this.count / this.pageSize;
+					} else {
+						this.allPage = parseInt(this.count / this.pageSize) + 1;
+					}
+					if (this.page === 1) {
+						this.goodsList = res.data;
+					}
+					if (this.page > 1) {
+						this.goodsList = this.goodsList.concat(
+							res.data
+						);
+					}
+					if (this.allPage <= this.page) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
+       }else{
+				 wx.showToast({
+          title: res.msg,
+          icon: "none",
+          duration: 1000
+        });
+			 }
+    },
     goUrl(url,param){
       this.isJump = true
       setTimeout(() => {
