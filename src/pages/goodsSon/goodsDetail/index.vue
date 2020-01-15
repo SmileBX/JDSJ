@@ -186,8 +186,8 @@
                     <div class="right jus-b">
                         <div>
                             <p class="tit">{{proInfo.ProductName}}</p>
-                            <span>
-                                <span class="fuhao">￥</span>{{SpecInfo.PunitPrice===undefined?proInfo.ProductPrice:SpecInfo.PunitPrice}}</span>
+                            <span><span class="fuhao">￥</span>{{SpecInfo.PunitPrice===undefined?proInfo.ProductPrice:SpecInfo.PunitPrice}}</span>
+                            <p class="font_four">库存：{{reStock}}</p>
                                 <!-- :SpecInfo.PunitPrice -->
                         </div>
                         <span @click="hidePopup" class="chacha">+</span>
@@ -202,20 +202,24 @@
                 </div>
                 <div class="two jus-b ali-c">
                     <span>购买数量</span>
-                    <!-- <span>x1</span> -->
                     <div class="ali-c">
                         <span @click="suan(1)">-</span>
-                        <input type="number" v-model="goodsNum">
+                        <input type="number" v-model="goodsNum" disabled>
                         <span @click="suan(2)">+</span>
                     </div>
                 </div>
             </div>
             <div class="flex bot">
-              <block v-if="showbtntype==0">
-                <p class="flex1 jus-c ali-c" @click="gocart">加入购物车</p>
-                <p class="flex1 jus-c ali-c" @click="gouBuy">立即购买</p>
+              <block v-if="reStock>0">
+                <block v-if="showbtntype==0">
+                  <p class="flex1 jus-c ali-c" @click="gocart">加入购物车</p>
+                  <p class="flex1 jus-c ali-c btn_red" @click="gouBuy">立即购买</p>
+                </block>
+                <p v-else class="flex1 jus-c ali-c btn_red" @click="confirmBtn">确定</p>
               </block>
-              <p v-else class="flex1 jus-c ali-c" @click="confirmBtn">确定</p>
+              <block v-else>
+                <p class="flex1 jus-c ali-c">商家补货中</p>
+              </block>
             </div>
         </div>
         <!-- 优惠券弹窗 -->
@@ -287,13 +291,16 @@ export default {
       isMatch:false,//是否已匹配sku
       ShareMemberid:"",//分享的会员id
       showCoupon:false,//是否显示优惠券弹窗
+      reStock:0,//库存
+      maxbuy:0,//最大购买量
+      minbuy:1, //最小购买量
     }
   },
   onLoad(){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.shopid = wx.getStorageSync("shopid");
-    this.proId=this.$root.$mp.query.id||3;
+    this.proId=this.$root.$mp.query.id;
   },
   onShow(){
     this.goodsNum = 1
@@ -332,9 +339,12 @@ export default {
         const please = JSON.parse(item.SpecValue)
         if(this.isObjectValueEqual(please,this.SpecValue)){
           this.SpecInfo = item//匹配到的sku
+          this.reStock=item.ProStock;
+          if(this.reStock==0){
+            console.log("库存不足")
+          }
           this.SpecText = this.SpecInfo.SpecText;
           this.isMatch=true;
-          console.log(this.SpecInfo)
         }
       })
     },
@@ -350,6 +360,7 @@ export default {
         }
         return true;
     },
+    
     // 显示sku
     showSku(type){
       this.showPopupSku = true;
@@ -372,11 +383,49 @@ export default {
       })
     },
     suan(tip){
-        if(tip==1&&this.goodsNum!=1){
+      if(tip==1){
+        if(this.goodsNum>1){
+          if(this.goodsNum>this.minbuy){
             this.goodsNum--
-        }else if(tip==2){
-            this.goodsNum++
+          }else{
+            this.goodsNum=this.minbuy;
+            wx.showToast({
+							title: this.minbuy+'件起购',
+							icon:"none",
+							duration: 1500
+						});
+          }
         }
+
+      }else if(tip==2){
+        if(this.maxbuy==0){
+          if(this.goodsNum>=this.reStock){
+            this.goodsNum=this.reStock;
+            wx.showToast({
+							title: "库存不足！",
+							icon:"none",
+							duration: 1500
+						});
+          }else{
+            this.goodsNum++
+          }
+        }else{
+          if(this.reStock>=this.goodsNum){
+            if(this.goodsNum<this.maxbuy){
+              this.goodsNum++
+            }else{
+              this.goodsNum=this.maxbuy;
+              wx.showToast({
+                title: "限购"+this.maxbuy+"件",
+                icon:"none",
+                duration: 1500
+              });
+            }
+          }else{
+            this.goodsNum=this.reStock;
+          }
+        }
+      }
     },
     //统一的关闭弹窗方法
     hidePopup() {
@@ -476,6 +525,9 @@ export default {
         this.BannerNum=res.data.ProductImgList.length;
         this.IsCollect=res.data.IsCollectionPro;
         this.specList = JSON.parse(res.data.SpecificationValue);
+        this.reStock=res.data.Stock;
+        this.maxbuy=res.data.MaxBuyNum;//最大购买量
+        this.minbuy=res.data.MinBuyNum; //最小购买量
         if(!res.data.ProductSpecList.length){
           this.isMatch=true;
         }
@@ -967,10 +1019,10 @@ export default {
         height: 98rpx;
         color: #fff;
         font-size: 28rpx;
-        p:nth-child(1){
+        p{
             background-color: #fda33a;
         }
-        p:nth-child(2){
+        p.btn_red{
             background-color: #ff3333;
         }
     }
