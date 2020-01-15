@@ -114,7 +114,7 @@ export default {
         this.showCancel = true
         this.cancelGoodsId = id
       }else if(str==='去支付'){
-        console.log('zhifu')
+        this.ConfirmWeiXinSmallPay(id);
       }else if(str==='查看物流'){
         this.goUrl('/pages/myson2/orderRoute/main',id)
       }else if(str==='提醒发货'){
@@ -223,6 +223,38 @@ export default {
       this.list = []
       this.getList()
       // console.log(this.tabIndex,"this.tabIndex")
+    },
+    //微信支付需参数
+    async ConfirmWeiXinSmallPay(no){
+      let result = await post('Pay/WeiXinSmallPayByOrder',{
+        OrderNo:no,
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token"),
+        WxCode:wx.getStorageSync("wxCode"),
+				WxOpenid:wx.getStorageSync("openId")
+      })
+      let payData=JSON.parse(result.data.JsParam)
+      if(result.code==0){
+        let _this=this;
+        wx.requestPayment({
+          timeStamp: payData.timeStamp,
+          nonceStr: payData.nonceStr,
+          package: payData.package,
+          signType: payData.signType,
+          paySign: payData.paySign,
+          success(res) {
+              wx.redirectTo({
+                url: "/pages/goodsSon/paysuccess/main?OrderNo="+no
+              })
+            },
+          fail(res) {
+            console.log(res);
+            wx.redirectTo({
+              url: "/pages/goodsSon/paysuccess/main?OrderNo="+no+"&msg=fail"
+            })
+          }
+        })
+      }
     },
   },
 }

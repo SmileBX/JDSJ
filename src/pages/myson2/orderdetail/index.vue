@@ -73,7 +73,7 @@
       </div>
       <div class="flex justifyContentEnd pp2 bg_fff mt2 bb_fix">
           <p class="btn btn_gray">取消</p>
-          <p class="btn btn_red">去支付</p>
+          <p class="btn btn_red" @click="ConfirmWeiXinSmallPay()">去支付</p>
       </div>
   </div>
 </template>
@@ -120,7 +120,40 @@ export default {
       }).then(res=>{
         this.info = res.data
       })
-    }
+    },
+    //微信支付需参数
+    async ConfirmWeiXinSmallPay(){
+      let result = await post('Pay/WeiXinSmallPayByOrder',{
+        OrderNo:this.$mp.query.id,
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token"),
+        WxCode:wx.getStorageSync("wxCode"),
+				WxOpenid:wx.getStorageSync("openId")
+      })
+      let payData=JSON.parse(result.data.JsParam)
+      if(result.code==0){
+        let _this=this;
+        wx.requestPayment({
+          timeStamp: payData.timeStamp,
+          nonceStr: payData.nonceStr,
+          package: payData.package,
+          signType: payData.signType,
+          paySign: payData.paySign,
+          success(res) {
+              wx.redirectTo({
+                url: "/pages/goodsSon/paysuccess/main?OrderNo="+_this.$mp.query.id
+              })
+            },
+          fail(res) {
+            console.log(res);
+            wx.redirectTo({
+              url: "/pages/goodsSon/paysuccess/main?OrderNo="+_this.$mp.query.id+"&msg=fail"
+            })
+          }
+        })
+      }
+    },
+
   },
 }
 </script>

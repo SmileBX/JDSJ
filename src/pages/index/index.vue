@@ -100,7 +100,7 @@ export default {
       userId: "",
 			token: "",
       shopid:"",
-      shopName:"集店",
+      shopName:"",
       banner:[],
       hasData:false,
 			noDataIsShow: false,//没有数据的提示是否显示
@@ -173,7 +173,7 @@ export default {
         ShopId:this.shopid
       })
       if(res.code==0){
-        this.shopName=res.data.ShopInfo.companyName;
+        this.shopName=res.data.ShopInfo.shopNick;
       }
     },
     async GetShopRecruitment(){
