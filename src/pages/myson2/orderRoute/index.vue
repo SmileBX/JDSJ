@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class='goods-box ali-c'>
-      <img :src="imgUrl" alt="">
+      <img :src="msg.logo" alt="">
       <div>
-        <p><span>物流公司：</span>{{msg.companyName}}</p>
-        <p class="ali-c"><span>物流单号：</span>{{msg.nu}}<span class="copy ali-c jus-c" @click="cop">复制</span></p>
+        <p><span>物流公司：</span>{{msg.kuaidiInfo.companyName}}</p>
+        <p class="ali-c"><span>物流单号：</span>{{msg.kuaidiInfo.nu}}<span class="copy ali-c jus-c" @click="cop">复制</span></p>
         <!-- <p>预计8月22日送达</p> -->
       </div>
     </div>
@@ -14,7 +14,7 @@
       <p>[收货地址] {{address}}</p>
     </div>
     <div class="route-box">
-      <div class="list-box ali-c" v-for="(item, index) in msg.data" :key="index">
+      <div class="list-box ali-c" v-for="(item, index) in msg.kuaidiInfo.data" :key="index">
         <div class="list ali-c">
           <img :src="index==0?'http://jd.wtvxin.com/images/images/icons/l_active.png':'http://jd.wtvxin.com/images/images/icons/ll.png'" alt="">
           <div>
@@ -65,14 +65,14 @@ export default {
       post('Order/GetLogistics',{//物流信息
         UserId:wx.getStorageSync("userId"),
         Token:wx.getStorageSync("token"),
-        OrderNo:this.$mp.query.orderNumber
+        OrderNo:this.$mp.query.id
       }).then(res=>{
-        this.msg = JSON.parse(res.data)
+        this.msg = res.data
         console.log(this.msg)
         post('Order/OrderDetails',{//订单详情
           UserId:wx.getStorageSync("userId"),
           Token:wx.getStorageSync("token"),
-          OrderNo:this.msg.orderNo
+          OrderNo:this.$mp.query.id
         }).then(resu=>{
           console.log(resu)
           this.address = resu.data.Address
