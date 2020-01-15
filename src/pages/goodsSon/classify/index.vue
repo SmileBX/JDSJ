@@ -4,7 +4,7 @@
         <img class="bg" mode='aspectFill' :src="datainfo.bannerPicNo" alt="">
         <div class="main">
           <div class="flexc search-box">
-            <div class="search flexc">
+            <div class="search flexc" @click="goSearch">
               <img src="http://jd.wtvxin.com/images/images/index/search_b.png" alt="">
               <span>搜索本店商品</span>
             </div>
@@ -49,6 +49,11 @@ export default {
     goUrl(id,name){
       wx.navigateTo({
         url:'/pages/goodsSon/classifyDetail/main?cid='+id+'&name='+name
+      })
+    },
+    goSearch(){
+       wx.navigateTo({
+        url:'/pages/goodsSon/goodsSearch/main'
       })
     },
     async GetMerchantDetail(){

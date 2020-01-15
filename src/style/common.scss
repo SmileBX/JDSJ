@@ -139,8 +139,8 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 /*字体24rpx*/
 
 .font_four {
-    font-size: 24rpx;
-    color: #9999
+    font-size: 24rpx !important;
+    color: #999999 !important
 }
 
 .font22 {
@@ -148,7 +148,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 }
 
 .fontColor {
-    color: #9999
+    color: #999999
 }
 
 .color_white {
