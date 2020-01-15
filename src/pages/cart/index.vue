@@ -17,11 +17,12 @@
                             <div class="left" @click="selectStyle(item,index,item.select,item.disBuy,$event)">
                               <input type="checkbox" class="checkbox-cart" :checked="item.select">
                             </div>
-                            <div class="flex justifyContentBetween">
-                                <img :src="item.ProductImg" alt="" class="shop" @click="goUrl('/pages/goodsSon/goodsDetail/main?id='+item.ProductId)">
+                            <div class="flex justifyContentBetween p_re">
+                                <span v-if="item.TabFlashSale==1" class="tag tag-limit">限时</span>
+                                <img :src="item.ProductImg" alt="" class="shop" @click="goUrl('/pages/goodsSon/goodsDetail/main?id='+item.ProductId+'&isLimint='+item.TabFlashSale)">
                                 <div class="flex1 mr2 txtbox">
-                                    <div class="twoline" @click="goUrl('/pages/goodsSon/goodsDetail/main?id='+item.ProductId)">{{item.ProductName}}</div>
-                                    <span class="mt1 spec" v-if="item.SpecText" @click="showSKU(item.Id,index)">
+                                    <div class="twoline" @click="goUrl('/pages/goodsSon/goodsDetail/main?id='+item.ProductId+'&isLimint='+item.TabFlashSale)">{{item.ProductName}}</div>
+                                    <span class="mt1 spec" v-if="item.SpecText" @click="showSKU(item.Id,index,item.TabFlashSale)">
                                         <span class="cg font24">{{item.SpecText}}</span>
                                         <img src="http://jd.wtvxin.com/images/images/icons/down.png" alt="" class="down">
                                     </span>
@@ -41,7 +42,6 @@
               </div>
           </div>
           <!--底部按钮-->
-        <div style="height: 100rpx;"></div>  
         <div class="flex btn_bot flexAlignCenter justifyContentBetween">
           <div class="left btn_left" @click="Allcheck()">
             <input type="checkbox" class="checkbox-cart" :checked="allSelect">
@@ -105,7 +105,8 @@
                     <div class="right jus-b">
                         <div>
                             <p class="tit">{{proInfo.ProductName}}</p>
-                            <span><span class="fuhao">￥</span>{{SpecInfo.PunitPrice===undefined?proInfo.ProductPrice:SpecInfo.PunitPrice}}</span>
+                            <span v-if="proInfo.FlashSaleprice">{{proInfo.FlashSaleprice}}</span>
+                            <span v-else><span class="fuhao">￥</span>{{SpecInfo.PunitPrice===undefined?proInfo.ProductPrice:SpecInfo.PunitPrice}}</span>
                             <p class="font_four">库存：{{reStock}}</p>
                                 <!-- :SpecInfo.PunitPrice -->
                         </div>
@@ -371,7 +372,7 @@ export default {
       }
     },
     // 获取购物车sku
-    async showSKU(id,index){
+    async showSKU(id,index,isFlashSale){
       this.editSkuIndex=index;
       this.specList=[];
       this.SpecText="";
@@ -383,9 +384,13 @@ export default {
         CartId: id
       });
       if(res.code==0){
+        let _this=this;
         this.proInfo=res.data;
         this.specList = JSON.parse(res.data.SpecificationValue);
         this.reStock=res.data.ProductStock;
+        if(isFlashSale==1){
+          this.$set(_this.proInfo, "FlashSaleprice", _this.cartList[index].SalePrice);
+        }
         var query = wx.createSelectorQuery();
         setTimeout(() => {
           var query = wx.createSelectorQuery();
@@ -543,7 +548,15 @@ export default {
       }
     },
   },
-  
+  onPullDownRefresh() {
+			//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
+			let _this=this;
+				_this.cartlist = [];
+			setTimeout(function () {
+				_this.getCartList();
+				wx.stopPullDownRefresh();  //停止下拉刷新动画
+			}, 1000);
+		}
 }
 </script>
 
@@ -572,6 +585,7 @@ export default {
     .cart_shop{
       padding:30rpx;border-radius:15rpx;
     }
+    padding-bottom: 120rpx;
   }
   .shopcart_item{
     margin-top:20rpx;
@@ -587,6 +601,17 @@ export default {
       padding:0 20rpx;
     }
     .txtbox{ width: 400rpx}
+    .tag{
+       position: absolute; 
+       left: 0; 
+       top: 10rpx; 
+       z-index: 3;
+       background: #f0370b;
+       color: #fff; 
+       font-size: 24rpx; 
+       padding: 2rpx 16rpx;
+       border-radius: 0 100px 100px 0;
+    }
   }
   .btn_bot{
   position:fixed;

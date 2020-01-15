@@ -281,6 +281,12 @@
 					"pathName": "pages/myson/collect/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "限时购",
+					"pathName": "pages/goodsSon/rob/main",
+					"scene": null
 				}
 			]
 		}
