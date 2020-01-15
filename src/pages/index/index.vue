@@ -2,8 +2,8 @@
   <div>
     <div class="top">
       <div class="search ali-c">
-        <p class="oneline">{{shopName}}</p>
-        <div class="right flexc" @click="goUrl('/pages/goodsSon/goodsSearch/main')">
+        <p class="oneline shopName">{{shopName}}</p>
+        <div class="right flexc flex1" @click="goUrl('/pages/goodsSon/goodsSearch/main')">
           <img src="http://jd.wtvxin.com/images/images/index/search.png" alt="">
           <span>搜索</span>
         </div>
@@ -145,7 +145,6 @@ export default {
       this.shopid = decodeURIComponent(e.shopid);
       wx.setStorageSync("shopid", this.shopid);
     }
-    wx.setStorageSync("shopid", "50FB070743F1853A");
   },
   onShow(){
     if(wx.getStorageSync("shopid")){
@@ -485,10 +484,13 @@ export default {
   .search{
     height: 60rpx;
     padding: 0 30rpx;
+    .shopName{
+      max-width: 70%;
+    }
     p{
       font-size: 48rpx;
       color: #fff;
-      margin-right: 50rpx;
+      margin-right: 30rpx;
     }
     .right{
       width: 301rpx;

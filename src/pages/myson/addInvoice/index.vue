@@ -35,7 +35,7 @@
           <label class="weui-label">电话号码</label>
         </div>
         <div class="weui-cell__bd">
-          <input type="text" class="weui-input" v-model="phone" placeholder="选填">
+          <input type="text" class="weui-input" v-model="regCall" placeholder="选填">
         </div>
       </div>
       <div class="weui-cell" v-if="invoiceType===1">
@@ -63,7 +63,7 @@
           <p class="font24 cg">请先与公司财务确认需要开具的是专用发票</p>
         </div>
         <div class="">
-          <switch :checked="checked" color="#f00000" @change="tab"/>
+          <switch :checked="isOpen" color="#f00000" @change="switchStatus"/>
         </div>
       </div>
       <div class="weui-cell" v-if="invoiceType===2">
@@ -115,13 +115,12 @@
   </div>
 </template>
 <script>
-import { post, toLogin, trim } from "@/utils";
+import { post, trim } from "@/utils";
 export default {
   onLoad() {
     this.setBarTitle();
   },
   onShow() {
-    this.curPage = getCurrentPageUrlWithArgs();
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.initData();
@@ -133,7 +132,6 @@ export default {
   data() {
     return {
       invoiceId: "", //编辑的时候传进来的id
-      curPage: "",
       checked: true,
       isDefault: 1,
       invoiceType: 2, //1:个人；2：公司
@@ -316,7 +314,7 @@ export default {
     getInvoiceInfo() {
       //获取发票信息
       post(
-        "About/GetInfo",
+        "Invoice/GetInvoiceInfo",
         {
           Id: this.invoiceId,
           UserId: this.userId,
@@ -336,8 +334,8 @@ export default {
             this.isVATExclusive = res.data.IsVATExclusive;
           }
           if(res.data.InvoiceTitle===1){  //个人的时候
-            this.phone = res.data.Phone;
-            this.email = res.data.Email;
+            this.regCall = res.data.RegCall;
+            this.email = res.data.QQEmail;
           }
           if (this.isVATExclusive === 1) {
             this.isOpen = true;
@@ -354,23 +352,22 @@ export default {
       let that = this;
       //新增发票信息
       post(
-        "About/Addinvoice",
+        "Invoice/AddInvoice",
         {
           UserId: that.userId,
           Token: that.token,
-          InvoiceTitle: that.invoiceType, //1:个人；2：单位公司
-          HeaderName: that.headerName, //发票抬头
-          Phone: that.phone, //个人的电话  选填
-          Email: that.email, //个人的邮箱  选填
-          RegCall: that.regCall, //公司电话
-          IsDefault: that.isDefault, //是否默认；0：否，1：是
-          TaxNumber: that.taxNumber, //发票税号
-          BankName: that.bankName, //开户银行
-          BankAccount: that.bankAccount, //银行账号
-          RegAddress: that.regAddress, //注册地址
+          InvoiceTitle: that.invoiceType, //1:个人；2：单位公司+
+          HeaderName: that.headerName, //发票抬头+
+          // Phone: that.phone, //个人的电话  选填
+          QQEmail: that.email, //个人的邮箱  选填
+          RegCall: that.regCall, //公司电话+个人的电话
+          IsDefault: that.isDefault, //是否默认；0：否，1：是+
+          TaxNumber: that.taxNumber, //发票税号+
+          BankName: that.bankName, //开户银行+
+          BankAccount: that.bankAccount, //银行账号+
+          RegAddress: that.regAddress, //注册地址+
           IsVATExclusive: that.isVATExclusive
-        },
-        that.curPage
+        }
       ).then(res => {
         if (res.code === 0) {
           wx.showToast({
@@ -380,7 +377,7 @@ export default {
             success: function() {
               setTimeout(function() {
                 wx.redirectTo({
-                  url: "/pages/member2/invoiceList/main"
+                  url: "/pages/myson/invoiceList/main"
                 });
               }, 1500);
             }
@@ -391,21 +388,22 @@ export default {
     updateInvoice() {
       //编辑
       post(
-        "About/Updateinvoice",
+        "Invoice/UpdateInvoice",
         {
           Id: this.invoiceId,
           UserId: this.userId,
           Token: this.token,
           InvoiceTitle: this.invoiceType,
           HeaderName: this.headerName,
-          Phone: this.phone, //个人的电话  选填
-          Email: this.email, //个人的邮箱  选填
+          // Phone: this.phone, //个人的电话  选填
+          QQEmail: this.email, //个人的邮箱  选填
           RegCall: this.regCall,
           IsDefault: this.isDefault,
           TaxNumber: this.taxNumber,
           BankName: this.bankName,
           BankAccount: this.bankAccount,
-          RegAddress: this.regAddress
+          RegAddress: this.regAddress,
+          IsVATExclusive: this.isVATExclusive
         },
         this.curPage
       ).then(res => {
@@ -417,7 +415,7 @@ export default {
             success: function() {
               setTimeout(function() {
                 wx.redirectTo({
-                  url: "/pages/member2/invoiceList/main"
+                  url: "/pages/myson/invoiceList/main"
                 });
               }, 1500);
             }

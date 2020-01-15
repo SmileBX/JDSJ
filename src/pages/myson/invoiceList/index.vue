@@ -1,6 +1,6 @@
 <template>
   <div class="pageContent">
-    <div class="headnav">
+    <div class="headnav" v-if="false">
       <div @click="navIndex=0"><span :class="{'active':navIndex===0}">发票抬头</span></div>
       <div @click="navIndex=1"><span :class="{'active':navIndex===1}">开具发票</span></div>
     </div>
@@ -38,31 +38,7 @@
           <span class="cg mt2">您还没有发票抬头哦~</span>
           <span class="add_new" @tap="gotoAddInvoice(-1)">新建发票抬头</span>
     </div>
-    <div class="invoiceList" v-if="navIndex===1" style="margin-top:20rpx">
-      <div class="item" v-for="(item,index) in invList" :key="index">
-        <div class="item__bd .flex-center">
-          <input type="checkbox" class="checkbox-cart" style="margin-right:20rpx" 
-          :checked="item.hascheck"
-          @click="selectInv(index)"
-          >
-          <div>
-            <div class="remarks">
-              <text class="name">{{item.Dy.Name}}</text>
-            </div>
-            <div class="type">交易时间：{{item.Dy.AddTime}}</div>
-            <div class="type" >实付金额：<span style="color:#ff6666">￥{{item.Dy.PayAmount}}</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="noData center" v-if="invList.length==0&&navIndex===1" style="padding:60rpx 30rpx;">您暂时还没有可开票的订单！</div>
-      <div style="height:120rpx;"></div>
-      <div class="nextbox" v-if="invList.length>0&&navIndex===1">
-        <input type="checkbox" class="checkbox-cart" :checked=allSelect @click="selectAll">
-        <p>全选</p>
-        <div class="nextBtn" @click="nextBtn()">下一步</div>
-      </div>
-    </div>
-    <div class="noData center" style="padding:60rpx 30rpx;" v-if="hasDataList===false && hasDataList !=='' && page===1&& navIndex===0">暂无数据</div>
+    <div class="noData center" style="padding:60rpx 30rpx;" v-if="hasDataList===false && hasDataList !==''&& navIndex===0">暂无数据</div>
     <div class="ftBtn" style="height:100rpx" v-if="navIndex==0&&list.length>0">
       <div class="inner fixed bm0">
         <div class="btns">
@@ -72,69 +48,11 @@
         </div>
       </div>
     </div>
-    <!--弹层-->
-    <div class="mask" v-if="ShowMask" catchtouchmove="true" @click="cancle"></div>
-    <div class="maskType boxSize noParActive" v-if="ShowMask">
-      <div class="flex">
-            <span class="size" @click="cancle">取消</span>
-            <span class="title">请选择发票抬头</span>
-            <span class="size" @click="subConfirm">确定</span>
-      </div>
-      <scroll-view :scroll-y="true" style="height:480rpx;" class="showItem" @scrolltolower="loadMore">
-        <div v-for="(item,index) in list" :key="index">
-            <p :class="{'itemactive':invIndex == index}" @click="chose(index)" style="margin-top:3rpx;">{{item.HeaderName}}
-            </p>
-        </div>
-      </scroll-view>
-    </div>
-    <div class="fapiaobox" v-if="Showfp">
-      <div class="maskfp"  @click.stop="Showfp=false"></div>
-      <div class="box">
-        <div class="itemfp">
-          <span class="fptit">发票格式</span>
-          <div class="fptype">
-            <span :class="{'active':fptype==0}" @click="fptype=0">电子</span>
-            <span :class="{'active':fptype==1}" @click="fptype=1">纸质</span>
-          </div>
-        </div>
-        <div class="itemfp">
-          <span class="fptit">发票抬头</span>
-          <div class="txtbox" @click="selectfpId">
-            <input type="text" v-model="InvoiceTxt" disabled=false>
-          </div>
-        </div>
-        <div class="itemfp">
-          <span class="fptit">总金额</span>
-          <div class="fpprice">
-            <span class="price">{{allprice}}元</span><span>共{{selectlen}}个订单</span>
-          </div>
-        </div>
-        <div class="itemfp">
-          <span class="fptit">电子邮箱</span>
-          <div class="txtbox">
-            <input type="text" placeholder="请输入" v-model="MailBox">
-          </div>
-        </div>
-        <div class="artxt" v-if="fptype==1">
-          <span>地址</span>
-          <div>
-            <textarea placeholder="请输入详细地址" v-model="Address"></textarea>
-          </div>
-        </div>
-        <div class="artxt">
-          <span>备注信息</span>
-          <div>
-            <textarea  placeholder="请输入备注信息" v-model="Remark"></textarea>
-          </div>
-        </div>
-        <div class="fpBtn" @click="submit">提交</div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
 //引用成成拼租
-import { post, toLogin, trim } from "@/utils";
+import { post, trim } from "@/utils";
 export default {
   onLoad() {
     this.setBarTitle();
@@ -142,7 +60,6 @@ export default {
   onShow() {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    // this.curPage = getCurrentPageUrlWithArgs();
     this.pramas = ''
     if(this.$root.$mp.query.invoiceType && this.$root.$mp.query.invoiceType !==""){
         this.invoiceType = this.$root.$mp.query.invoiceType
@@ -150,8 +67,6 @@ export default {
     if(this.$root.$mp.query.url && this.$root.$mp.query.url !==""){
         this.pramas = this.$root.$mp.query.url
     }
-    
-    this.list = [{id:1,HeaderName:"哈哈哈",InvoiceTitlestr:"个人",TaxNumber:"3667964979656895659598"},{id:1,HeaderName:"哈哈哈",InvoiceTitlestr:"个人",TaxNumber:"3667964979656895659598"},{id:1,HeaderName:"哈哈哈",InvoiceTitlestr:"个人",TaxNumber:"3667964979656895659598"}];
     this.hasDataList = "";
     this.getInvoiceList();
     this.FeesOrderList();
@@ -159,25 +74,14 @@ export default {
   data() {
     return {
       navIndex:0,
-      invIndex:0,//发票index
       fptype:0,//发票格式 0电子 1纸质
       MailBox:"",//发票邮箱
-      Remark:"",
       Address:"",
       InvoiceIdF:"",//抬头Id；
       InvoiceTxt:"请选择",//抬头名称
-      allprice:0,
-      allSelect:false,//全选
-      selectlen:0,
-      ShowMask:false,
-      Showfp:false,
-      OrderId:[],
-      OrderIdTxt:"",
       userId: "",
       token: "",
-      curPage: "",
       list: [],
-      invList:[],
       invoiceType:"",
       pramas:"",
       hasDataList: "",
@@ -219,192 +123,14 @@ export default {
           }
         }
     },
-    selectfpId(){
-      this.Showfp=false;
-      this.ShowMask=true;
-    },
-    //全选
-    selectAll(){
-      var that=this;
-      if(this.allSelect){
-        this.allSelect=false;
-        this.selectlen=0;
-        this.invList.forEach(function(item) {
-          that.$set(item,"hascheck",false)
-        });
-        console.log(this.invList)
-      }else{
-        this.allSelect=true;
-        this.selectlen=this.invList.length;
-        this.invList.forEach(function(item) {
-          that.$set(item,"hascheck",true)
-        });
-        console.log(this.invList)
-      }
-    },
-    //单选
-    selectInv(index){
-      var that=this
-      var selectId=!this.invList[index].hascheck;console.log(selectId)
-      this.$set(this.invList[index],"hascheck",selectId);console.log(this.invList)
-      if(selectId){
-        this.selectlen++
-      }else{
-        this.selectlen--
-      }
-      var len=this.invList.length;
-      if(this.selectlen==len){
-        this.allSelect=true
-      }else{
-        this.allSelect=false
-      }
-    },
-    //下一步
-    nextBtn(){
-      if(this.selectlen==0){
-        wx.showToast({
-          icon:"none",
-          title:"请选择所需要开发票的订单！"
-        })
-      }else{
-        this.Showfp = true;
-        var that=this;
-        that.allprice=0;
-        that.OrderId=[];
-        that.invList.forEach(function(item) {console.log(item)
-          if(item.hascheck){
-            that.OrderId.push(item.Dy.Id);
-            that.allprice+=item.Dy.PayAmount;
-          }
-        });
-        that.allprice=that.allprice.toFixed(2)
-        that.OrderIdTxt=that.OrderId.join(",");console.log(that.OrderIdTxt)
-      }
-    },
-    //取消选择
-    cancle(){
-      this.ShowMask = false;
-      this.Showfp = true;
-      // this.showDefaultCompany = false
-      this.invIndex = 0;
-      this.OrderId=[]
-    },
-    //选择发票抬头
-    chose(index){
-      this.invIndex=index;
-    },
-    //确定选择
-    subConfirm(){
-      var that=this;
-      console.log(this.invIndex)
-      this.InvoiceIdF=this.list[this.invIndex].Id;
-      this.InvoiceTxt=this.list[this.invIndex].HeaderName;
-      this.ShowMask = false;
-      this.Showfp = true;
-      console.log(this.OrderId)
-    },
-    submit(){
-      if(this.Authentication()){console.log("11111111")
-        this.BatchApplyInvoice();
-      }
-    },
-    FeesOrderList() {  //获取开票订单列表
-      let that = this;
-      post(
-        "About/FeesOrderList",
-        {
-          UserId: that.userId,
-          Token: that.token,
-          Type:0
-        },
-        that.curPage
-      ).then(res => {
-        if (res.code === 0) {
-          that.invList = res.data;
-          that.invList.forEach(function(item) {console.log(item)
-            that.$set(item,"hascheck",false)
-          });
-          console.log(that.invList)
-        }
-      });
-    },
-    Authentication(){
-      if(this.InvoiceIdF==""){
-        wx.showToast({
-          icon:"none",
-          title:"请选择发票抬头！"
-        })
-        return false;
-      }
-      if(this.MailBox==""){
-        wx.showToast({
-          icon:"none",
-          title:"请输入邮箱地址！"
-        })
-        return false;
-      }else{
-        let reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-        if (!reg.test(this.MailBox)) {
-          wx.showToast({
-            title: "请输入正确的邮箱地址！",
-            icon: "none",
-            duration: 2000
-          });
-          return false;
-        }
-      }
-      if(this.fptype==1){
-        if(this.Address==""){
-          wx.showToast({
-            icon:"none",
-            title:"请输入地址！"
-          })
-          return false;
-        }
-      }
-      return true;
-    },
-    BatchApplyInvoice() {  //批量开票
-      let that = this;
-      post(
-        "About/BatchApplyInvoice",
-        {
-          UserId: that.userId,
-          Token: that.token,
-          OrderId:that.OrderIdTxt,
-          InvoiceId:that.InvoiceIdF,
-          Remark:that.Remark,
-          MailBox:that.MailBox,
-          Invoiceformat:that.fptype,
-        },
-        that.curPage
-      ).then(res => {
-        if (res.code === 0) {
-          that.Showfp=false;
-          wx.showToast({
-            title:res.msg,
-            icon:"none"
-          })
-        }else{
-          wx.showToast({
-            title:res.msg,
-            icon:"none"
-          })
-        }
-        setTimeout(() => {
-          that.FeesOrderList();
-        }, 1500);
-      });
-    },
     getInvoiceList() {  //获取发票列表
       let that = this;
       post(
-        "About/invoiceList",
+        "Invoice/GetAllInvoiceList",
         {
           UserId: that.userId,
           Token: that.token
-        },
-        that.curPage
+        }
       ).then(res => {
         if (res.code === 0) {
           if (res.data.length > 0) {
@@ -423,13 +149,12 @@ export default {
         return false;
       }
       post(
-        "About/SetDefaultinvoice",
+        "Invoice/SetDefaultInvoice",
         {
           UserId: that.userId,
           Token: that.token,
           Id: id
-        },
-        that.curPage
+        }
       ).then(res => {
         if (res.code === 0) {
           that.list.forEach((item, indexOf) => {
@@ -442,13 +167,6 @@ export default {
           wx.showToast({
             title: "设置默认发票成功！",
             icon: "none",
-            duration: 1500
-            // success:function(){
-            //   setTimeout(()=>{
-            //     that.list = [];
-            //     that.getInvoiceList();
-            //   },1500)
-            // }
           });
         }
       });
@@ -462,11 +180,11 @@ export default {
           cancelColor:'#999',
         success(res){
           if(res.confirm){
-            post("About/Deleteinvoice",{
+            post("Invoice/DeleteInvoice",{
               UserId: that.userId,
-                Token: that.token,
-                Id: id
-            },that.curPage).then(res => {
+              Token: that.token,
+              Id: id
+            }).then(res => {
               if (res.code === 0) {
                 wx.showToast({
                   title: "删除成功",

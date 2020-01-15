@@ -116,7 +116,7 @@ export default {
       }else if(str==='去支付'){
         console.log('zhifu')
       }else if(str==='查看物流'){
-        this.goUrl('/pages/myson2/orderRoute/main',id)
+
       }else if(str==='提醒发货'){
         post('Order/Remind',{
           UserId:wx.getStorageSync("userId"),
@@ -138,13 +138,9 @@ export default {
               icon:'none',
               title:res.msg
             })
-            this.list = []
-            this.isOver = false
-            this.isHaveData = false
-            this.getList()
         })
       }else if(str==='去评价'){
-        this.goUrl('/pages/myson/addcomment/main',id)
+
       }
     },
     confirmCencel(){//确认取消
@@ -156,9 +152,6 @@ export default {
           ReMarks:this.cancelText,
         }).then(res=>{
           this.showCancel = false
-          this.list = []
-          this.isOver = false
-          this.isHaveData = false
           this.getList()
           wx.showToast({
             icon:'none',

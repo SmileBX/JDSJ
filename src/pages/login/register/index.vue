@@ -4,7 +4,7 @@
       <div class="regLoginBox">
         <div class="logo">
           <div class="img">
-            <img src="http://jd.wtvxin.com/images/images/user.png" />
+            <img src="/static/logo.png" />
           </div>
         </div>
         <div class="from pd10">
