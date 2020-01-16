@@ -54,7 +54,7 @@
         </div>
         <div class="item" @click="ChooseInvoice">
           <h3>开票类型</h3>
-          <h4 class="flex-center">{{Invoicetxt}}<span @click.stop="delInvoicet" class="delinvoice">×</span><span class="icon"><van-icon name="arrow" color="#999"/></span> </h4>
+          <h4 class="flex-center">{{Invoicetxt}}<span v-if="InvoiceId>0" @click.stop="delInvoicet" class="delinvoice">×</span><span class="icon"><van-icon name="arrow" color="#999"/></span> </h4>
         </div>
       </div>
       <div class="price-box plr30">
@@ -232,6 +232,7 @@ export default {
       })
     },
     delInvoicet(){
+      wx.setStorageSync("invoiceinfo","");
       this.InvoiceId=0;//发票的id
       this.InvoiceType=0;//发票的类型
       this.Invoicetxt="不开发票";

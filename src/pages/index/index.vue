@@ -144,6 +144,7 @@ export default {
     if(decodeURIComponent(e.shopid)&&decodeURIComponent(e.shopid)!='undefined'){
       this.shopid = decodeURIComponent(e.shopid);
       wx.setStorageSync("shopid", this.shopid);
+      this.AddVisitShop();//添加浏览店铺
     }
   },
   onShow(){
@@ -175,6 +176,15 @@ export default {
       if(res.code==0){
         this.shopName=res.data.ShopInfo.shopNick;
       }
+    },
+    //添加浏览店铺
+    async AddVisitShop(){
+      let res=await post("Login/AddVisitShop",{
+        OpenId:wx.getStorageSync("openId"),
+        ShopId:this.shopid,
+        Lng:"",
+        Lat:""
+      })
     },
     async GetShopRecruitment(){
       let res=await post("Shop/GetShopRecruitment",{

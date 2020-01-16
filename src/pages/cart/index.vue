@@ -14,10 +14,14 @@
                       </div>
                       <div class="shopcar_list" v-for="(item,index) in cartList" :key="index">
                           <div class="shopcart_item flex justifyContentBetween flexAlignCenter">
-                            <div class="left" @click="selectStyle(item,index,item.select,item.disBuy,$event)">
-                              <input type="checkbox" class="checkbox-cart" :checked="item.select">
+                            <div class="left" @click="selectStyle(item,index,item.select,item.disBuy)">
+                              <input type="checkbox" :class="['checkbox-cart',item.disBuy?'disabled':'']" :checked="item.select" :disabled="item.disBuy">
                             </div>
                             <div class="flex justifyContentBetween p_re">
+                                <div v-if="item.IsBuy>0" class="discover"></div>
+                                <span v-if="item.IsBuy>0" class="tips">
+                                  {{item.IsBuy==1?"告罄":item.IsBuy==2?"下架":item.IsBuy==3?"预售":item.IsBuy==4?"库存不足":''}}
+                                </span>
                                 <span v-if="item.TabFlashSale==1" class="tag tag-limit">限时</span>
                                 <img :src="item.ProductImg" alt="" class="shop" @click="goUrl('/pages/goodsSon/goodsDetail/main?id='+item.ProductId+'&isLimint='+item.TabFlashSale)">
                                 <div class="flex1 mr2 txtbox">
@@ -26,11 +30,12 @@
                                         <span class="cg font24">{{item.SpecText}}</span>
                                         <img src="http://jd.wtvxin.com/images/images/icons/down.png" alt="" class="down">
                                     </span>
+                                    <p class="red fz12 mt_5" v-if="item.MinBuyNum>1">{{item.MaxBuyNum}}件起购</p>
+                                    <p class="red fz12 mt_5" v-if="item.MaxBuyNum>0">限购{{item.MaxBuyNum}}件</p>
                                     <div class="flex justifyContentBetween mt1">
                                         <p class="cr font30 flex ali-c">￥{{item.SalePrice}}</p>
                                         <div class="selNumRow flex ali-c">
-                                          <span class="red" v-if="item.MinBuyNum>1">{{item.MaxBuyNum}}件起购</span>
-                                          <span class="red" v-if="item.MaxBuyNum>0">限购{{item.MaxBuyNum}}件</span>
+                                          <span class="red" v-if="item.Stock<10">仅剩{{item.Stock}}件</span>
                                           <number-box :disabled="false" :value="item.Number" :min="item.MinBuyNum" :max="item.MaxBuyNum" v-on:change="change(arguments)" :index="index"></number-box>
                                         </div>
                                     </div>
@@ -276,11 +281,10 @@ export default {
       } 
     },
     //单选
-    selectStyle(item,index,select,disBuy,event) {
+    selectStyle(item,index,select,disBuy) {
       if(!this.isEdit){//未打开编辑按钮的单选
         if(disBuy){
           this.$set(item, "select", false);
-          event.preventDefault();
         }else{       
           if(select){
             if(this.selectlen>0){
@@ -590,6 +594,20 @@ export default {
   }
   .shopcart_item{
     margin-top:20rpx;
+    .discover{ position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: rgba(255,255,255,.6); z-index: 99;}
+    .tips{ 
+      position: absolute;
+      left: 0;
+      top: 132rpx;
+      width: 172rpx;
+      height: 40rpx;
+      line-height: 40rpx;
+      font-size: 24rpx;
+      background: #ccc;
+      color: #fff;
+      text-align: center;
+      z-index: 100;
+     }
     .shop{
       width:172rpx;height:172rpx;
     }
