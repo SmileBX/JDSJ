@@ -281,6 +281,12 @@
 					"pathName": "pages/myson/collect/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/myson2/order/main",
+					"pathName": "pages/myson2/order/main",
+					"scene": null
 				}
 			]
 		}

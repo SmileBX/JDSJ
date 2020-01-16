@@ -3,12 +3,12 @@
       <div class="or_list mt2">
         <div class="or_item bg_fff mt2 pw3">
             <div class="flex or_main">
-                <img :src="shopInfo.ShopLogo" alt="" class="shop">
+                <img :src="shopInfo.ProductImg" alt="" class="shop">
                 <div class="flex1 flex flexAlignCenter mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
                       <div>
-                        <p>{{shopInfo.orderDetails[0].ProductName}}</p>
-                        <p class="cg font24 mt1">规格：{{shopInfo.orderDetails[0].ProductSkuName}}</p>
+                        <p>{{shopInfo.ProductName}}</p>
+                        <p class="cg font24 mt1">规格：{{shopInfo.ProductSkuName}}</p>
                       </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@ export default {
     this.imgList = []
   },
   onShow(){
-    console.log(this.$mp.query.id) 
+    console.log(this.$mp.query) 
     this.getDetail()
   },
   watch: {
@@ -85,7 +85,7 @@ export default {
           UserId:wx.getStorageSync("userId"),
           Token:wx.getStorageSync("token"),
           OrderNo:this.$mp.query.id,
-          OrderDetailId:this.shopInfo.orderDetails[0].Id,
+          OrderDetailId:this.$mp.query.goodsId,
           ProductStarNum:this.score,
           LogisticsStarNum:this.score,
           ServiceStarNum:this.score,
@@ -136,7 +136,12 @@ export default {
         Token:wx.getStorageSync("token"),
         OrderNo:this.$mp.query.id,
       }).then(res=>{
-        this.shopInfo = res.data
+        // this.shopInfo = res.data
+        res.data.orderDetails.forEach(item=>{
+          if(item.Id==this.$mp.query.goodsId){
+            this.shopInfo = item
+          }
+        })
       })
     },
     goUrl(url,param){
