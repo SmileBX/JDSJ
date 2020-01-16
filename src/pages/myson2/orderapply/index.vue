@@ -2,9 +2,13 @@
   <div class="apply">
       <div class="pp3 bg_fff">
           <div>退款原因</div>
-          <div class="flex reason_in flexAlignCenter mt2">
-              <input type="text" placeholder="请选择退款原因" class="flex1">
-              <img src="http://jd.wtvxin.com/images/images/icons/down.png" alt="" class="icon_down">
+          <div class="flex reason_in flexAlignCenter mt2" @click="showList=!showList">
+              <!-- <input type="text" placeholder="请选择退款原因" class="flex1"> -->
+              <p class="flex1">{{changeReason.message||'请选择退款原因'}}</p>
+              <img :class="{'rot':!showList}" src="http://jd.wtvxin.com/images/images/icons/down.png" alt="" class="icon_down">
+              <div class="list-box" v-if="showList">
+                <p class="list ali-c" @click="cliList(item)" v-for="(item, index) in reasonList" :key="index">{{item.message}}</p>
+              </div>
           </div>
           <div class="mt3">退款金额 <span class="cr mr2">¥ 1980</span> </div>
           <div class="mt3">退款说明 <span class="font22 cg">(选填)</span> </div>
@@ -19,20 +23,32 @@
 </template>
 
 <script>
-import {switchPath,isJump} from '@/utils'
+import {post,get} from '@/utils'
 export default {
 
   data () {
     return {
-     
-      
+      reasonList:[],
+      showList:false,
+      changeReason:{}
     }
   },
   
   onShow(){
-    
+    this.showList = false
+    console.log(this.$mp.query)
+    this.getReason()
   },
   methods: {
+    cliList(item){
+      this.changeReason = item
+    },
+    getReason(){
+      get('Order/GetRefundReason').then(res=>{this.reasonList = res.data})
+    },
+    getGoodsDetail(){
+      
+    },
     goUrl(url,param){
       this.isJump = true
       setTimeout(() => {
@@ -48,14 +64,36 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+.rot{
+  transform: rotate(-90deg)
+}
   .reason_in{
     border:1rpx solid #f5f5f5;
+    height: 88rpx;
     padding:0 20rpx;border-radius:15rpx;
+    position: relative;
+    .list-box{
+      width: 690rpx;
+      position: absolute;
+      left: 0rpx;
+      top: 88rpx;
+      background-color: #fff;
+      z-index: 999;
+      border-left: 1rpx solid #ededed;
+      border-right: 1rpx solid #ededed;
+      border-bottom: 1rpx solid #ededed;
+      .list{
+        height: 80rpx;
+        padding-left: 30rpx;
+        color: #666;
+        border-bottom: 1rpx solid #ededed;
+      }
+    }
     input{
       height:80rpx;
     }
     .icon_down{
-      width:24rpx;height:12rpx;
+      width:24rpx;height:12rpx;transition: all .2s
     }
   }
   .reas_text{
