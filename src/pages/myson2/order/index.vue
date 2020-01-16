@@ -30,21 +30,31 @@
                 <p class="btn btn_red" @click="cliListBtn(btnb[1],item.OrderNumber)" v-if="item.StatusId==1">{{btnb[1]}}</p>
                 <p class="btn btn_gray" @click="cliListBtn(btna[2],item.OrderNumber)" v-if="item.StatusId==2">{{btna[2]}}</p>
                 <p class="btn btn_red" @click="cliListBtn(btnb[2],item.OrderNumber)" v-if="item.StatusId==2">{{btnb[2]}}</p>
-                <p class="btn btn_red" @click="cliListBtn(btnb[3],item.OrderNumber)" v-if="item.StatusId==3">{{btnb[3]}}</p>
+                <p class="btn btn_red" @click="cliListBtn(btnb[3],item.OrderNumber,item.orderDetails)" v-if="item.StatusId==3">{{btnb[3]}}</p>
             </div>
         </div>
       </div>
       <!-- 取消弹框 -->
       <div class="cancel" v-if="showCancel">
-      <div class="main">
-        <p class="tit ali-c">取消原因</p>
-        <p class="list jus-c ali-c" @click="cliCencel(index,item)" :class="cancelActive==index?'active':''" v-for="(item, index) in cancelList" :key="index">{{item.message}}</p>
-        <div class="btn-box flex">
-          <span class="flex1 ali-c jus-c" @click="showCancel=false">返回</span>
-          <span class="flex1 ali-c jus-c" @click="confirmCencel()">确认取消</span>
+        <div class="main">
+          <p class="tit ali-c">取消原因</p>
+          <p class="list jus-c ali-c" @click="cliCencel(index,item)" :class="cancelActive==index?'active':''" v-for="(item, index) in cancelList" :key="index">{{item.message}}</p>
+          <div class="btn-box flex">
+            <span class="flex1 ali-c jus-c" @click="showCancel=false">返回</span>
+            <span class="flex1 ali-c jus-c" @click="confirmCencel()">确认取消</span>
+          </div>
         </div>
       </div>
-    </div>
+
+      <div class="change-goods flexc" v-if="showChange" @click="showChange=false">
+        <div class="main">
+          <div class="tit">请选择要评价的商品</div>
+          <div class="list ali-c jus-b" v-for="(item, index) in needChangeGoods" @click.stop="changeGoods(item.Id)" :key="index">
+            <img :src="item.ProductImg" alt="">
+            <p>{{item.ProductName}}</p>
+          </div>
+        </div>
+      </div>
 
       <p class="list-data" v-if="isHaveData">您暂无该项订单数据~</p>
       <p class="list-data" v-if="isOver">没有更多了~</p>
@@ -74,7 +84,10 @@ export default {
       list:[],
       isHaveData:false,
       isOver:false,
-      shopName:''
+      shopName:'',
+      needChangeGoods:[],
+      showChange:false,
+      changeNumId:'',//评价多商品订单时选中的订单id
     }
   },
   computed: {
@@ -89,6 +102,9 @@ export default {
     }
   },
   onShow(){
+    this.changeNumId = ''
+    this.needChangeGoods = []
+    this.showChange = false
     this.page = 1
     this.isOver = false
     this.isHaveData = false
@@ -104,12 +120,15 @@ export default {
     this.getCancelList()
   },
   methods: {
+    changeGoods(id){
+      this.goUrl('/pages/myson/addcomment/main',this.changeNumId,id)
+    },
     getCancelList(){
       get('Order/CancelReason').then(res=>{
         this.cancelList = res.data
       })
     },
-    cliListBtn(str,id){
+    cliListBtn(str,id,goods){
       if(str==='取消'){
         this.showCancel = true
         this.cancelGoodsId = id
@@ -144,7 +163,14 @@ export default {
             this.getList()
         })
       }else if(str==='去评价'){
-        this.goUrl('/pages/myson/addcomment/main',id)
+        if(goods.length==1){
+          this.goUrl('/pages/myson/addcomment/main',id,goods[0].Id)
+        }else{
+          this.showChange = true
+          this.needChangeGoods = goods
+          this.changeNumId = id
+        }
+        
       }
     },
     confirmCencel(){//确认取消
@@ -207,9 +233,9 @@ export default {
         }
       })
     },
-    goUrl(url,param){
+    goUrl(url,param,param2){
         wx.navigateTo({
-          url:url+'?id='+param
+          url:url+'?id='+param+'&goodsId='+param2
         })
     },
     cliServer(index){
@@ -261,6 +287,36 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+.change-goods{
+  background-color: rgba(0,0,0,0.4);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  .main{
+    background-color: #fff;
+    width: 500rpx;
+    border-radius: 20rpx;
+    overflow: hidden;
+    .tit{
+      text-align: center;
+      line-height: 88rpx;
+      font-weight: 900;
+      border-bottom: 1rpx solid #ededed;
+    }
+    .list{
+      height: 120rpx;
+      padding: 0 30rpx;
+      border-bottom: 1rpx solid #ededed;
+      img{
+        width: 80rpx;
+        height: 80rpx;
+        border-radius: 10rpx;
+      }
+    }
+  }
+}
 .cancel{
   // display: none;
   position: fixed;
