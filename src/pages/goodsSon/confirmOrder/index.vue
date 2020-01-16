@@ -52,9 +52,9 @@
           <h3>优惠劵</h3>
           <h4 class="flex-center"><span :class="[couponid>0?'red':'']">{{coupontxt}}</span> <span class="icon"><van-icon name="arrow" color="#999"/></span></h4>
         </div>
-        <div class="item" style="display:none">
+        <div class="item" @click="ChooseInvoice">
           <h3>开票类型</h3>
-          <h4 class="flex-center">不开发票<span class="icon"><van-icon name="arrow" color="#999"/></span> </h4>
+          <h4 class="flex-center">{{Invoicetxt}}<span @click.stop="delInvoicet" class="delinvoice">×</span><span class="icon"><van-icon name="arrow" color="#999"/></span> </h4>
         </div>
       </div>
       <div class="price-box plr30">
@@ -135,6 +135,11 @@ export default {
       hasaddress:false,//是否有地址
       addressId:"",//地址的id
       addressinfo:{},//地址信息
+      InvoiceId: 0,//发票的id
+      InvoiceType: 0,//发票的类型
+      InvoiceEmail:"",
+      InvoiceInfo:{},//发票信息
+      Invoicetxt:"不开发票",//发票文本
       CouponList:{},//可用优惠券列表
       couponindex:0,//当前选中优惠券
       couponItem:{},//当前选中优惠券信息
@@ -175,6 +180,18 @@ export default {
     }else{
       this.getAdress();
     }
+    if(wx.getStorageSync("invoiceinfo")){
+      this.InvoiceInfo=wx.getStorageSync("invoiceinfo");
+      this.InvoiceId=this.InvoiceInfo.Id;//发票的id
+      this.InvoiceType=this.InvoiceInfo.InvoiceTitle;//发票的类型
+      this.Invoicetxt=this.InvoiceInfo.InvoiceTitlestr+"："+this.InvoiceInfo.HeaderName;
+      this.InvoiceEmail=this.InvoiceInfo.QQEmail;
+    }else{
+      this.InvoiceId=0;//发票的id
+      this.InvoiceType=0;//发票的类型
+      this.Invoicetxt="不开发票";
+      this.InvoiceEmail="";
+    }
     if(this.sourceType==1){//购物车
       this.GetConfirmOrderGoods();
     }else{//详情页
@@ -208,7 +225,18 @@ export default {
         } 
       }
     },
-
+    //选择发票
+    ChooseInvoice(){
+      wx.navigateTo({
+        url:'/pages/myson/invoiceList/main?pagetype=confirm&checkId='+this.InvoiceId
+      })
+    },
+    delInvoicet(){
+      this.InvoiceId=0;//发票的id
+      this.InvoiceType=0;//发票的类型
+      this.Invoicetxt="不开发票";
+      this.InvoiceEmail="";
+    },
     //获取已领可用优惠券
     async getCouponList(){
       let para ={};
@@ -401,6 +429,9 @@ export default {
         Token: this.token,
         CartIds:this.cartids,
         AddressId:this.addressId,
+        InvoiceId: this.InvoiceId,//发票的id
+        InvoiceType: this.InvoiceType,//发票的类型
+        InvoiceEmail:this.InvoiceEmail,//发票邮箱
         MemberCouponId:this.couponid,
         OrderRemarks:remark
       })
@@ -433,6 +464,9 @@ export default {
         ProId:this.cartids,
         Number:this.buynum,
         AddressId:this.addressId,
+        InvoiceId: this.InvoiceId,//发票的id
+        InvoiceType: this.InvoiceType,//发票的类型
+        InvoiceEmail:this.InvoiceEmail,//发票邮箱
         SpecText:this.SpecText,
         Remark:this.orderRemarksArr,
         MemberCouponId:this.couponid,
@@ -732,5 +766,5 @@ export default {
   }
 
 }
-
+.delinvoice{ display: block; height: 40rpx; width: 40rpx; text-align: center; line-height: 40rpx; border-radius: 50%; background: #ccc; color: #fff; margin: 0 20rpx;}
 </style>

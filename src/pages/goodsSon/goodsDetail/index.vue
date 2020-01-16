@@ -509,6 +509,7 @@ export default {
     gouBuy(){
       if(this.isMatch){
         wx.setStorageSync("addressinfo",'');
+        wx.setStorageSync("invoiceinfo","");
         wx.navigateTo({
           url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.goodsNum+'&orderSType=0'+'&isLimint='+this.isLimint+'&ShareMemberId='+this.ShareMemberid,
         })

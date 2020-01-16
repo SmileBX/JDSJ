@@ -16,17 +16,17 @@
         <div class="item__ft flex">
           <label
             class="flexItem checkedLabel flex gou flexAlignCneter"
-            @tap="SetDefaultinvoice(index,item.Id)"
+            @tap.stop="SetDefaultinvoice(index,item.Id)"
           >
             <radio value :checked="item.IsDefault===1" color="#ff952e"/>
             <span v-if="item.IsDefault===1" style="color:#ff952e">已设为默认</span>
             <span v-else>设为默认</span>
           </label>
           <div class="flexItem flex1 flex justifyContentEnd">
-            <div class="iconText inline-block" @click="gotoAddInvoice(item.Id)">
+            <div class="iconText inline-block" @click.stop="gotoAddInvoice(item.Id)">
               <img src="http://jd.wtvxin.com/images/images/icons/write.png" class="write" alt>编辑
             </div>
-            <div class="iconText inline-block" @click="deleteBtn(index,item.Id)">
+            <div class="iconText inline-block" @click.stop="deleteBtn(index,item.Id)">
               <img src="http://jd.wtvxin.com/images/images/icons/delete.png" class="delete" alt>删除
             </div>
           </div>
@@ -38,7 +38,6 @@
           <span class="cg mt2">您还没有发票抬头哦~</span>
           <span class="add_new" @tap="gotoAddInvoice(-1)">新建发票抬头</span>
     </div>
-    <div class="noData center" style="padding:60rpx 30rpx;" v-if="hasDataList===false && hasDataList !==''&& navIndex===0">暂无数据</div>
     <div class="ftBtn" style="height:100rpx" v-if="navIndex==0&&list.length>0">
       <div class="inner fixed bm0">
         <div class="btns">
@@ -54,23 +53,6 @@
 //引用成成拼租
 import { post, trim } from "@/utils";
 export default {
-  onLoad() {
-    this.setBarTitle();
-  },
-  onShow() {
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
-    this.pramas = ''
-    if(this.$root.$mp.query.invoiceType && this.$root.$mp.query.invoiceType !==""){
-        this.invoiceType = this.$root.$mp.query.invoiceType
-    }
-    if(this.$root.$mp.query.url && this.$root.$mp.query.url !==""){
-        this.pramas = this.$root.$mp.query.url
-    }
-    this.hasDataList = "";
-    this.getInvoiceList();
-    this.FeesOrderList();
-  },
   data() {
     return {
       navIndex:0,
@@ -83,10 +65,31 @@ export default {
       token: "",
       list: [],
       invoiceType:"",
-      pramas:"",
+      //pramas:"",
       hasDataList: "",
-      page: 1
-    };
+      page: 1,
+      checkId:"",//已选
+      pagetype:"",//页面来源
+    }
+  },
+  onLoad() {
+    this.setBarTitle();
+  },
+  onShow() {
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+    this.checkId=this.$root.$mp.query.checkId||'';
+    console.log("this.checkId"+this.checkId)
+    this.pagetype=this.$root.$mp.query.pagetype||'';
+    //this.pramas = '';
+    // if(this.$root.$mp.query.invoiceType && this.$root.$mp.query.invoiceType !==""){
+    //     this.invoiceType = this.$root.$mp.query.invoiceType
+    // }
+    // if(this.$root.$mp.query.url && this.$root.$mp.query.url !==""){
+    //     this.pramas = this.$root.$mp.query.url
+    // }
+    this.hasDataList = "";
+    this.getInvoiceList();
   },
   methods: {
     setBarTitle() {
@@ -96,32 +99,37 @@ export default {
     },
     //选择发票 --必传发票种类 个人/公司    路径
     choseInvoice(i){
-      console.log(this.pramas)
-      if(this.pramas){
-          const InvoiceId = this.list[i].Id
-          const InvoiceHeaderName = this.list[i].HeaderName
-          let typeId = 0
-          if(this.list[i].InvoiceTitlestr=='公司'){
-              typeId=0
-          }else{
-              typeId=1
-          }
-          if(this.invoiceType != typeId){
-            wx.showToast({
-              title:"请选择合适类型的发票",
-              icon:"none",
-              duration:1500
-            })
-          }else{
-              // wx.navigateTo({url:"/pages/"+this.pramas+"/main?InvoiceId="+InvoiceId})
-              let InvoiceInfo={
-                  InvoiceId:InvoiceId,
-                  InvoiceHeaderName:InvoiceHeaderName
-              }
-              this.$store.commit("update",{InvoiceInfo})
-              wx.navigateBack()
-          }
+      //console.log(this.pramas)
+      //if(this.pramas){
+        if(this.pagetype == 'confirm'){
+          wx.setStorageSync("invoiceinfo",this.list[i]);
+          wx.navigateBack()
+
+          // const InvoiceId = this.list[i].Id
+          // const InvoiceHeaderName = this.list[i].HeaderName
+          // let typeId = 0
+          // if(this.list[i].InvoiceTitlestr=='公司'){
+          //     typeId=0
+          // }else{
+          //     typeId=1
+          // }
+          // if(this.invoiceType != typeId){
+          //   wx.showToast({
+          //     title:"请选择合适类型的发票",
+          //     icon:"none",
+          //     duration:1500
+          //   })
+          // }else{
+          //     // wx.navigateTo({url:"/pages/"+this.pramas+"/main?InvoiceId="+InvoiceId})
+          //     let InvoiceInfo={
+          //         InvoiceId:InvoiceId,
+          //         InvoiceHeaderName:InvoiceHeaderName
+          //     }
+          //     this.$store.commit("update",{InvoiceInfo})
+          //     wx.navigateBack()
+          // }
         }
+        //}
     },
     getInvoiceList() {  //获取发票列表
       let that = this;
@@ -204,10 +212,16 @@ export default {
       })
     },
     gotoAddInvoice(id) {
-      console.log(id);
+      let ischecked=false;
+      if(id==this.checkId){
+        ischecked=true
+      }else{
+        ischecked=false;
+      }
+      console.log("ischecked"+ischecked)
       let objUrl = "";
       if (id !==-1) {
-        objUrl = "/pages/myson/addInvoice/main?id=" + id;
+        objUrl = "/pages/myson/addInvoice/main?id=" + id+'&ischeck='+ischecked;
       } else {
         objUrl = "/pages/myson/addInvoice/main";
       }
