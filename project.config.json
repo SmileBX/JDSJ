@@ -260,6 +260,12 @@
 					"pathName": "pages/goodsSon/confirmOrder/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "发票",
+					"pathName": "pages/myson/invoiceList/main",
+					"scene": null
 				}
 			]
 		}

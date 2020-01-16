@@ -123,10 +123,11 @@ export default {
   onShow() {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
+    this.ischeck=this.$mp.query.ischeck||false;
     this.initData();
     if (this.$root.$mp.query.id !== "" && this.$root.$mp.query.id) {
       this.invoiceId = this.$root.$mp.query.id;
-      this.getInvoiceInfo();
+      this.getInvoiceInfo(this.invoiceId);
     }
   },
   data() {
@@ -146,7 +147,8 @@ export default {
       bankName: "", //开户银行
       regCall: "", //注册电话
       bankAccount: "", //银行账号
-      regAddress: "" //注册地址
+      regAddress: "",//注册地址
+      ischeck:false,//是否是已选发票
     };
   },
   methods: {
@@ -297,26 +299,29 @@ export default {
           }
         }
       }
+      console.log("999999999")
       return true;
     },
     btnSure() {
       //点击保存按钮
       if (trim(this.invoiceId) == "") {
+        console.log("999")
         if (this.Authentication()) {
           this.addInvoice();
         }
       } else {
+        console.log("888")
         if (this.Authentication()) {
           this.updateInvoice();
         }
       }
     },
-    getInvoiceInfo() {
+    getInvoiceInfo(id) {
       //获取发票信息
       post(
         "Invoice/GetInvoiceInfo",
         {
-          Id: this.invoiceId,
+          Id: id,
           UserId: this.userId,
           Token: this.token
         },
@@ -344,6 +349,9 @@ export default {
           this.isDefault = res.data.IsDefault;
           if (this.isDefault === 1) {
             this.checked = true;
+          }
+          if(this.ischeck){
+            wx.setStorageSync("invoiceinfo",res.data);
           }
         }
       });
@@ -376,9 +384,13 @@ export default {
             duration: 1500,
             success: function() {
               setTimeout(function() {
-                wx.redirectTo({
-                  url: "/pages/myson/invoiceList/main"
-                });
+                if(that.ischeck){
+                  that.getInvoiceInfo(that.$mp.query.id)
+                }
+                wx.navigateBack()
+                // wx.redirectTo({
+                //   url: "/pages/myson/invoiceList/main"
+                // });
               }, 1500);
             }
           });
@@ -386,6 +398,7 @@ export default {
       });
     },
     updateInvoice() {
+      let that = this;
       //编辑
       post(
         "Invoice/UpdateInvoice",
@@ -414,12 +427,17 @@ export default {
             duration: 1500,
             success: function() {
               setTimeout(function() {
-                wx.redirectTo({
-                  url: "/pages/myson/invoiceList/main"
-                });
+                console.log("保存"+that.ischeck)
+                if(that.ischeck){
+                  that.getInvoiceInfo(that.$mp.query.id)
+                }
+                wx.navigateBack()
+                // wx.redirectTo({
+                //   url: "/pages/myson/invoiceList/main"
+                // });
               }, 1500);
             }
-          });
+          }); 
         }
       });
     }

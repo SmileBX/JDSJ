@@ -64,7 +64,6 @@ export default {
       areaList,
       showArea: false,
       ischeck:false,//是否是已选地址
-      reInfo:{},
     }
   },
   onShow(){
