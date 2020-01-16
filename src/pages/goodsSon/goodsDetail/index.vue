@@ -7,9 +7,29 @@
         </swiper-item>
       </swiper>
       <div class="top">
+        <div v-if="isLimint==1" :class="['limitTiem jus-b ali-c',starTimetype!=1?'no':'']">
+            <div class="limt-left">
+              <div class="active-price jus-a ali-c">
+                  <h3><span>¥</span>{{proInfo.TimePrice}}</h3>
+                   <p>¥{{proInfo.MarketPrice}}</p>
+              </div>
+              <div class="percentage">
+                <span :style="['width:'+percentage+'%']"><i>已抢{{proInfo.SalesVolume}}件</i></span>
+              </div>
+            </div>
+            <div class="limt-right">
+              <div class="txt">限时秒杀</div>
+              <div class="time ali-c jus-b" >
+                  <span class="timetxt">{{starTimetype==1?'距离结束':'距离开始'}}</span>
+                  <div class="countDown" v-if="timeStr.length">
+                    <span>{{timeStr[1]}}</span>:<span>{{timeStr[2]}}</span>:<span>{{timeStr[3]}}</span>
+                  </div>
+              </div>
+            </div>
+        </div>
         <div class="jus-b ali-c">
           <div class="left">
-            <p class="price">
+            <p class="price" v-if="isLimint==0">
               <span>￥</span><span>{{proInfo.ProductPrice}}</span><span>￥{{proInfo.MarketPrice}}</span>
             </p>
             <p class="tit">{{proInfo.ProductName}}</p>
@@ -55,7 +75,7 @@
             <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
           </div>
         </div>
-        <div class="list ali-c jus-b" @click="showSku(0)">
+        <div class="list ali-c jus-b" v-if="isLimint!=1" @click="showSku(0)">
           <div class="left ali-c">
             <span>规格</span>
             <p class="quan">{{SpecText||'请选择规格数量'}}</p>
@@ -171,8 +191,8 @@
           </div>
         </div>
         <div class="right flex">
-          <p class="flex1 flexc" @click="showSku(1)">加入购物车</p>
-          <p class="flex1 flexc" @click="showSku(2)">立即购买</p>
+          <p :class="['flex1 flexc',starTimetype!=1?'dis':'']" @click="showSku(1)">加入购物车</p>
+          <p :class="['flex1 flexc',starTimetype!=1?'dis':'']" @click="showSku(2)">立即购买</p>
         </div>
       </div>
       <div class="topbtn" @click="Top" v-if="isTop"></div>
@@ -186,7 +206,8 @@
                     <div class="right jus-b">
                         <div>
                             <p class="tit">{{proInfo.ProductName}}</p>
-                            <span><span class="fuhao">￥</span>{{SpecInfo.PunitPrice===undefined?proInfo.ProductPrice:SpecInfo.PunitPrice}}</span>
+                            <span v-if="isLimint">{{proInfo.TimePrice}}</span>
+                            <span v-else><span class="fuhao">￥</span>{{SpecInfo.PunitPrice===undefined?proInfo.ProductPrice:SpecInfo.PunitPrice}}</span>
                             <p class="font_four">库存：{{reStock}}</p>
                                 <!-- :SpecInfo.PunitPrice -->
                         </div>
@@ -210,15 +231,17 @@
                 </div>
             </div>
             <div class="flex bot">
-              <block v-if="reStock>0">
-                <block v-if="showbtntype==0">
-                  <p class="flex1 jus-c ali-c" @click="gocart">加入购物车</p>
-                  <p class="flex1 jus-c ali-c btn_red" @click="gouBuy">立即购买</p>
-                </block>
-                <p v-else class="flex1 jus-c ali-c btn_red" @click="confirmBtn">确定</p>
-              </block>
+              <p v-if="isLimint==1&&starTimetype==0" class="flex1 jus-c ali-c">即将开始 敬请期待</p>
+              <p v-else-if="isLimint==1&&starTimetype==2" class="flex1 jus-c ali-c btn_ccc">秒杀已结束</p>
               <block v-else>
-                <p class="flex1 jus-c ali-c">商家补货中</p>
+                <block v-if="reStock>0">
+                  <block v-if="showbtntype==0">
+                    <p class="flex1 jus-c ali-c" @click="gocart">加入购物车</p>
+                    <p class="flex1 jus-c ali-c btn_red" @click="gouBuy">立即购买</p>
+                  </block>
+                  <p v-else class="flex1 jus-c ali-c btn_red" @click="confirmBtn">确定</p>
+                </block>
+                <p v-else class="flex1 jus-c ali-c">商家补货中</p>
               </block>
             </div>
         </div>
@@ -273,6 +296,10 @@ export default {
       isTop:false,//是否显示置顶
       IsCollect:false, //是否收藏该商品
       isLimint:0,//0非限时购产品，1限时购产品
+      timer:null,
+      timeStr:[],//倒计时
+      starTimetype:1,//0秒杀未开始，1一开始，2已结束
+      percentage:0,//已售百分比
       isPin:0,//0非拼团产品，1拼团产品
       proInfo:{},//商品信息
       bannerindex:0,//当前轮播图
@@ -299,16 +326,19 @@ export default {
   onLoad(){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    this.shopid = wx.getStorageSync("shopid");
-    this.proId=this.$root.$mp.query.id;
   },
   onShow(){
-    this.goodsNum = 1
-    this.specList=[]
-    this.SpecText=""
-    this.SpecValue={}
-    this.SpecInfo={}
-    this.showPopupSku = false
+    this.shopid = wx.getStorageSync("shopid");
+    this.proId=this.$root.$mp.query.id;
+    this.isLimint=this.$root.$mp.query.isLimint||0;
+    this.goodsNum = 1;
+    this.specList=[];
+    this.SpecText="";
+    this.SpecValue={};
+    this.SpecInfo={};
+    this.showPopupSku = false;
+    this.timeStr=[];
+    clearInterval(this.timer);
     this.ProductInfo();
     this.GetAllCartNumber();
     setTimeout(() => {
@@ -478,18 +508,10 @@ export default {
     //立即购买
     gouBuy(){
       if(this.isMatch){
-        if(this.isLimint==1){
-          // 添加限时时间判断
-          // wx.setStorageSync("addressinfo",'');
-          // wx.navigateTo({
-          //   url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.goodsNum+'&orderSType=0'+'&isLimint='+this.isLimint+'&ShareMemberId='+this.ShareMemberid,
-          // })
-        }else{
-          wx.setStorageSync("addressinfo",'');
-          wx.navigateTo({
-            url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.goodsNum+'&orderSType=0&ShareMemberId='+this.ShareMemberid,
-          })
-        }
+        wx.setStorageSync("addressinfo",'');
+        wx.navigateTo({
+          url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.goodsNum+'&orderSType=0'+'&isLimint='+this.isLimint+'&ShareMemberId='+this.ShareMemberid,
+        })
       }else{
         wx.showToast({
           title: "请选择产品规格",
@@ -528,6 +550,7 @@ export default {
         this.reStock=res.data.Stock;
         this.maxbuy=res.data.MaxBuyNum;//最大购买量
         this.minbuy=res.data.MinBuyNum; //最小购买量
+        this.percentage=res.data.SalesVolume/res.data.Stock*100;
         if(!res.data.ProductSpecList.length){
           this.isMatch=true;
         }
@@ -536,8 +559,59 @@ export default {
             item.EndTime=item.EndTime.split("T")[0];
           })
         }
+        if(this.isLimint==1){
+          //比较秒杀是否开始
+					let dateBegin = new Date(this.proInfo.FlashSaleStartTime.replace(/T/g, " "));
+					let dateNow = new Date(); //获取当前时间
+					let beginDiff = dateNow.getTime() - dateBegin.getTime(); //时间差的毫秒数 
+          var beginDayDiff = Math.floor(beginDiff / (24 * 3600 * 1000)); //计算出相差天数  
+					if(beginDayDiff < 0){
+						this.starTimetype=0;
+						this.GetRTime(this.proInfo.FlashSaleStartTime);
+					}else{
+						this.starTimetype=1;
+						this.GetRTime(this.proInfo.FlashSaleEndTime);
+					}
+					let StartTimestr=this.proInfo.FlashSaleStartTime.split("T")[1].substr(0,5);
+					this.proInfo.FlashSaleStartTime=StartTimestr;
+        }
         
       }
+    },
+    //倒计时
+    GetRTime(endTime) {
+      let _this = this;
+      //倒计时
+      let endtime=endTime.replace(/-/g, '/').replace(/T/g, ' ');
+      let EndTime = new Date(endtime); //结束时间
+      this.timer = setInterval(function() {
+      let NowTime = new Date(); //当前时间
+      let t = EndTime.getTime() - NowTime.getTime();
+      if (t > 0) {
+        let d = Math.floor(t / 1000 / 60 / 60 / 24); //天
+        let h = Math.floor((t / 1000 / 60 / 60) % 24); //时
+        let m = Math.floor((t / 1000 / 60) % 60); //分
+        let s = Math.floor((t / 1000) % 60); //秒
+        if (parseInt(d) < 1) {
+        d = "";
+        } else {
+        d = d + "天";
+        }
+        if (parseInt(h) < 10) {
+        h = "0" + h;
+        }
+        if (parseInt(m) < 10) {
+        m = "0" + m;
+        }
+        if (parseInt(s) < 10) {
+        s = "0" + s;
+        }
+        _this.timeStr = [d,h,m,s];
+      } else {
+        this.starTimetype=2;
+        clearInterval(this.timer);
+      }
+      }, 1000);
     },
     //获取购物车数
     async GetAllCartNumber(){
@@ -689,6 +763,9 @@ export default {
   }
   .right p:nth-child(2){
     background-color: #ff3333
+  }
+  .right p.dis{
+    opacity: .5;
   }
   .left{
     div{
@@ -858,6 +935,45 @@ export default {
     font-size: 26rpx;
     color: #999
   }
+  .limitTiem{
+    background: #ff3333;
+    color: #fff;
+    margin: 0 -30rpx;
+    padding: 20rpx 30rpx;
+    .limt-left{
+      .active-price{
+        h3{ font-size: 40rpx; margin-right: 10rpx;
+          span{ font-size: 28rpx !important}
+        }
+        p{text-decoration: line-through}
+      } 
+      .percentage{
+          width:210rpx;
+          height:24rpx;
+          line-height:24rpx;
+          font-size:24rpx;
+          background:#ff747a;
+          border-radius:20rpx;
+          text-align:center;
+          position:relative;
+          overflow: hidden;
+          span{
+            position:absolute;
+            top:0;
+            left:0;
+            height:100%;
+            border-radius:20rpx;
+            background:#ffaa01;
+            display:block;
+            i{ display: inline-block;width: 220rpx}
+          }
+        }
+    }
+    .limt-right .txt{ font-size: 40rpx; font-weight: bold;text-align: right;}
+    .countDown span{
+      background: #fff; color: #ff3333; border-radius: 4rpx; margin: 0 6rpx; padding: 0 4rpx;
+    }
+  }
 }
 .swiper{
   height: 700rpx;
@@ -1025,6 +1141,7 @@ export default {
         p.btn_red{
             background-color: #ff3333;
         }
+        p.btn_ccc{ background-color: #ccc}
     }
 }
 .mengban{

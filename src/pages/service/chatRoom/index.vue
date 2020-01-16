@@ -5,7 +5,7 @@
     id="charRoom"
     :class="showModule==='emotion'?'showEmotion':showModule==='message'?'showMessage':showModule==='imgage'?'showBtn':showModule==='manySelect'?'showManySelect':''"
     @click="hidePopWin"
-    v-if="ShopMessageList.IsShopServie==0"
+    v-if="IsShopServie==0"
   >
     <!--聊天列表-->
     <div class="padwid" @click="isShowMask=false">
@@ -166,7 +166,8 @@ export default {
       page: 1,
       pageSize: 20,
       selectAll:false,//全选状态
-      ShopMessageList:{}
+      ShopMessageList:{},
+      IsShopServie:0,//0不是本商店客服
     };
   },
   onLoad() {
@@ -233,18 +234,21 @@ export default {
         }
       );
       if(res.code==0){
-        var list=res.data.DataTable;
-        list.map(item=>{
-          item.AddTime=item.AddTime.replace(/T/,' ').substring(0,19)
-        })
+        this.IsShopServie=res.data.IsShopServie;
         if(res.data.IsShopServie==0){//不是客服，直接显示聊天室
+        console.log("**********")
           this.FriendId=res.data.DataTable[0].FriendId
           this.getFriendMessage("scrollBottom").then(() => {
             this.connectSocket();
           });
+        }else{
+          var list=res.data.DataTable;
+          list.map(item=>{
+            item.AddTime=item.AddTime.replace(/T/,' ').substring(0,19)
+          })
+          this.ShopMessageList=res.data;
+          console.log(this.ShopMessageList)
         }
-        this.ShopMessageList=res.data;
-        console.log(this.ShopMessageList)
       }
     },
     // 返回字符串长度，中文2，英文1
@@ -407,23 +411,23 @@ export default {
                 scrollBottom === "scrollBottom" ||
                 (res.data.length < that.pageSize && that.page === 1)
               ) {
-                that.scrollBottom();
+                // that.scrollBottom();
               }
-              if (scrollPosition) {
-                setTimeout(() => {
-                  wx
-                    .createSelectorQuery()
-                    .select("#" + scrollPosition)
-                    .boundingClientRect(function(rect) {
-                      // 使页面滚动到底部
-                      wx.pageScrollTo({
-                        scrollTop: rect.top,
-                        duration: 0
-                      });
-                    })
-                    .exec();
-                }, 100);
-              }
+              // if (scrollPosition) {
+              //   setTimeout(() => {
+              //     wx
+              //       .createSelectorQuery()
+              //       .select("#" + scrollPosition)
+              //       .boundingClientRect(function(rect) {
+              //         // 使页面滚动到底部
+              //         wx.pageScrollTo({
+              //           scrollTop: rect.top,
+              //           duration: 0
+              //         });
+              //       })
+              //       .exec();
+              //   }, 100);
+              // }
               resolve();
             }else {
               wx.showToast({ title: res.msg, icon: "none" });
@@ -502,7 +506,7 @@ export default {
     // 展示模块
     onShowModule(val) {
       // if(this.chatStatu.info.length>this.pageSize){
-      this.scrollBottom();
+      // this.scrollBottom();
       // }
       this.showModule === val
         ? (this.showModule = "")

@@ -34,7 +34,8 @@
             </div>
           </div>
         </block>
-        <div class="item flex-center-between" v-else>
+        <div class="item flex-center-between p_re" v-else>
+          <span v-if="isLimint==1" class="tag tag-limit">限时</span>
           <img :src="prolist.ProductImage" :alt="prolist.ProductName">
           <div class="right">
             <h4 class="ellipsis2">{{prolist.ProductName}}</h4>
@@ -140,7 +141,7 @@ export default {
       couponid:"",//选择优惠券的id
       coupontxt:"",//选中优惠券名称
       showCoupon:false,//显示优惠券弹窗
-      isLimit: 0, //是否是限时购
+      isLimint: 0, //是否是限时购
       orderRemarksArr:"",//备注
       buynum:1,//立即购买数量
       SpecText:"",//立即购买产品规格
@@ -165,6 +166,8 @@ export default {
   },
   onShow(){
     this.shopid = wx.getStorageSync("shopid");
+    this.couponprice=0;
+    this.Freight=0;
     if(wx.getStorageSync("addressinfo")){
       this.addressinfo=wx.getStorageSync("addressinfo");
       this.hasaddress=true;
@@ -245,6 +248,7 @@ export default {
           }
         }else{
           this.coupontxt="暂无可用优惠券";
+          this.couponprice=0;
           this.couponid=0;
         }
         if(this.sourceType==1){
@@ -350,7 +354,7 @@ export default {
       this.SpecText=this.$root.$mp.query.SpecText||"";
 
       let protype=0;//0普通产品，1限时，2一元购
-      if(this.isLimit==1){
+      if(this.isLimint==1){
 				protype=1;
 			}
       let res=await post("Goods/BuyNowInfo",{
@@ -358,7 +362,8 @@ export default {
         Token: this.token,
         proId:this.cartids,
         proSpecText:this.SpecText,
-        productType:protype
+        productType:protype,
+        ShopId:this.shopid
       })
       if(res.code==0){
        this.prolist=res.data;
@@ -417,7 +422,7 @@ export default {
     //提交订单立即购买
     async NowSubmitOrder(){
       let url ="";
-      if(this.isLimit==1){
+      if(this.isLimint==1){
         url="Order/BuyFlashSaleeCreateOrder";
       }else {
         url="Order/BuyNowSubmitOrder";
@@ -488,11 +493,15 @@ export default {
           signType: payData.signType,
           paySign: payData.paySign,
           success(res) {
-              wx.navigateTo({
-                url: "/pages/goodsSon/paysuccess/main?orderNo="+_this.OrderNo
+              wx.redirectTo({
+                url: "/pages/goodsSon/paysuccess/main?OrderNo="+_this.OrderNo
               })
             },
           fail(res) {
+            console.log(res);
+            wx.redirectTo({
+              url: "/pages/goodsSon/paysuccess/main?OrderNo="+_this.OrderNo+"&msg=fail"
+            })
           }
         })
       }
@@ -591,6 +600,17 @@ export default {
       img{
         width:160rpx;height:160rpx;border-radius:10rpx;
       }
+      .tag{
+        position: absolute; 
+        left: 0; 
+        top: 10rpx; 
+        z-index: 3;
+        background: #f0370b;
+        color: #fff; 
+        font-size: 24rpx; 
+        padding: 2rpx 16rpx;
+        border-radius: 0 100px 100px 0;
+      }
       .right{
         width:450rpx;
         &>h4{
@@ -635,8 +655,8 @@ export default {
     background:#fff;
     position:fixed;
     left:0;
+    right: 0;
     bottom:0;
-    width:100%;
     height:98rpx;
     z-index: 999;
     p{

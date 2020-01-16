@@ -2,13 +2,13 @@
   <div>
       <div class="tit_red flex flexColumn flexAlignCenter justifyContentCenter">
           <div class="flex flexAlignCenter">
-              <img src="http://jd.wtvxin.com/images/images/icons/gou_w.png" alt="" class="gou_w">
-              <span class="font30 mr2">支付成功</span>
+              <img v-if="paystaus!='fail'" src="http://jd.wtvxin.com/images/images/icons/gou_w.png" alt="" class="gou_w">
+              <span class="font30 mr2">{{paystaus=="fail"?"支付失败":"支付成功"}}</span>
           </div>
-          <div class="mt2"><span class="font20">￥</span><span class="font30 fb">56.33</span></div>
+          <div class="mt2"><span class="font20">￥</span><span class="font30 fb">{{TotalPrice}}</span></div>
           <div class="mt2 flex btn_tt justifyContentAround">
-              <p class="btn_ccc">返回首页</p>
-              <p class="btn_ccc">查看订单</p>
+              <p class="btn_ccc" @click="goshop">返回首页</p>
+              <p class="btn_ccc" @click="goOrder">查看订单</p>
           </div>
       </div>
       <div class="pp2 flex justifyContentCenter flexAlignCenter">
@@ -17,81 +17,177 @@
           <img src="http://jd.wtvxin.com/images/images/icons/ll_right.png" alt="" class="mm_ll">
       </div>
       <div class="goods-box">
-      <div class="xd">
-        <div class="shai flex">
-          <div class="flex1 flexc">
-            <span>默认</span>
-          </div>
-          <div class="flex1 flexc">
-            <span>销量</span>
-            <img src="http://jd.wtvxin.com/images/images/index/shai.png" alt="">
-          </div>
-          <div class="flex1 flexc">
-            <span>价格</span>
-            <img src="http://jd.wtvxin.com/images/images/index/shai.png" alt="">
-          </div>
-        </div>
-      </div>
-      <div class="goods jus-b flex-wrap">
-        <div class="list" v-for="(item, index) in 5" :key="index" @click="goUrl('/pages/goodsSon/goodsDetail/main')">
-          <img class="img" src="http://jd.wtvxin.com/images/images/index/goods.png" alt="">
-          <div class="text-box">
-            <p class="tit oneline">至本舒颜修护氨基酸洁至本舒颜修护氨基酸洁</p>
-            <div class="price">
-              <span>￥</span><span>29.00</span><span>￥39.00</span>
-            </div>
-            <div class="carda ali-c jus-b">
-              <span>已售1235</span>
-              <img src="http://jd.wtvxin.com/images/images/index/shop_card.png" alt="">
+        <div class="goods jus-b flex-wrap" v-if="hasData">
+          <div class="list" v-for="(item, index) in goodsList" :key="index" @click="goUrl('/pages/goodsSon/goodsDetail/main',item.Id)">
+            <img class="img" :src="item.Pic" :alt="item.Name">
+            <div class="text-box">
+              <p class="tit twoline">{{item.Name}}</p>
+              <div class="price">
+                <span>￥</span><span>{{item.Price}}</span><span>￥{{item.MarketPrice}}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <noData :isShow="noDataIsShow"></noData>
+        <view class="loading" v-if="hasData">
+          <load-more :loadingType="loadingType"></load-more>
+        </view>
     </div>
 
   </div>
 </template>
 
 <script>
-import {switchPath,isJump} from '@/utils'
+import {post,get} from '@/utils'
+import noData from "@/components/noData"; //没有数据的通用提示
+import LoadMore from '@/components/load-more';
 export default {
-
+  components: {
+		noData,
+		LoadMore
+  },
   data () {
     return {
-     showEdit:false,
-      
+      OrderNo:"",
+      NOarr:[],
+      userId: "",
+      token: "",
+      paystaus:"",
+      TotalPrice:"",
+      shopid:"",
+      hasData:false,
+			noDataIsShow: false,//没有数据的提示是否显示
+			page: 1,
+      pageSize: 8,
+      allPage: 0,
+			count: 0,
+			isLoad: false,
+			isOved:false,       //显示已经到底了
+			loadingType: 0, //0加载前，1加载中，2没有更多了
+      goodsList:{} 
     }
   },
-
+  onLoad(){
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+  },
   onShow(){
-    
+    this.OrderNo=this.$root.$mp.query.OrderNo;
+    this.NOarr=this.OrderNo.split(",");
+    this.paystaus=this.$root.$mp.query.msg||'';
+    this.shopid = wx.getStorageSync("shopid");
+    this.GetOrdersMoney();
+    this.GetProductList();
   },
   methods: {
     goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
-        wx.navigateTo({
-          url:url+'?id='+param
-        })
-      }, 100);
+      wx.navigateTo({
+        url:url+'?id='+param
+      })
     },
     
+    //查询订单金额
+    async GetOrdersMoney(){
+      let res=await post("Order/GetOrdersMoney",{
+          OrderNo: this.OrderNo,
+          UserId: this.userId,
+          Token: this.token
+      })
+      if(res.code==0){
+        this.TotalPrice=res.data.TotalPrice;
+      }
+    },
+    goshop(){
+      wx.switchTab({
+        url: '/pages/index/main'
+      })
+    },
+    goOrder(){
+      if(this.NOarr.length>1){
+        wx.navigateTo({
+          url:'/pages/myson2/order/main?type=0'
+        })
+      }else{
+        wx.navigateTo({
+          url:'/pages/myson2/orderdetail/main?id='+this.OrderNo
+        })
+      }
+    },
+    //列表
+    async GetProductList(){
+      let res=await post("Goods/GetDiscountProductList",{
+        PageIndex: this.page,
+        PageSize: this.pageSize,
+        ShopId: this.shopid
+      })
+      if(res.code==0){
+          let _this=this;
+					if (res.data.length > 0) {
+						this.hasData = true;
+						this.noDataIsShow = false;
+					}
+					this.count = res.count;
+					if (this.count == 0) {
+						this.noDataIsShow = true;
+						this.hasData = false;
+					}
+					if (parseInt(this.count) % this.pageSize === 0) {
+						this.allPage = this.count / this.pageSize;
+					} else {
+						this.allPage = parseInt(this.count / this.pageSize) + 1;
+					}
+					if (this.page === 1) {
+						this.goodsList = res.data;
+					}
+					if (this.page > 1) {
+						this.goodsList = this.goodsList.concat(
+							res.data
+						);
+					}
+					if (this.allPage <= this.page) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
+       }else{
+				 wx.showToast({
+          title: res.msg,
+          icon: "none",
+          duration: 1000
+        });
+			 }
+    },
   },
+  onReachBottom: function() {
+    if (this.isLoad) {
+			this.loadingType = 1;
+      this.isOved = false;
+      this.page++;
+      this.GetProductList();
+    } else {
+			this.loadingType = 2;
+      if (this.page > 1) {
+        this.isOved = true;
+      } else {
+        this.isOved = false;
+      }
+    }
+  }
 }
 </script>
 
 <style scoped lang='scss'>
   .goods-box{
-    background-color: #fff;
     .goods{
-      padding: 30rpx;
+      padding: 10rpx 30rpx 30rpx;
         .list{
           width: 335rpx;
-          height: 525rpx;
           border-radius: 10rpx;
           overflow: hidden;
           margin-bottom: 20rpx;
+          background: #fff;
           box-shadow: 0rpx 2rpx 5rpx 0rpx rgba(0, 0, 0, 0.1);
           .text-box{
             padding: 0 20rpx;

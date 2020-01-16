@@ -1,47 +1,176 @@
 <template>
   <div class="foot_list">
-      <div class="pp3 text_right">{{showEdit?'完成':'编辑'}}</div>
+      <div class="pp3 text_right" v-if="list&&list.length>0" @click="showEdit=!showEdit">{{showEdit?'完成':'编辑'}}</div>
       <div class="or_list">
-        <div class="or_item bg_fff flex justifyContentBetween flexAlignCenter pw3 gou" v-for="(item,index) in 3" :key="index">
-            <label style="display:none">
-              <input type="checkbox" class="checkbox-cart">
+        <div class="or_item bg_fff flex flex1 justifyContentBetween flexAlignCenter pw3 gou" v-for="(item,index) in list" :key="index">
+            <label v-show="showEdit">
+              <input type="checkbox" class="checkbox-cart" :checked="item.hascheck" @click="selectInv(index)">
             </label>
-            <div class="flex or_main">
-                <img src="http://jd.wtvxin.com/images/images/shop.png" alt="" class="shop">
+            <div class="flex or_main flex1">
+                <img :src="item.PicFrist" alt="" class="shop">
                 <div class="flex1 flex flexAlignCenter mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
-                      <p>精华液面部精华雪域滋润保湿补水提亮肤色官</p>
-                      <p class="cr font30">￥199 <span class="line_through font22 cg">￥600</span> </p>
+                      <p>{{item.AssociationName}}</p>
+                      <p class="cr font30">￥{{item.Price}} <span class="line_through font22 cg" v-if="false">￥600</span> </p>
                     </div>
                 </div>
             </div>
         </div>
       </div>
-      <div class="foot_fot flex justifyContentBetween flexAlignCenter">
+      <div style="height:100rpx" v-show="showEdit"></div>
+      <div class="foot_fot flex justifyContentBetween flexAlignCenter" v-show="showEdit">
           <label class="flex foot_btnl">
-              <input type="checkbox" class="checkbox-cart chppo">
+              <input type="checkbox" class="checkbox-cart chppo" :checked=allSelect @click="selectAll">
               <span>全选</span>
           </label>
-          <p class="foot_btnr">删除</p>
+          <p class="foot_btnr" @click="deletec">删除</p>
       </div>
   </div>
 </template>
 
 <script>
-import {switchPath,isJump} from '@/utils'
+import {post,switchPath,isJump} from '@/utils'
 export default {
 
   data () {
     return {
-     showEdit:false,
-      
+      showEdit:false,
+      page: 1,
+      pageSize: 8,
+      count:0,
+      allPage:0,
+      userId: "",
+      token: "",
+      shopid:"",
+      isLoad:true,
+      list:[],
+      allSelect:false,//全选
+      selectlen:0,
+      IdTxt:"",//删除的足迹id集合
     }
   },
 
   onShow(){
-    
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+    this.shopid=wx.getStorageSync("shopid");
+    this.page=1
+    this.list=[]
+    this.allSelect=false
+    this.selectlen=0
+    this.geSiteList()
   },
   methods: {
+    async geSiteList(){
+      const res = await post('User/MemberFootprintList',{
+        UserId: this.userId,
+        Token: this.token,
+        ShopId:this.shopid,
+        Page: this.page,
+        PageSize: this.pageSize
+      })
+      if(res.code==0){
+        this.count = res.count;
+        if(this.count==0){
+          this.isshownodata=true
+        }else{
+          this.isshownodata=false
+        }
+        if(this.page == 1){
+          this.list = []
+        }
+        if(parseInt(this.count) % this.pageSize == 0){
+          this.allPage = this.count / this.pageSize
+        }else{
+          this.allPage = parseInt(this.count / this.pageSize) + 1
+        }
+        if(this.allPage > this.page){
+          this.isLoad = true;
+        }else{
+          this.isLoad = false
+        }
+        if(res.data.length>0){
+          res.data.map(item=>{
+            this.$set(item,"hascheck",false)
+          })
+          this.list = this.list.concat(res.data)
+        }
+      }
+    },
+    //全选
+    selectAll(){
+      var that=this;
+      if(this.allSelect){
+        this.allSelect=false;
+        this.selectlen=0;
+        this.list.forEach(function(item) {
+          that.$set(item,"hascheck",false)
+        });
+        console.log(this.list)
+      }else{
+        this.allSelect=true;
+        this.selectlen=this.list.length;
+        this.list.forEach(function(item) {
+          that.$set(item,"hascheck",true)
+        });
+        console.log(this.list)
+      }
+    },
+    //单选
+    selectInv(index){
+      var that=this
+      var selectId=!this.list[index].hascheck;console.log(selectId)
+      this.$set(this.list[index],"hascheck",selectId);console.log(this.list)
+      if(selectId){
+        this.selectlen++
+      }else{
+        this.selectlen--
+      }
+      var len=this.list.length;
+      if(this.selectlen==len){
+        this.allSelect=true
+      }else{
+        this.allSelect=false
+      }
+    },
+    //删除
+    deletec(){
+      if(this.selectlen==0){
+        wx.showToast({
+          icon:"none",
+          title:"请选择要删除的足迹！"
+        })
+      }else{
+        var that=this;
+        var OrderId=[];
+        that.list.forEach(function(item) {console.log(item)
+          if(item.hascheck){
+            OrderId.push(item.Id);
+          }
+        });
+        that.IdTxt=OrderId.join(",");console.log(that.IdTxt)
+        that.SureDel()
+      }
+    },
+    SureDel(id){
+      post("User/DeleteMyFootprint",
+        {
+          Id: this.IdTxt,
+          UserId: this.userId,
+          Token: this.token
+        }
+      ).then(res => {
+        if (res.code === 0) {
+          wx.showToast({
+            title: "删除成功!",
+          });
+          var that=this
+          setTimeout(res=>{
+            that.geSiteList();
+          },1500)
+        }
+      });
+    },
     goUrl(url,param){
       this.isJump = true
       setTimeout(() => {
@@ -51,8 +180,16 @@ export default {
         })
       }, 100);
     },
-    
   },
+  onReachBottom() {
+    console.log("ddddd");
+    //加载更多
+    console.log(this.allPage,this.page,this.isLoad)
+    if (this.isLoad) {
+      this.page++;
+      this.geSiteList()
+    }
+  }
 }
 </script>
 
