@@ -65,7 +65,8 @@
         "goodsDetail/main",
         "paysuccess/main",
         "goodsSearch/main",
-        "confirmOrder/main"
+        "confirmOrder/main",
+        "allcomment/main"
       ]
     }
   ],
@@ -77,7 +78,7 @@
   },
   "tabBar": {
     "color": "#999",
-    "backgroundColor": "#fafafa",
+    "backgroundColor": "#fff",
     "selectedColor": "#f00",
     "borderStyle": "white",
 

@@ -155,8 +155,13 @@ export default {
     }
     this.GetMerchantDetail();
     this.GetShopRecruitment();
+    // 初始化
+    this.hasData=false;
+		this.noDataIsShow=false;//没有数据的提示是否显示
     this.loadingType=0;
     this.page=1;
+    this.isLoad=false;
+		this.isOved=false;  
     this.goodsList={};
     this.GetProductList();
   },

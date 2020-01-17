@@ -135,7 +135,7 @@
       <div class="comment">
         <div class="tit ali-c jus-b">
           <p class="left">商品评价<span>({{proInfo.EvaluateCount}})</span></p>
-          <div class="right" v-if="proInfo.EvaluateCount>0">
+          <div class="right" v-if="proInfo.EvaluateCount>0" @click="goUrl('/pages/goodsSon/allcomment/main',proId)">
             <span>查看全部</span>
             <img src="http://jd.wtvxin.com/images/images/index/more_r.png" alt="">
           </div>

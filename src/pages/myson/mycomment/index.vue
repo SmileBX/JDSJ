@@ -132,7 +132,7 @@ export default {
     },
     //预览图片
 			previewImg(imgurls,index){
-				uni.previewImage({
+				wx.previewImage({
 					current:imgurls[index],
 					urls: imgurls,
 					indicator:imgurls.length
