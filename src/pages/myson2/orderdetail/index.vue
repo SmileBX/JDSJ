@@ -71,10 +71,10 @@
               <img src="http://jd.wtvxin.com/images/images/icons/er.png" alt="" class="icon_ch"><span>在线客服</span>
           </p>
       </div>
-      <div class="flex justifyContentEnd pp2 bg_fff mt2 bb_fix">
+      <!-- <div class="flex justifyContentEnd pp2 bg_fff mt2 bb_fix">
           <p class="btn btn_gray">取消</p>
           <p class="btn btn_red" @click="ConfirmWeiXinSmallPay()">去支付</p>
-      </div>
+      </div> -->
   </div>
 </template>
 

@@ -35,6 +35,7 @@
       "root":"pages/myson2/",
       "pages":[
         "order/main",
+        "orderTui/main",
         "orderRoute/main",
         "orderdetail/main",
         "orderapply/main",
