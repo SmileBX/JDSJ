@@ -1,9 +1,9 @@
 <template>
-  <div class="ticket" style="padding-top:98rpx;">
-      <div class="tab flex">
+  <div class="ticket">
+      <!-- <div class="tab flex">
         <div class="flex1 flexc" :class="{'active':tabIndex==index}" v-for="(item, index) in tabList" :key="index" @click="cliTab(index)">{{item}}</div>
         <span :style="'left:'+tabStyle+'rpx'"></span>
-      </div>
+      </div> -->
       <div class="or_list mt2">
         <div class="or_item bg_fff" v-for="(item,index) in list" :key="index">
             <div class="flex pp2 justifyContentBetween">
@@ -13,7 +13,7 @@
                 </p>
                 <p class="cr">{{item.StatusName}}</p>
             </div>
-            <div class="bg_gray pp3 flex" v-for="(ite, ind) in item.orderDetails" @click="goUrl('/pages/myson2/orderdetail/main',item.OrderNumber)" :key="ind">
+            <div class="bg_gray pp3 flex" v-for="(ite, ind) in item.OrderDetails" @click="goUrl('/pages/myson2/orderdetail/main',item.OrderNumber)" :key="ind">
                 <img :src="ite.ProductImg" alt="" class="shop">
                 <div class="flex1 flex flexAlignCenter mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
@@ -23,8 +23,8 @@
                     <div class="mr3">x{{ite.ProductCount}}</div>
                 </div>
             </div>
-            <div class="text_right font24 bor_tit">共{{item.orderDetails.length}}件商品 合计 <span class="cr font30">  ¥{{item.TotalPrice}}</span></div>
-            <div class="flex justifyContentEnd pp2">
+            <div class="text_right font24 bor_tit">共{{item.OrderDetails.length}}件商品 合计 <span class="cr font30">  ¥{{item.TotalPrice}}</span></div>
+            <!-- <div class="flex justifyContentEnd pp2">
                 <p class="btn btn_gray" @click="cliListBtn(btna[0],item.OrderNumber)" v-if="item.StatusId==0">{{btna[0]}}</p>
                 <p class="btn btn_red" @click="cliListBtn(btnb[0],item.OrderNumber)" v-if="item.StatusId==0">{{btnb[0]}}</p>
                 <p class="btn btn_gray" @click="cliListBtn(btna[3],item.OrderNumber,item.orderDetails)" v-if="item.StatusId==1">{{btna[3]}}</p>
@@ -33,11 +33,11 @@
                 <p class="btn btn_gray" @click="cliListBtn(btna[4],item.OrderNumber,item.orderDetails)" v-if="item.StatusId==2">{{btna[4]}}</p>
                 <p class="btn btn_red" @click="cliListBtn(btnb[2],item.OrderNumber)" v-if="item.StatusId==2">{{btnb[2]}}</p>
                 <p class="btn btn_red" @click="cliListBtn(btnb[3],item.OrderNumber,item.orderDetails)" v-if="item.StatusId==3">{{btnb[3]}}</p>
-            </div>
+            </div> -->
         </div>
       </div>
       <!-- 取消弹框 -->
-      <div class="cancel" v-if="showCancel">
+      <!-- <div class="cancel" v-if="showCancel">
         <div class="main">
           <p class="tit ali-c">取消原因</p>
           <p class="list jus-c ali-c" @click="cliCencel(index,item)" :class="cancelActive==index?'active':''" v-for="(item, index) in cancelList" :key="index">{{item.message}}</p>
@@ -56,7 +56,7 @@
             <p>{{item.ProductName}}</p>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <p class="list-data" v-if="isHaveData">您暂无该项订单数据~</p>
       <p class="list-data" v-if="isOver">没有更多了~</p>
@@ -92,11 +92,11 @@ export default {
       changeNumId:'',//评价多商品订单时选中的订单id
     }
   },
-  computed: {
-    tabStyle(){
-      return ((750/this.tabList.length)*this.tabIndex)+(((750/this.tabList.length)-50)/2)
-    }
-  },
+  // computed: {
+  //   tabStyle(){
+  //     return ((750/this.tabList.length)*this.tabIndex)+(((750/this.tabList.length)-50)/2)
+  //   }
+  // },
   onReachBottom(){
     if(!this.isOver&&!this.isHaveData){
       this.page++
@@ -118,133 +118,17 @@ export default {
     this.cancelGoodsId = ''
     this.tabIndex = this.$mp.query.type
     this.getList()
-    this.GetMerchantDetail()
-    this.getCancelList()
   },
   methods: {
-    changeGoods(id){
-      if(this.tabIndex==2){
-        this.goUrl('/pages/myson2/orderapply/main',this.changeNumId,id,1)
-      }else if(this.tabIndex==3){
-        this.goUrl('/pages/myson2/orderapply/main',this.changeNumId,id,2)
-      }else if(this.tabIndex==4){
-        this.goUrl('/pages/myson/addcomment/main',this.changeNumId,id)
-      }
-      
-    },
-    getCancelList(){
-      get('Order/CancelReason').then(res=>{
-        this.cancelList = res.data
-      })
-    },
-    cliListBtn(str,id,goods){
-      if(str==='取消'){
-        this.showCancel = true
-        this.cancelGoodsId = id
-      }else if(str==='去支付'){
-        this.ConfirmWeiXinSmallPay(id);
-      }else if(str==='查看物流'){
-        this.goUrl('/pages/myson2/orderRoute/main',id)
-      }else if(str==='提醒发货'){
-        post('Order/Remind',{
-          UserId:wx.getStorageSync("userId"),
-          Token:wx.getStorageSync("token"),
-          OrderNo:id
-        }).then(res=>{
-            wx.showToast({
-              icon:'none',
-              title:res.msg
-            })
-        })
-      }else if(str==='确认收货'){
-        post('Order/ConfirmReceipt',{
-          UserId:wx.getStorageSync("userId"),
-          Token:wx.getStorageSync("token"),
-          OrderNo:id
-        }).then(res=>{
-            wx.showToast({
-              icon:'none',
-              title:res.msg
-            })
-            this.list = []
-            this.isOver = false
-            this.isHaveData = false
-            this.getList()
-        })
-      }else if(str==='去评价'){
-        if(goods.length==1){
-          this.goUrl('/pages/myson/addcomment/main',id,goods[0].Id)
-        }else{
-          this.showChange = true
-          this.needChangeGoods = goods
-          this.changeNumId = id
-        }
-      }else if(str=='申请退款'){
-        if(goods.length==1){
-          this.goUrl('/pages/myson2/orderapply/main',id,goods[0].Id,1)
-        }else{
-          this.showChange = true
-          this.needChangeGoods = goods
-          this.changeNumId = id
-        }
-      }else if(str=='申请退货'){
-        if(goods.length==1){
-          this.goUrl('/pages/myson2/orderapply/main',id,goods[0].Id,2)
-        }else{
-          this.showChange = true
-          this.needChangeGoods = goods
-          this.changeNumId = id
-        }
-      }
-    },
-    confirmCencel(){//确认取消
-      if(this.cancelText!=''){//取消原因不为空时
-        post('Order/CancelOrders',{
-          UserId:wx.getStorageSync("userId"),
-          Token:wx.getStorageSync("token"),
-          OrderNo:this.cancelGoodsId,
-          ReMarks:this.cancelText,
-        }).then(res=>{
-          this.showCancel = false
-          this.list = []
-          this.isOver = false
-          this.isHaveData = false
-          this.getList()
-          wx.showToast({
-            icon:'none',
-            title:res.msg
-          })
-        })
-      }else{//取消原因为空时
-        wx.showToast({
-          icon:'none',
-          title:'请选择取消原因!'
-        })
-      }
-    },
-    cliCencel(index,item){
-      this.cancelText = item.message
-      this.cancelActive = index
-    },
-    GetMerchantDetail(){
-      post("Shop/GetMerchantDetail",{
-        ShopId:wx.getStorageSync("shopid")
-      }).then(res=>{
-        if(res.code==0){
-          this.shopName=res.data.ShopInfo.companyName;
-        }
-      })
-      
-    },
     getList(){
-      post('Order/OrderList',{
+      post('Order/RefundOrderListV2',{
         UserId:wx.getStorageSync("userId"),
         Token:wx.getStorageSync("token"),
         Page:this.page,
         PageSize:this.pagesize,
-        Status:this.tabIndex,
+        // Status:this.tabIndex,
         Type:0,
-        ShopId:wx.getStorageSync("shopid")
+        // ShopId:wx.getStorageSync("shopid")
       }).then(res=>{
         if(res.code===0){
           this.list.push(...res.data)
@@ -265,48 +149,7 @@ export default {
     },
     cliServer(index){
       this.serverIndex = index
-    },
-    cliTab(index){
-      this.tabIndex = index
-      this.page = 1
-      this.isOver = false
-      this.isHaveData = false
-      this.list = []
-      this.getList()
-      // console.log(this.tabIndex,"this.tabIndex")
-    },
-    //微信支付需参数
-    async ConfirmWeiXinSmallPay(no){
-      let result = await post('Pay/WeiXinSmallPayByOrder',{
-        OrderNo:no,
-        UserId:wx.getStorageSync("userId"),
-        Token:wx.getStorageSync("token"),
-        WxCode:wx.getStorageSync("wxCode"),
-				WxOpenid:wx.getStorageSync("openId")
-      })
-      let payData=JSON.parse(result.data.JsParam)
-      if(result.code==0){
-        let _this=this;
-        wx.requestPayment({
-          timeStamp: payData.timeStamp,
-          nonceStr: payData.nonceStr,
-          package: payData.package,
-          signType: payData.signType,
-          paySign: payData.paySign,
-          success(res) {
-              wx.redirectTo({
-                url: "/pages/goodsSon/paysuccess/main?OrderNo="+no
-              })
-            },
-          fail(res) {
-            console.log(res);
-            wx.redirectTo({
-              url: "/pages/goodsSon/paysuccess/main?OrderNo="+no+"&msg=fail"
-            })
-          }
-        })
-      }
-    },
+    }
   },
 }
 </script>

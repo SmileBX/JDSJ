@@ -57,7 +57,7 @@
                 <span class="flexc" v-if="orderNum.Received!=0">{{orderNum.Received}}</span>
               </div>
             </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main')">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson2/orderTui/main')">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/5.png" alt="">
                 <p>退款/售后</p>
