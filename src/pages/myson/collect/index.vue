@@ -5,7 +5,7 @@
           <van-swipe-cell :right-width="65" class="swipe-cell" async-close @close="shanwwchu($event,item.Id)">
             <van-cell-group>
               <van-cell class="item">
-                <div class="or_item bg_fff flex justifyContentBetween flexAlignCenter pw3" @click="goDetail()">
+                <div class="or_item bg_fff flex justifyContentBetween flexAlignCenter pw3" @click="goUrl('/pages/goodsSon/goodsDetail/main',item.AssociationId)">
                     <div class="flex or_main">
                         <img :src="item.PicFrist" alt="" class="shop">
                         <div class="flex1 flex flexAlignCenter mr2 text_left">
@@ -45,9 +45,6 @@ export default {
     this.getList()
   },
   methods: {
-    goDetail(){
-      console.log('去详情')
-    },
     getList(){
       post('User/MemberCollectionsList',{
         UserId:wx.getStorageSync("userId"),

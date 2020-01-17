@@ -56,6 +56,10 @@
           <h3>开票类型</h3>
           <h4 class="flex-center">{{Invoicetxt}}<span v-if="InvoiceId>0" @click.stop="delInvoicet" class="delinvoice">×</span><span class="icon"><van-icon name="arrow" color="#999"/></span> </h4>
         </div>
+        <div class="item" v-if="InvoiceId>0&&InvoiceType==2">
+          <h3>接收邮箱</h3>
+          <h4 class="flex-center"><input type="text" v-model="InvoiceEmail" style="text-align: right;" placeholder="请填写接收发票邮箱"></h4>
+        </div>
       </div>
       <div class="price-box plr30">
         <div class="item">
@@ -117,7 +121,7 @@
 </template>
 
 <script>
-import {post,get,getUrlParam} from '@/utils'
+import {post,get,trim} from '@/utils'
 import uniPopup from '@/components/uni-popup.vue';
 export default {
   components: {
@@ -420,7 +424,7 @@ export default {
       this.BuyNowOrderMoney();
     },
     BuyNowOrderMoney(){
-      this.totalMoney=this.allprice+this.Freight-this.couponprice;
+      this.totalMoney=parseFloat(this.allprice)+parseFloat(this.Freight)-parseFloat(this.couponprice);
       this.closeCoupon();
     },
     //购物车下单
@@ -440,7 +444,7 @@ export default {
         this.OrderNo=res.data;
         this.ConfirmWeiXinSmallPay();
       }else if(res.code==200){
-        wx.navigateTo({ 
+        wx.redirectTo({ 
           url: "/pages/goodsSon/paysuccess/main?orderNo=" + res.data+'&status='+res.code+'&price=0'
         });
       }else{
@@ -495,10 +499,12 @@ export default {
         RemarksArr=[{"ShopId":this.shopid,"Text":this.orderRemarksArr}];
       }
       if (this.addressId) {
-        if(this.sourceType==1){
-         this.BuyCart(RemarksArr);
-        }else{
-          this.NowSubmitOrder();
+        if(this.valmail()){
+          if(this.sourceType==1){
+          this.BuyCart(RemarksArr);
+          }else{
+            this.NowSubmitOrder();
+          }
         }
       } else {
         wx.showToast({
@@ -508,7 +514,31 @@ export default {
         });
       }
     },
-    
+    //使用公司邮箱验证邮箱
+    valmail(){
+      if(this.InvoiceType==2){
+        if(trim(this.InvoiceEmail)==""){
+          wx.showToast({
+            title: '请填写邮箱地址!',
+            icon: "none",
+            duration: 1000
+          });
+          return false;
+        }
+        if (
+            !/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.InvoiceEmail)
+          ) {
+            wx.showToast({
+              title: "请输入正确的邮箱地址！",
+              icon: "none",
+              duration: 1500
+            });
+            return false;
+          }
+         return true
+      }
+        return true
+    },
     //微信支付需参数
     async ConfirmWeiXinSmallPay(){
       let result = await post('Pay/WeiXinSmallPayByOrder',{

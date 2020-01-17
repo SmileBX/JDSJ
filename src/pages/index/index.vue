@@ -120,22 +120,22 @@ export default {
         },
         {
           name: "销量",
-          sortorder: "", //0：倒序；1:为顺序
+          sortorder: 0, //2：倒序；1:为顺序
           sortname: "s",
           isSortorder: true,
           active: false
         },
         {
           name: "价格",
-          sortorder: "", //0：倒序；1:为顺序
+          sortorder: 0, //2：倒序；1:为顺序
           sortname: "j",
           isSortorder: true,
           active: false
         }
       ],
       sortname: "m", //j：价格排序；s：销量排序；m：默认排序
-      sFilter:"",//按销量
-      pFilter:""//按价格
+      sFilter:0,//按销量 0:无 1:价格正序 2:价格倒序 ,
+      pFilter:0//按价格
     }
   },
   onLoad(e){
@@ -161,7 +161,9 @@ export default {
     this.loadingType=0;
     this.page=1;
     this.isLoad=false;
-		this.isOved=false;  
+    this.isOved=false; 
+    this.sFilter=0;//按销量 0:无 1:价格正序 2:价格倒序 ,
+    this.pFilter=0;
     this.goodsList={};
     this.GetProductList();
   },
@@ -262,48 +264,38 @@ export default {
 			 }
     },
     filter(index){
-
-      // wx.pageScrollTo({
-      //   selector: '#goods-box',
-      //   duration: 300,
-      //   success(res){
-      //     console.log(res)
-      //   }
-      // })
-
       let _this=this;
-
       _this.filterTab.forEach(function(item, subIndex) {
         if (subIndex === index) {
           _this.$set(item, 'active', true);
           if (item.isSortorder) {
-            if (item.sortorder == "") {
-              _this.$set(item, 'sortorder', "0");
+            if (item.sortorder == 0) {
+              _this.$set(item, 'sortorder', 1);
               return false;
-            } else if (item.sortorder == "0") {
-              _this.$set(item, 'sortorder', "1");
+            } else if (item.sortorder == 1) {
+              _this.$set(item, 'sortorder', 2);
               return false;
-            } else {
-              _this.$set(item, 'sortorder', "0");
+            } else if (item.sortorder == 2){
+              _this.$set(item, 'sortorder', 1);
               return false;
             }
           }
         } else {
           _this.$set(item, 'active', false);
-          _this.$set(item, 'sortorder', "");
+          _this.$set(item, 'sortorder', 0);
           return false;
         }
       });
       _this.sortname = _this.filterTab[index].sortname;
         if(_this.sortname=="s"){
           _this.sFilter=_this.filterTab[index].sortorder;
-          _this.pFilter="";
+          _this.pFilter=0;
         }else if(_this.sortname=="j"){
-          _this.sFilter="";
+          _this.sFilter=0;
           _this.pFilter=_this.filterTab[index].sortorder;
         }else{
-          _this.sFilter="";
-          _this.pFilter="";
+          _this.sFilter=0;
+          _this.pFilter=0;
         }
 				_this.page = 1;
 				_this.goodsList = {};
@@ -464,10 +456,10 @@ export default {
         border-top: 10rpx solid #999;
       }
     }
-    .f_0 .icon-top{
+    .f_1 .icon-top{
       border-bottom-color: #ff3333
     }
-    .f_1 .icon-down{
+    .f_2 .icon-down{
       border-top-color: #ff3333
     }
   }

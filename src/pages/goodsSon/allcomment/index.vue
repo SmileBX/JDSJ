@@ -2,9 +2,8 @@
   <div class="commentPage bg_fff" style="min-height: 100%;">
      <div class="commentGrade">
 			<span :class="['type',Grade==0?'active':'']" @click="tapTab(0)">全部({{allcommentnum}})</span>
-			<span :class="['type',Grade==1?'active':'']" @click="tapTab(1)">好评</span>
-			<span :class="['type',Grade==2?'active':'']" @click="tapTab(2)">中评</span>
-			<span :class="['type',Grade==3?'active':'']" @click="tapTab(3)">差评</span>
+			<span :class="['type',Grade==1?'active':'']" @click="tapTab(1)">有图</span>
+			<span :class="['type',Grade==2?'active':'']" @click="tapTab(2)">好评</span>
 		</div>
     <!-- 评论区 start -->
 		<div class="or_list mt2" v-if="hasData">

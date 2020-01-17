@@ -88,7 +88,7 @@ export default {
     
     //查询订单金额
     async GetOrdersMoney(){
-      let res=await post("Order/GetOrdersMoney",{
+      let res=await post("Order/GetPayAfterOrdersMoney",{
           OrderNo: this.OrderNo,
           UserId: this.userId,
           Token: this.token
