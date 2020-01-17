@@ -11,7 +11,7 @@ page {
 *{
     box-sizing: border-box;
 }
-
+div,p,span{box-sizing: border-box}
 .check__label .wx-checkbox-input {
     border-radius: 8rpx !important;
     width: 38rpx;
@@ -154,7 +154,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 .font22 {
     font-size: 22rpx
 }
-
+.fz12{ font-size: 24rpx}
 .fontColor {
     color: #999999
 }
@@ -226,6 +226,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 .mm1 {
     margin: 0 20rpx
 }
+.mt_5{ margin-top: 10rpx}
 .text_l{ text-align: left}
 .p_re{position: relative;}
 /*中间块*/
