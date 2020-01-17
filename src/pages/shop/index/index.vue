@@ -30,10 +30,11 @@ export default {
     }
   },
   onLoad(){
-   this.userId = wx.getStorageSync("userId");
-   this.token = wx.getStorageSync("token");
+   
   },
   onShow(){
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
     this.GetVisitShopList();
   },
   methods: {
@@ -59,6 +60,15 @@ export default {
           this.ShopList=res.data
         }
       }
+  },
+  onPullDownRefresh() {
+    //监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
+    let _this=this;
+    this.ShopList={};
+    setTimeout(function () {
+      _this.GetVisitShopList();
+      wx.stopPullDownRefresh();  //停止下拉刷新动画
+    }, 1000);
   }
 }
 </script>

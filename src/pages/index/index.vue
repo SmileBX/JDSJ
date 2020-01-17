@@ -155,6 +155,9 @@ export default {
     }
     this.GetMerchantDetail();
     this.GetShopRecruitment();
+    this.loadingType=0;
+    this.page=1;
+    this.goodsList={};
     this.GetProductList();
   },
   methods: {
@@ -321,7 +324,18 @@ export default {
         this.isOved = false;
       }
     }
-  }
+  },
+   onPullDownRefresh() {
+			//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
+      let _this=this;
+        _this.shopid =wx.getStorageSync("shopid");
+        _this.page=1;
+				_this.goodsList = {};
+			setTimeout(function () {
+				_this.GetProductList();
+				wx.stopPullDownRefresh();  //停止下拉刷新动画
+			}, 1000);
+		}
 }
 </script>
 

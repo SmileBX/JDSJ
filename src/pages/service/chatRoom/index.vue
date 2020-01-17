@@ -187,6 +187,7 @@ export default {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.shopid=wx.getStorageSync("shopid");
+    this.IsShopServie='';
     this.getShopMessageList()
   },
   onUnload() {
