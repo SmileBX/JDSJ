@@ -265,6 +265,13 @@
 					"id": -1,
 					"name": "发票",
 					"pathName": "pages/myson/invoiceList/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "优惠券市场",
+					"pathName": "pages/myson/ticketcenter/main",
 					"scene": null
 				}
 			]

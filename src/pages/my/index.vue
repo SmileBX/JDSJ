@@ -112,7 +112,7 @@
         <div class="card">
           <p class="tit ali-c">更多工具</p>
           <div class="icon-box icon-boxb flex-wrap ali-c">
-            <div class="icon flexc" @click="switchPath('/pages/myson/mytuan/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/mytuan/main','',0)">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/12.png" alt="">
                 <p>我的拼团</p>
@@ -180,7 +180,15 @@ export default {
         }
       })
     },
-    switchPath(path,type){
+    switchPath(path,type,no){
+      if(no==0){
+         wx.showToast({
+          title: "该功能暂未开放，敬请期待",
+          icon: "none",
+          duration: 2000
+        });
+        return false
+      }
       setTimeout(() => {
         wx.navigateTo({
           url:path+'?type='+type

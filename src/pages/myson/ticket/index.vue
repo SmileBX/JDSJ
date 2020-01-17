@@ -17,6 +17,7 @@
           </div>
         </div>
       </div>
+      <div v-if="list.length==0" style="text-align: center; color:#999; margin-top:200rpx" >暂无数据</div>
   </div>
 </template>
 

@@ -1,5 +1,6 @@
 <template>
   <div class="ticket">
+    <block v-if="hasData">
       <div class="list jus-b" v-for="(item,index) in list" :key="index">
         <div class="left flex">
           <div class="price">
@@ -20,19 +21,25 @@
           </div>
         </div>
       </div>
+    </block>
+    <noData :isShow="noDataIsShow"></noData>
   </div>
 </template>
 
 <script>
-import {switchPath,isJump,post,get} from '@/utils'
+import {post,get} from '@/utils'
+import noData from "@/components/noData"; //没有数据的通用提示
 export default {
-
+  components: {
+		noData,
+  },
   data () {
     return {
       userId: "",
 			token: "",
       shopid:"",
-      isJump:false,
+      hasData:false,
+      noDataIsShow:false,
       page: 1,
       pageSize: 99,
       list:[],
@@ -56,6 +63,13 @@ export default {
         "Enable": 3
       })
       if(res.code==0){
+        if (res.count == 0) {
+						this.noDataIsShow = true;
+						this.hasData = false;
+					}else{
+            this.hasData = true;
+            this.noDataIsShow = false;
+          }
         this.list = res.data;
       }
     },
@@ -117,7 +131,7 @@ export default {
       font-size: 48rpx;
       margin-right: 20rpx;
       span{
-        font-size: 36rpx!important;
+        font-size: 30rpx!important;
         color: #f00;
       }
     }

@@ -25,7 +25,7 @@
             <div class="ans-mask" @click="showPopwinStatus = false"></div>
             <div class="ans-main p30">
                 <p>{{Url}}</p>
-                <div class="btn">复制链接</div>
+                <div class="btn" @click="copy(Url)">复制链接</div>
             </div>
       </div>
   </div>
@@ -57,25 +57,25 @@ export default {
   methods: {
       async ShopServiceLink(){
           if(this.verify()){
-              let res=await post("WebSocket/ShopServiceLink",{
-                UserId: this.userId,
-                Token: this.token,
-                ShopId:this.shopid,
-                ProtuctName:this.title,
-                ProtuctPrice:this.price,
-                Pic:this.pic64
-            })
-            if(res.code==0){
-                this.showPopwinStatus=true;
-                this.Url=this.Url+res.data;
-            }else{
-                wx.showToast({
-                    title: res.msg,
-                    icon: "none",
-                    duration: 1000
-                });
-            }
-          }
+                let res=await post("WebSocket/ShopServiceLink",{
+                    UserId: this.userId,
+                    Token: this.token,
+                    ShopId:this.shopid,
+                    ProtuctName:this.title,
+                    ProtuctPrice:this.price,
+                    Pic:this.pic64
+               })
+                if(res.code==0){
+                    this.showPopwinStatus=true;
+                    this.Url=this.Url+res.data;
+                }else{
+                    wx.showToast({
+                        title: res.msg,
+                        icon: "none",
+                        duration: 1000
+                    });
+                }
+           }
       },
       //验证
       verify(){
@@ -123,7 +123,18 @@ export default {
             
         })
     },
-
+    copy(str){
+        let _this=this;
+      wx.setClipboardData({
+        data: str,
+        success (res) {
+            _this.showPopwinStatus=false
+          // wx.getClipboardData({
+            
+          // })
+        }
+      })
+    },
   }
 }
 </script>
@@ -167,7 +178,6 @@ export default {
         width:500rpx;
         border-radius:20rpx;
         p{
-        width:500rpx;
         word-wrap:break-word;
         }
         .btn{

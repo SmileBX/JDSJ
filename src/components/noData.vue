@@ -1,6 +1,6 @@
 <template>
   <div class="emptybox center" v-if="isShow">
-    <div class="iconimg"><span class="iconfont icon-nodata"></span></div>
+    <div class="iconimg"><img class="icon-nodata" src="http://jd.wtvxin.com/images/images/nodata.png" alt=""></div>
     <p class="tips">{{tisTxt}}</p>
   </div>
 </template>
@@ -40,7 +40,8 @@ export default {
     margin-top: 30rpx; color: #999;
   }
   .icon-nodata{
-    font-size: 160rpx; line-height: 1;color: #999; 
+    height: 200rpx; width: 200rpx;
+    margin: 0 auto; 
   }
 </style>
 

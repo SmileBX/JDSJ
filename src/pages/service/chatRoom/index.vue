@@ -57,6 +57,7 @@
       </div>
     </div>
     <!--底部按钮 输入框 下拉按钮-->
+    <block v-if="isshowInput">
     <div class="bottomicon" v-if="showModule!=='manySelect'">
       <div class="inputbtn flex flexAlignCenter bg_fff">
         <div
@@ -118,10 +119,11 @@
         <div class="removeMsgArr" @click="removeMsgArr">删除</div>
       </div>
     </div>
+    </block>
     <!--弹层-->
     <div class="mask" v-if="isShowMask" catchtouchmove="true" @click="isShowMask=false"></div>
   </div>
-  <div v-else>
+  <div v-if="IsShopServie==1">
     <div class="itembox" v-for="(item,index) in ShopMessageList.DataTable" :key="index" @click="goUrl(item.FriendId)">
       <div class="leftbox">
         <img :src="item.Headimgurl" alt="">
@@ -167,7 +169,8 @@ export default {
       pageSize: 20,
       selectAll:false,//全选状态
       ShopMessageList:{},
-      IsShopServie:0,//0不是本商店客服
+      IsShopServie:'',//0不是本商店客服
+      isshowInput:false
     };
   },
   onLoad() {
@@ -234,9 +237,9 @@ export default {
         }
       );
       if(res.code==0){
+        this.isshowInput=true;
         this.IsShopServie=res.data.IsShopServie;
         if(res.data.IsShopServie==0){//不是客服，直接显示聊天室
-        console.log("**********")
           this.FriendId=res.data.DataTable[0].FriendId
           this.getFriendMessage("scrollBottom").then(() => {
             this.connectSocket();

@@ -43,7 +43,7 @@
     </div>
     <div class="youhui ali-c jus-b">
       <img @click="goUrl('/pages/goodsSon/rob/main')" src="http://jd.wtvxin.com/images/images/index/qianggou.png" alt="">
-      <img @click="goUrl('/pages/team/goods/main')" src="http://jd.wtvxin.com/images/images/index/pintuan.png" alt="">
+      <img @click="goUrl('/pages/team/goods/main',0)" src="http://jd.wtvxin.com/images/images/index/pintuan.png" alt="">
     </div>
     <div class="goods-box" id="goods-box">
       <div class="xd">
@@ -159,9 +159,17 @@ export default {
   },
   methods: {
     goUrl(url,param){
-      wx.navigateTo({
-        url:url+'?id='+param
-      })
+      if(param==0){
+         wx.showToast({
+          title: "该功能暂未开放，敬请期待",
+          icon: "none",
+          duration: 2000
+        });
+      }else{
+        wx.navigateTo({
+          url:url+'?id='+param
+        })
+      }
     },
     goCart(){
       wx.navigateTo({
