@@ -501,7 +501,7 @@ export default {
         this.OrderNo=res.data;
         this.ConfirmWeiXinSmallPay();
       }else if(res.code==200){
-        wx.navigateTo({ 
+        wx.redirectTo({ 
           url: "/pages/goodsSon/paysuccess/main?orderNo=" + res.data+'&status='+res.code+'&price=0'
         });
       }else{

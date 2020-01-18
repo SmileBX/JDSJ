@@ -81,8 +81,7 @@ export default {
         IdcardPositiveUrl:"",
         IdcardNegative:"",//身份证反面
         IdcardNegativeUrl:"",//身份证反面
-        Remarks:"",
-        Address:"",
+        Remarks:""
     }
   },
   onShow(){
@@ -90,6 +89,21 @@ export default {
     this.token = wx.getStorageSync("token");
   },
   methods: {
+    //初始化
+    init(){
+      this.ShopName="";
+      this.ShopNick="";
+      this.MasterProduct="";
+      this.Address="";
+      this.Mobile="";
+      this.logo="";
+      this.logoUrl="";
+      this.IdcardPositive="";
+      this.IdcardPositiveUrl="";
+      this.IdcardNegative="";//身份证反面
+      this.IdcardNegativeUrl="";//身份证反面
+      this.Remarks=""
+    },
     yanzheng(){
       if(this.logo==""){
         wx.showToast({
@@ -165,10 +179,21 @@ export default {
           "ShopName": this.ShopName,
           "CompanyName": ""
         }).then(res=>{
-          wx.showToast({
-            title: res.msg,
-            icon: 'none',
-          })
+          if(res.code==0){
+            wx.showToast({
+              title: "申请成功，请等待审核",
+              icon: 'none',
+            })
+            setTimeout(() => {
+              wx.navigateBack()
+            }, 1500);
+            this.init();
+          }else{
+            wx.showToast({
+              title: res.msg,
+              icon: 'none',
+            })
+          }
         })
       }
     },
