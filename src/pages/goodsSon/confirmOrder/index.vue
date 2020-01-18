@@ -76,7 +76,10 @@
         </div>
         <div class="msg">
           <h3>买家留言</h3>
-          <textarea name="" v-model="orderRemarksArr" id="" cols="30" rows="10" placeholder="填写内容需与商家协商并确认，45字以内"></textarea>
+          <textarea v-model="orderRemarksArr" @blur="bindContentBlur" v-show="isInputContentFocus"  v-bind:focus="isFocus" id="" cols="30" rows="10" placeholder="填写内容需与商家协商并确认，45字以内"></textarea>
+          <scroll-view scroll-y class="msgcontent" v-text="orderRemarksArr" @click="bindContentFocus" v-show="isContentFocus">
+            <div class="placeholder" v-if="!orderRemarksArr">填写内容需与商家协商并确认，45字以内</div>
+          </scroll-view>
         </div>
       </div>
     </div>
@@ -152,6 +155,9 @@ export default {
       showCoupon:false,//显示优惠券弹窗
       isLimint: 0, //是否是限时购
       orderRemarksArr:"",//备注
+      isContentFocus: true,
+      isInputContentFocus: false,
+      isFocus: false,
       buynum:1,//立即购买数量
       SpecText:"",//立即购买产品规格
       allprice:0,//商品总金额
@@ -177,6 +183,7 @@ export default {
     this.shopid = wx.getStorageSync("shopid");
     this.couponprice=0;
     this.Freight=0;
+    this.orderRemarksArr="";//清空留言
     if(wx.getStorageSync("addressinfo")){
       this.addressinfo=wx.getStorageSync("addressinfo");
       this.hasaddress=true;
@@ -203,6 +210,16 @@ export default {
     }
   },
   methods: {
+    bindContentFocus(e) {
+      this.isFocus = true; //触发焦点
+      this.isContentFocus = false; //聚焦时隐藏内容文本标签
+      this.isInputContentFocus = true;
+    },
+    bindContentBlur(e) {
+      this.isContentFocus = true; //聚焦时隐藏内容文本标签
+      this.isInputContentFocus = false;
+      this.isFocus = false; //失去焦点
+    },
     goshop(){
       wx.switchTab({
         url: '/pages/index/main'
@@ -250,7 +267,8 @@ export default {
           UserId: this.userId,
           Token: this.token,
           CartIds:this.cartids,
-          Type: 1
+          Type: 1,
+          ShopId:this.shopid
         };
       }else{
         para = {
@@ -259,7 +277,8 @@ export default {
           ProductId: this.cartids,
           ProductNumber:this.buynum,
           ProductSpec:this.SpecText,
-          Type: 0
+          Type: 0,
+          ShopId:this.shopid
         };
       }
       let res=await post("Order/GetCouponList",para)
@@ -276,7 +295,7 @@ export default {
                 this.couponprice=this.allprice;
               }
             }else {
-              this.couponprice=this.allprice*(1-res.data[0].Denomination);
+              this.couponprice=this.allprice*(1-res.data[0].Denomination).toFixed(2);
             }
           }
         }else{
@@ -424,7 +443,8 @@ export default {
       this.BuyNowOrderMoney();
     },
     BuyNowOrderMoney(){
-      this.totalMoney=parseFloat(this.allprice)+parseFloat(this.Freight)-parseFloat(this.couponprice);
+      let number=parseFloat(this.allprice)+parseFloat(this.Freight)-parseFloat(this.couponprice);
+      this.totalMoney=Math.round(number * 100)/100;
       this.closeCoupon();
     },
     //购物车下单
@@ -708,11 +728,14 @@ export default {
     }
   }
   .msg{
-    textarea{
+    textarea,.msgcontent{
       width:100%;
       height:160rpx;
+      color: #666;
+      font-size: 30rpx;
     }
     padding-bottom:20rpx;
+    .placeholder{ color: #999}
   }
 
   .footer{

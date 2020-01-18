@@ -630,7 +630,8 @@ export default {
 				let res = await post("Goods/ProductCollection", {
 					proId: this.proId,
 					userId:this.userId,
-					token:this.token
+          token:this.token,
+          ShopId:this.shopid
 				  });
 				if(res.code==0){
 					if(this.IsCollect){

@@ -12,7 +12,10 @@
           </div>
           <div class="mt3">{{text}}金额 <span class="cr mr2">¥ {{price}}</span> </div>
           <div class="mt3">{{text}}说明 <span class="font22 cg">(选填)</span> </div>
-          <textarea v-model="content" name="" id="" cols="30" rows="10" placeholder="200字内" class="reas_text mt2"></textarea>
+          <textarea @blur="bindContentBlur" v-show="isInputContentFocus"  v-bind:focus="isFocus" v-model="content" cols="30" rows="10" placeholder="200字内" class="reas_text mt2"></textarea>
+          <scroll-view scroll-y class="reas_text mt2" v-text="content" @click="bindContentFocus" v-show="isContentFocus">
+            <div class="c-999" v-if="!content">200字内</div>
+          </scroll-view>
           <div class=" mt3 font24 cg">
               温馨提示：订单{{text}}金额以实际支付金额为准，不包括优惠券抵扣金额，且订单申请{{text}}后优惠券将不会返还，请您谨慎操作。
           </div>
@@ -34,7 +37,10 @@ export default {
       price:0,
       content:'',
       type:0,
-      text:''
+      text:'',
+      isContentFocus: true,
+      isInputContentFocus: false,
+      isFocus: false,
     }
   },
   
@@ -50,6 +56,16 @@ export default {
     this.getGoodsDetail()
   },
   methods: {
+    bindContentFocus(e) {
+      this.isFocus = true; //触发焦点
+      this.isContentFocus = false; //聚焦时隐藏内容文本标签
+      this.isInputContentFocus = true;
+    },
+    bindContentBlur(e) {
+      this.isContentFocus = true; //聚焦时隐藏内容文本标签
+      this.isInputContentFocus = false;
+      this.isFocus = false; //失去焦点
+    },
     pub(){
       post(this.type==1?'Order/ApplicationRefund':'Order/ApplicationReturn',{
         UserId:wx.getStorageSync("userId"),

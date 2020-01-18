@@ -11,7 +11,7 @@
                 <div class="tit ellipsis">{{item.Name}}</div>
                 <div class="inShop">进店</div>
               </div>
-              <p class="ellipsis">{{item.Describe}}</p>
+              <!-- <p class="ellipsis">{{item.Describe}}</p> -->
             </div>
           </div>
         </block>

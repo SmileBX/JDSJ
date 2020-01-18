@@ -94,7 +94,7 @@ export default {
           Token: this.token
       })
       if(res.code==0){
-        this.TotalPrice=res.data.TotalPrice;
+        this.TotalPrice=res.data;
       }
     },
     goshop(){
