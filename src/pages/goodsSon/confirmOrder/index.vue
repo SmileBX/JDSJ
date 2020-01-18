@@ -341,7 +341,7 @@ export default {
       if(this.sourceType==1){
         this.BuyCartShopMoney();
       }else{
-        if(this.couponindex>0){
+        if(this.couponindex>=0){
           if(this.couponItem.DiscountType==1){
             if(this.couponItem.MeetConditions!=0){
               this.couponprice=this.couponItem.Denomination;
@@ -350,8 +350,9 @@ export default {
             }
 					}else if(this.couponItem.DiscountType==2){
 						this.couponprice=this.allprice*(1-this.couponItem.Denomination);
-					}
+          }
         }
+        
         this.BuyNowOrderMoney();
       }
     },
