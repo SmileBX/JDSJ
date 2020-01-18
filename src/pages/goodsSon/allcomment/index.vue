@@ -9,8 +9,19 @@
 		<div class="or_list mt2" v-if="hasData">
 			<block v-for="(item,index) in commentlist" :key="index">
 				<div class="or_item bg_fff mt2 flex flexColumn justifyContentBetween pw3">
-            <div class="p2">
-                <p class="font24 cg">{{item.AddTime}}</p>
+						<div class="hd ali-c jus-b">
+							<div class="ali-c">
+								<img class="left" :src="item.MemberAvatar||'http://jd.wtvxin.com/images/images/ava.png'" alt="">
+								<div>
+									<p class="name">{{item.MemberName}}</p>
+									<p class="font24 cg">{{item.AddTime}}</p>
+								</div>
+							</div>
+							<div>
+								<img v-for="(i,e) in item.Star" :key="e" class="right" src="http://jd.wtvxin.com/images/images/index/star.png" alt="">
+							</div>
+						</div>
+            <div class="bd">
                 <p class="mt1">{{item.ContentText}}</p>
                 <p class="flex flexWrap"  v-if="item.imgArr">
                   <block v-for="(i,e) in item.imgArr" :key="e">
@@ -20,9 +31,9 @@
             </div>
         </div>
 			</block>
-			<div class="uni-tab-bar-loading">
-				<uni-load-more :loadingType="loadingType"></uni-load-more>
-			</div>
+			<view class="loading">
+        <load-more :loadingType="loadingType"></load-more>
+      </view>
 		</div>
 		<!-- 评论区 end -->
     <noData :isShow="noDataIsShow"></noData>
@@ -30,7 +41,7 @@
 </template>
 
 <script>
-import {post,get} from '@/utils'
+import {post,get,dateUtils} from '@/utils'
 import noData from "@/components/noData"; //没有数据的通用提示
 import LoadMore from '@/components/load-more';
 export default {
@@ -48,12 +59,12 @@ export default {
 				hasData: false,
 				noDataIsShow: false,
 				page: 1,
-				pageSize: 10,
+				pageSize: 6,
 				allPage: 0,
 				count: 0,
 				Pid: "",//商品id
 				allcommentnum:0,//全部评价数量
-				Grade: 0, //1好评，2中评，3差评
+				Grade: 0, //0全部，1有图，2好评
 				commentlist: {},
     }
   },
@@ -61,7 +72,7 @@ export default {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.shopid=wx.getStorageSync("shopid");
-    this.Pid = this.$root.$mp.query.id||12;
+    this.Pid = this.$root.$mp.query.id;
     this.tapTab(0);
   },
   methods: {
@@ -96,7 +107,7 @@ export default {
 					if (result.data.length) {
 						this.hasData = true;
 						result.data.forEach(function(item) {
-              item.AddTime = item.AddTime.split("T")[0];
+              item.AddTime = dateUtils.format(item.AddTime);
               let arr = item.PicNo.split(",");
 							if(arr[arr.length-1] ==""){
 								arr.splice(arr.length-1,1);
@@ -157,16 +168,16 @@ export default {
       this.loadingType = 2;
     }
   },
-		onPullDownRefresh() { //下拉刷新
-			//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
-			let _this=this;
-			_this.page=1;
-			_this.loadingType = 1;
-			setTimeout(function () {
-				_this.GetEvaluate();
-				uni.stopPullDownRefresh();  //停止下拉刷新动画
-			}, 1000);
-		}
+	onPullDownRefresh() { //下拉刷新
+		//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
+		let _this=this;
+		_this.page=1;
+		_this.loadingType = 1;
+		setTimeout(function () {
+			_this.GetEvaluate();
+			uni.stopPullDownRefresh();  //停止下拉刷新动画
+		}, 1000);
+	}
 }
 </script>
 
@@ -179,7 +190,27 @@ export default {
     width:200rpx;height:200rpx;
   }
   .or_item{
-    margin-top:20rpx;border-radius:15rpx;
+		margin-top:20rpx;border-radius:15rpx;
+		.hd{
+			height: 114rpx;
+			.name{
+				font-size: 30rpx;
+      	font-weight: bold;
+			}
+      .left{
+        width: 68rpx;
+        height: 68rpx;
+        border-radius: 50%;
+        margin-right: 20rpx;
+        background: #eee;
+      }
+      .right{
+        width: 24rpx;
+        height: 24rpx;
+        margin-left: 10rpx;
+      }
+		}
+		.bd{ padding-bottom: 20rpx}
     .or_left{
       height:100%;
     }

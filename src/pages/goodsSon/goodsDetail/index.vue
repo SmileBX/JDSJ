@@ -35,7 +35,7 @@
             <p class="tit">{{proInfo.ProductName}}</p>
           </div>
           <div class="right">
-            <img src="http://jd.wtvxin.com/images/images/index/fenxiang.png" alt="">
+            <button open-type='share' class="sharebutton"><img src="http://jd.wtvxin.com/images/images/index/fenxiang.png" alt=""></button>
           </div>
         </div>
         <div class="jus-b ali-c">
@@ -175,7 +175,7 @@
       <div style="height: 100rpx;"></div>
       <div class="foot ali-c jus-b">
         <div class="left ali-c">
-          <div>
+          <div @click="gokefu">
             <img src="http://jd.wtvxin.com/images/images/index/ans.png" alt="">
             <p>客服</p>
           </div>
@@ -362,6 +362,11 @@ export default {
       wx.navigateTo({
         url:'/pages/cart/main'
       })
+    },
+    gokefu(){
+      wx.navigateTo({
+        url:"/pages/service/chatRoomSon2/main"
+      });
     },
     cliTag(name,value){//点击选择规格标签--name:规格名称 value:所选规格值
       this.$set(this.SpecValue,name,value)
@@ -577,6 +582,12 @@ export default {
 					this.proInfo.FlashSaleStartTime=StartTimestr;
         }
         
+      }else{
+        wx.showToast({
+          title: res.msg,
+          icon:"none",
+          duration: 1500
+        });
       }
     },
     //倒计时
@@ -659,10 +670,24 @@ export default {
       this.isTop=false;
     }
   },
+  onShareAppMessage: function() {
+    return {
+      title: this.proInfo.ProductName, //转发页面的标题
+      imageUrl:this.proInfo.ProductImgList[0].PicUrl,
+      path: '/pages/goodsSon/goodsDetail/main?id='+this.proId+'&isLimint='+this.isLimint
+    }
+  }
 }
 </script>
 
 <style scoped lang='scss'>
+.sharebutton{
+  padding: 0;
+  background: #fff!important;
+}
+.sharebutton::after{
+  border: none!important;
+}
 .pin{
   background-color: #fff;
   margin-top: 20rpx;

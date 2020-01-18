@@ -76,8 +76,8 @@
         </div>
         <div class="msg">
           <h3>买家留言</h3>
-          <textarea v-model="orderRemarksArr" @blur="bindContentBlur" v-show="isInputContentFocus"  v-bind:focus="isFocus" id="" cols="30" rows="10" placeholder="填写内容需与商家协商并确认，45字以内"></textarea>
-          <scroll-view scroll-y class="msgcontent" v-text="orderRemarksArr" @click="bindContentFocus" v-show="isContentFocus">
+          <textarea v-model="orderRemarksArr" @click="bindContentBlur" v-if="isInputContentFocus" v-bind:focus="isFocus" cols="30" rows="10" placeholder="填写内容需与商家协商并确认，45字以内"></textarea>
+          <scroll-view scroll-y class="msgcontent" v-text="orderRemarksArr" @click="bindContentFocus" v-if="isContentFocus">
             <div class="placeholder" v-if="!orderRemarksArr">填写内容需与商家协商并确认，45字以内</div>
           </scroll-view>
         </div>
@@ -100,7 +100,7 @@
 						<div class="couponitem" @click="selectCoupon(-1)">
 							<div class="couponname">不使用优惠券</div>
 							<div style="margin: 0;">
-                <input type="checkbox" class="checkbox-cart" :checked="couponindex<0">
+                <span :class="['checkbox',couponindex<0?'checked':'']"></span>
               </div>
 						</div>
 						<div class="couponitem" v-for="(item,index) in CouponList" :key="index" @click="selectCoupon(index)">
@@ -109,7 +109,7 @@
                 <block v-else>{{item.Denomination*10}}折</block>
 							</div>
 							<div style="margin: 0;">
-                <input type="checkbox" class="checkbox-cart" :checked="couponindex==index">
+                <span :class="['checkbox',couponindex==index?'checked':'']"></span>
               </div>
 						</div>
 					</div>
@@ -177,7 +177,6 @@ export default {
     this.WxOpenid=wx.getStorageSync("openId");
     this.sourceType=this.$root.$mp.query.orderSType;
     this.cartids=this.$root.$mp.query.cartItem;
-    
   },
   onShow(){
     this.shopid = wx.getStorageSync("shopid");
