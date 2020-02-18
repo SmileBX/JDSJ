@@ -101,7 +101,7 @@
                 <p>店铺列表</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/shop/join/main')">
+            <div class="icon flexc" style="display:none" @click="switchPath('/pages/shop/join/main')">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/11.png" alt="">
                 <p>申请店铺</p>

@@ -3,10 +3,10 @@
 	"setting": {
 		"urlCheck": false,
 		"es6": true,
-		"enhance": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
+		"enhance": true,
 		"coverView": true,
 		"nodeModules": true,
 		"autoAudits": false,
@@ -293,6 +293,7 @@
 					"id": -1,
 					"name": "物流",
 					"pathName": "pages/myson2/orderRoute/main",
+					"query": "",
 					"scene": null
 				}
 			]

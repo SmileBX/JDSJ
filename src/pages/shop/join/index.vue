@@ -46,6 +46,12 @@
           <img src="http://jd.wtvxin.com/images/images/shop/upIDcard1.png" v-else alt="" @click="uplLoadImg(3)">
         </div>
         <p>拍摄时请确保身份证<span>边框完整  字体清晰</span></p>
+         <h4>请上传营业执照</h4>
+        <div class="upBox flex-center-between">
+          <img :src="yyzzUrl" v-if="yyzzUrl" alt="" @click="uplLoadImg(4)">
+          <img src="http://jd.wtvxin.com/images/images/shop/upIDcard3.png" v-else alt="" @click="uplLoadImg(4)">
+        </div>
+        <p>拍摄时请确保营业执照<span>边框完整  字体清晰</span></p>
     </div>
     
     <div class="bgf220"></div>
@@ -81,6 +87,8 @@ export default {
         IdcardPositiveUrl:"",
         IdcardNegative:"",//身份证反面
         IdcardNegativeUrl:"",//身份证反面
+        yyzz:"",//营业执照
+        yyzzUrl:"",//营业执照
         Remarks:""
     }
   },
@@ -102,6 +110,8 @@ export default {
       this.IdcardPositiveUrl="";
       this.IdcardNegative="";//身份证反面
       this.IdcardNegativeUrl="";//身份证反面
+      this.yyzz="";
+      this.yyzzUrl="";
       this.Remarks=""
     },
     yanzheng(){
@@ -157,6 +167,13 @@ export default {
       if(this.IdcardNegative==""){
         wx.showToast({
           title:"请上传身份证反面照！",
+          icon:"none"
+        })
+        return false
+      }
+      if(this.yyzz==""){
+        wx.showToast({
+          title:"请上传营业执照！",
           icon:"none"
         })
         return false
@@ -220,9 +237,12 @@ export default {
                     }else if(index==2){//身份证正面
                       this.IdcardPositiveUrl=imgUrl;
                       this.IdcardPositive=imgData
-                    }else{//身份证反面
+                    }else if(index==3){//身份证反面
                       this.IdcardNegativeUrl=imgUrl;
                       this.IdcardNegative=imgData
+                    }else{
+                      this.yyzzUrl=imgUrl;
+                      this.yyzz=imgData
                     }
                     console.log(imgData.length,imgUrl)
                 }
