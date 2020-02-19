@@ -358,8 +358,8 @@ export default {
   top: auto;
   bottom: 30rpx;
   right: 30rpx;
-  width: 98rpx;
-	height: 98rpx;
+  width: 130rpx;
+	height: 130rpx;
 }
 // .xd{
 //   transition: all 0.3s;
@@ -373,8 +373,8 @@ export default {
 //   left: 0;
 // }
 .car{
-  width: 98rpx;
-	height: 98rpx;
+  width: 100%;
+	height: 100%;
 }
 .goods-box{
   background-color: #fff;

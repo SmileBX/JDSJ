@@ -337,6 +337,7 @@ export default {
     this.SpecValue={};
     this.SpecInfo={};
     this.showPopupSku = false;
+    this.isMatch=false;
     this.timeStr=[];
     clearInterval(this.timer);
     this.ProductInfo();

@@ -13,7 +13,7 @@
     "pages/service/chatRoomSon/main",
     "pages/service/chatRoomSon2/main"
   ],
-  "subpackages":[
+  "subPackages":[
     {
       "root":"pages/myson/",
       "pages":[
@@ -42,7 +42,6 @@
         "orderapply/main",
         "sertydetail/main",
         "sertype/main"
-        
       ]
     },
     {

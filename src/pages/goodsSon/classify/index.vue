@@ -15,7 +15,7 @@
           </div>
         </div>
       </div>
-      <div class="main-box" v-for="(item, index) in datalist" :key="index">
+      <div class="main-box" v-for="(item, index) in datalist" :key="index" style="display:none">
         <div class="tit ali-c">
           <p>{{item.TypeName}}</p>
         </div>
@@ -23,6 +23,28 @@
           <p class="ali-c" v-for="(i,e) in item.classilyList" :key="e"  @click="goUrl(i.Id,i.ClassName)">{{i.ClassName}}</p>
         </div>
       </div>
+
+      
+        <view class="page-body">
+          <scroll-view class="nav-left" scroll-y style="height:100%" v-if="categoryList.length>0">
+            <view class="nav-left-item" @click="categoryClickMain(item.Id,index)" :key="index" :class="index==categoryActive?'active':''"
+            v-for="(item,index) in categoryList">
+              {{item.TypeName}}
+            </view>
+          </scroll-view>
+          <scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" style="height:100%" scroll-with-animation>
+            <view class="nav-rightList" v-if="subCategoryList.length>0">
+              <view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index" @click="goUrl(item.Id,item.ClassName)">
+                <image :src="item.PicUrl" v-if="item.PicUrl" />
+                <image src="/static/noPicmin.png" v-else mode="widthFix"></image>
+                <view class="txt">{{item.ClassName}}</view>
+              </view>
+            </view>
+          </scroll-view>
+
+        </view>
+      
+
   </div>
 </template>
 
@@ -34,7 +56,15 @@ export default {
      datainfo:{},//店铺信息
      typelist:{},//类型
      datalist:{},//分类数据
-     shopid:"" 
+     shopid:"" ,
+
+     categoryList: [], //左边的数据
+    subCategoryList: [], //右边的数据
+    categoryActive: 0,
+    scrollTop: 0,
+    scrollHeight: 0,
+    typeId: '',
+    parentId: '', //顶级分类id,如果为-1，就是查询全部
     }
   },
   onLoad(){
@@ -43,7 +73,8 @@ export default {
   onShow(){
     this.shopid = wx.getStorageSync("shopid");
     this.GetMerchantDetail();
-    this.GetProductType();
+    //this.GetProductType();
+		this.classifyNavList();
   },
   methods: {
     goUrl(id,name){
@@ -104,14 +135,45 @@ export default {
         });
         this.datalist=newData;
       }
-    }
+    },
+
+    //
+    scroll(e) {
+      this.scrollHeight = e.detail.scrollHeight;
+    },
+    categoryClickMain(id, index) {
+      this.categoryActive = index;
+      this.typeId = id;
+      this.scrollTop = -this.scrollHeight * index;
+      this.classifyList();
+    },
+    async classifyNavList() {
+      //顶级分类
+      let result = await post("Goods/GetProductType",{});
+      if (result.code === 0) {
+        this.categoryList = result.data;
+        this.typeId = result.data[0].Id;
+        this.categoryClickMain(this.typeId, this.categoryActive); //默认的第一条顶级分类(获取下级分类)
+      }
+    },
+			async classifyList() {
+				//获取下级分类
+				let result = await post("Goods/GetProductClass", {
+          ShopId:this.shopid,
+					typeId: this.typeId,
+					parentId: this.parentId
+				});
+				if (result.code === 0) {
+					this.subCategoryList = result.data;
+				}
+			},
   },
 }
 </script>
 
 <style scoped lang='scss'>
 .page{
-  min-height: 100vh;
+  height: 100vh;
   background-color: #fff!important
 }
 .main-box{
@@ -139,7 +201,7 @@ export default {
 }
 .top{
   box-sizing: border-box;
-  height: 280rpx;
+  height: 22%;
   position: relative;
   .main{
     background-color: rgba($color: #000000, $alpha: 0.3);
@@ -185,5 +247,67 @@ export default {
     position: absolute;
     z-index: 5
   }
+}
+.page-body {
+	display: flex;
+	background: #fff;
+  height: 78%;
+.nav {
+	display: flex;
+	width: 100%;
+}
+
+.nav-left {
+	width: 25%;
+	background: #f5f5f5;
+}
+
+.nav-left-item {
+	height: 100rpx;
+	font-size: 28rpx;
+	color: #333;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.nav-right {
+	width: 75%;
+}
+.nav-right-item {
+	width: 33.3%;
+	float: left;
+	text-align: center;
+	padding: 10rpx;
+	box-sizing: border-box;
+}
+
+.nav-right-item image {
+	width: 100rpx;
+	height: 100rpx;
+}
+.nav-right-item .txt{
+	font-size: 26rpx;
+	color: #333;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.active {
+	color: #ff3333;
+	background: #fff;
+	position: relative;
+}
+.active:before{
+	content: "";
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 50%;
+	height: 36rpx;
+	width: 6rpx;
+	background: #ff3333;
+	margin-top: -18rpx;
+}
 }
 </style>
