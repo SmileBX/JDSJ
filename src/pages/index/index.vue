@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import {post,get} from '@/utils'
+import {post,get,getNewMsgDot} from '@/utils'
 import noData from "@/components/noData"; //没有数据的通用提示。
 import LoadMore from '@/components/load-more';
 export default {
@@ -166,6 +166,7 @@ export default {
     this.pFilter=0;
     this.goodsList={};
     this.GetProductList();
+    getNewMsgDot()
   },
   methods: {
     goUrl(url,param){

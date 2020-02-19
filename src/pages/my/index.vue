@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import {post} from "@/utils";
+import {post,getNewMsgDot} from "@/utils";
 export default {
 
   data () {
@@ -155,6 +155,7 @@ export default {
   },
   onShow(){
     this.getInfo()
+    getNewMsgDot()
   },
   computed: {
     domStyle(){

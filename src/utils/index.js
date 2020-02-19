@@ -317,6 +317,31 @@ export function wx_pay(param) {
   })
 }
 
+// 获取新消息红点
+export function getNewMsgDot() {
+  let shopid=wx.getStorageSync("shopid");
+  if (wx.getStorageSync("userId") && wx.getStorageSync("token")) {
+    post("WebSocket/GetShopMessageList", {
+      UserId: wx.getStorageSync("userId"),
+      Token: wx.getStorageSync("token"),
+      ShopId:shopid
+    }).then(res => {
+      if (res.code === 0) {
+        const _res = res.data
+        let num = _res.DataTable[0].SumCount
+        num>99?num = '99+':num = String(num);
+        wx.setTabBarBadge({
+          index: 1,
+          text:num
+        });
+      }else{
+          wx.removeTabBarBadge({
+            index: 1
+          });
+      }
+    });
+  }
+}
 // 更改时间格式
 // type:'date'--返回日期；'time'--返回日期+时间
 export function editTime(time, type = 'date') {

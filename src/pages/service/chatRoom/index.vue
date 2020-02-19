@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { post,host,wssPath,emotionPath,filePath } from "@/utils";
+import { post,host,wssPath,emotionPath,filePath,getNewMsgDot } from "@/utils";
 import emotionList from "@/utils/emotionList";
 export default {
   data() {
@@ -189,6 +189,7 @@ export default {
     this.shopid=wx.getStorageSync("shopid");
     this.IsShopServie='';
     this.getShopMessageList()
+    getNewMsgDot()
   },
   onUnload() {
     wx.closeSocket({
