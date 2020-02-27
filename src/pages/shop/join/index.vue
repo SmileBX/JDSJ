@@ -34,6 +34,12 @@
           <input type="text" placeholder="请输入您的手机号" v-model="Mobile">
         </div>
       </div>
+      <div class="cell bb1">
+        <h4>推荐码：</h4>
+        <div class="right">
+          <input type="text" placeholder="非必填" v-model="referralCode">
+        </div>
+      </div>
     </div>
 
     <div class="bgf220"></div>
@@ -89,7 +95,8 @@ export default {
         IdcardNegativeUrl:"",//身份证反面
         yyzz:"",//营业执照
         yyzzUrl:"",//营业执照
-        Remarks:""
+        Remarks:"",
+        referralCode:""//推荐人
     }
   },
   onShow(){
@@ -112,7 +119,8 @@ export default {
       this.IdcardNegativeUrl="";//身份证反面
       this.yyzz="";
       this.yyzzUrl="";
-      this.Remarks=""
+      this.Remarks="";
+      this.referralCode="";
     },
     yanzheng(){
       if(this.logo==""){
@@ -191,10 +199,11 @@ export default {
           "Idcard": "",
           "IdcardPositive": this.IdcardPositive,
           "IdcardNegative": this.IdcardNegative,
-          "BusinessLicense": "",
+          "BusinessLicense": this.yyzz,
           "ShopNick": this.ShopNick,
           "ShopName": this.ShopName,
-          "CompanyName": ""
+          "CompanyName": "",
+          "ReferralCode":this.referralCode
         }).then(res=>{
           if(res.code==0){
             wx.showToast({
