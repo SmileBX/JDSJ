@@ -106,6 +106,31 @@
           </div>
         </div>
       </div>
+      <div class="play">
+        <div class="tit ali-c jus-b">
+          <p>拼团玩法</p>
+          <div class="ali-c">
+            <span>详细规则</span>
+            <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
+          </div>
+        </div>
+        <div class="flexc img">
+          <img src="http://jd.wtvxin.com/images/images/index/play.png" alt="">
+        </div>
+      </div>
+      <div class="pin">
+        <div class="tit ali-c">他们都在拼，可直接参团</div>
+        <div class="list ali-c jus-b">
+          <div class="left ali-c">
+            <img src="http://jd.wtvxin.com/images/images/index/ok.png" alt="">
+            <div>
+              <span>如果</span>
+              <p>还差1人成团，剩余<span>02:54:03</span>结束</p>
+            </div>
+          </div>
+          <p class="flexc right">去参团</p>
+        </div>
+      </div>
 
       <div class="comment">
         <div class="tit ali-c jus-b">
@@ -166,8 +191,8 @@
           </div>
         </div>
         <div class="right flex">
-          <p :class="['flex1 flexc',starTimetype!=1?'dis':'']" @click="showSku(1)">加入购物车</p>
-          <p :class="['flex1 flexc',starTimetype!=1?'dis':'']" @click="showSku(2)">立即购买</p>
+          <p :class="['flex1 flexc',starTimetype!=1?'dis':'']" >加入购物车</p>
+          <p :class="['flex1 flexc',starTimetype!=1?'dis':'']" >立即购买</p>
         </div>
       </div>
       <div class="topbtn" @click="Top" v-if="isTop"></div>
@@ -447,58 +472,6 @@ export default {
         this.gocart();
       }else if(this.showbtntype==2){
         this.gouBuy();
-      }
-    },
-    //加入购物车
-    async gocart(){
-      if(this.isMatch){
-        let res=await post("Cart/AddCart",{    
-          userId: this.userId,
-          token: this.token,
-          ShopId:this.shopid,
-          proId: this.proId,
-          Count: this.goodsNum,
-          SpecText: this.SpecText,
-          IsFlashSale: this.isLimint,
-          ShareMemberId: this.ShareMemberid
-        })
-        if(res.code==0){
-          this.GetAllCartNumber();
-           wx.showToast({
-            title: res.msg,
-            icon:"none",
-            duration: 1500
-          });
-          this.showPopupSku=false;
-        }else{
-          wx.showToast({
-            title: res.msg,
-            icon:"none",
-            duration: 1500
-          });
-        }
-      }else{
-        wx.showToast({
-          title: "请选择产品规格",
-          icon:"none",
-          duration: 1500
-        });
-      }
-    },
-    //立即购买
-    gouBuy(){
-      if(this.isMatch){
-        wx.setStorageSync("addressinfo",'');
-        wx.setStorageSync("invoiceinfo","");
-        wx.navigateTo({
-          url: '/pages/goodsSon/confirmOrder/main?cartItem='+this.proId+'&SpecText='+this.SpecText+'&number='+this.goodsNum+'&orderSType=0'+'&isLimint='+this.isLimint+'&ShareMemberId='+this.ShareMemberid,
-        })
-      }else{
-        wx.showToast({
-          title: "请选择产品规格",
-          icon:"none",
-          duration: 1500
-        });
       }
     },
     goUrl(url,param){

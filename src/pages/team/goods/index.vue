@@ -1,7 +1,7 @@
 <template>
   <div>
       <block v-if="hasData">
-        <div class="list ali-c jus-b" v-for="(item,index) in goodsList" :key="index">
+        <div class="list ali-c jus-b" v-for="(item,index) in goodsList" :key="index" @click="goUrl(item.Id)">
           <img class="left" :src="item.ProductImg" alt="">
           <div class="right">
             <p class="tit oneline">{{item.ProductName}}</p>
@@ -107,9 +107,9 @@ export default {
         });
 			 }
     },
-    goUrl(url,param){
+    goUrl(param){
       wx.navigateTo({
-        url:url+'?id='+param
+        url:'/pages/team/teamDetail/main?id='+param
       })
     },
     
