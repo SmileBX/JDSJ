@@ -328,12 +328,26 @@ export function getNewMsgDot() {
     }).then(res => {
       if (res.code === 0) {
         const _res = res.data
-        let num = _res.DataTable[0].SumCount
-        num>99?num = '99+':num = String(num);
-        wx.setTabBarBadge({
-          index: 1,
-          text:num
-        });
+        const IsShopServie=_res.IsShopServie;
+        if(IsShopServie==1){
+          let num = _res.DataTable[0].SumCount;
+          if(num&&num>0){
+            num>99?num = '99+':num = String(num);
+            wx.setTabBarBadge({
+              index: 1,
+              text:num
+            });
+          }
+        }else{
+          let num = _res.DataTable[0].Count;
+          if(num&&num>0){
+            num>99?num = '99+':num = String(num);
+            wx.setTabBarBadge({
+              index: 1,
+              text:num
+            });
+          }
+        }
       }else{
           wx.removeTabBarBadge({
             index: 1

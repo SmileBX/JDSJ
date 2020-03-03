@@ -295,6 +295,12 @@
 					"pathName": "pages/myson2/orderRoute/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "公告列表",
+					"pathName": "pages/news/newslist/main",
+					"scene": null
 				}
 			]
 		}

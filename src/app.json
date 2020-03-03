@@ -11,7 +11,9 @@
     "pages/login/main",
     "pages/login/register/main",
     "pages/service/chatRoomSon/main",
-    "pages/service/chatRoomSon2/main"
+    "pages/service/chatRoomSon2/main",
+    "pages/news/newslist/main",
+    "pages/news/newsdetail/main"
   ],
   "subPackages":[
     {
