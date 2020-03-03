@@ -5,46 +5,37 @@
         <swiper-item class="flexc" v-for="(item,index) in proInfo.ProductImgList" :key="index">
           <img mode='aspectFill' :src="item.PicUrl" alt="">
         </swiper-item>
-      </swiper>
+      </swiper>    
       <div class="top">
-        <div v-if="isLimint==1" :class="['limitTiem jus-b ali-c',starTimetype!=1?'no':'']">
+        <div  class="limitTiem jus-b ali-c">
             <div class="limt-left">
-              <div class="active-price jus-a ali-c">
-                  <h3><span>¥</span>{{proInfo.TimePrice}}</h3>
-                   <p>¥{{proInfo.MarketPrice}}</p>
-              </div>
-              <div class="percentage">
-                <span :style="['width:'+percentage+'%']"><i>已抢{{proInfo.SalesVolume}}件</i></span>
-              </div>
+                  <h3><span>¥</span>{{proInfo.FightingPrice}}</h3>
+                  <p>¥{{proInfo.OriginalPrice}}</p>
+                  <div class="percentage">赚{{proInfo.SalesVolume}}</div>
             </div>
             <div class="limt-right">
-              <div class="txt">限时秒杀</div>
-              <div class="time ali-c jus-b" >
-                  <span class="timetxt">{{starTimetype==1?'距离结束':'距离开始'}}</span>
-                  <div class="countDown" v-if="timeStr.length">
-                    <span>{{timeStr[1]}}</span>:<span>{{timeStr[2]}}</span>:<span>{{timeStr[3]}}</span>
-                  </div>
-              </div>
+              <div class="txt">{{proInfo.MinPeopleNum}}人团</div>
+              <div class="timetxt">已拼{{proInfo.SuccessGroup}}件</div>
             </div>
         </div>
-        <div class="jus-b ali-c">
-          <div class="left">
-            <p class="price" v-if="isLimint==0">
-              <span>￥</span><span>{{proInfo.ProductPrice}}</span><span>￥{{proInfo.MarketPrice}}</span>
-            </p>
-            <p class="tit">{{proInfo.ProductName}}</p>
+        <div class="proName">
+          <div class="proTitle">
+              <div class="tit">{{proInfo.GroupProductName}}</div>
+              <!-- 分享按钮 -->
+              <div class="shareBtn">
+                <button  open-type='share' class="sharebutton">
+                  <img src="http://jd.wtvxin.com/images/images/index/fenxiang.png" alt="">
+                </button>
+              </div>
           </div>
-          <div class="right">
-            <button open-type='share' class="sharebutton"><img src="http://jd.wtvxin.com/images/images/index/fenxiang.png" alt=""></button>
+          <div class="jus-b ali-c">
+            <span class="txtinfo">已售{{proInfo.SuccessGroup}}</span>
+            <span class="txtinfo">{{proInfo.ShopAddress}}</span>
           </div>
-        </div>
-        <div class="jus-b ali-c">
-          <span class="txtinfo">已售：{{proInfo.SalesVolume}}</span>
-          <span class="txtinfo">好评：{{proInfo.PraiseRate}}%</span>
         </div>
       </div>
       <div class="list-box">
-        <div class="list ali-c jus-b" v-if="proInfo.Score!=0||(proInfo.CouponList.length&&proInfo.IsUseCoupons)" @click="openCoupon">
+        <!-- <div class="list ali-c jus-b" v-if="proInfo.Score!=0||(proInfo.CouponList.length&&proInfo.IsUseCoupons)" @click="openCoupon">
           <div class="left ali-c">
             <span>领券</span>
             <div>
@@ -74,8 +65,8 @@
           <div class="right ali-c">
             <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
           </div>
-        </div>
-        <div class="list ali-c jus-b" v-if="isLimint!=1" @click="showSku(0)">
+        </div> -->
+        <div class="list ali-c jus-b"  @click="showSku(0)">
           <div class="left ali-c">
             <span>规格</span>
             <p class="quan">{{SpecText||'请选择规格数量'}}</p>
@@ -109,7 +100,7 @@
       <div class="play">
         <div class="tit ali-c jus-b">
           <p>拼团玩法</p>
-          <div class="ali-c">
+          <div class="ali-c" @click="showRule=true">
             <span>详细规则</span>
             <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
           </div>
@@ -165,38 +156,45 @@
           </p>
         </div>
       </div>
+      <!-- 店铺 -->
+      <!-- <div class="shopInfoBox">
+        <div class="left">
+          <img :src="proInfo.ShopLogo" alt="">
+          <div class="shopName">
+            <p>{{proInfo.ShopName}}</p>
+            <div class="star">
+              综合体验
+              <img v-for="item in proInfo.ServiceScore" :key="item" 
+              src="/static/star1.png" alt="">
+              <img v-for="item in 5-proInfo.ServiceScore" :key="item" 
+              src="/static/star2.png" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="right">进店逛逛</div>
+      </div> -->
+
       <div class="goods-detail">
         <p class="tit">商品详情</p>
         <div class="detail-box">
-          <div v-html="proInfo.ContentDetail"></div>
-          <div v-if="proInfo.ContentDetail==''" style="text-align: center;">卖家暂时还没有为该商品提供详细信息！</div>
+          <div v-html="proInfo.GroupContentDetail"></div>
+          <div v-if="proInfo.GroupContentDetail==''" style="text-align: center;">卖家暂时还没有为该商品提供详细信息！</div>
         </div>
       </div>
       <div style="height: 100rpx;"></div>
+
       <div class="foot ali-c jus-b">
-        <div class="left ali-c">
-          <div @click="gokefu">
-            <img src="http://jd.wtvxin.com/images/images/index/ans.png" alt="">
-            <p>客服</p>
-          </div>
-          <div @click="collect"> 
-            <img v-if="IsCollect" src="http://jd.wtvxin.com/images/images/index/collect_y.png" alt="">
-            <img v-else src="http://jd.wtvxin.com/images/images/index/collect_n.png" alt="">
-            <p>收藏</p>
-          </div>
-          <div @click="goCart">
-            <img src="http://jd.wtvxin.com/images/images/index/cart.png" alt="">
-            <p>购物车</p>
-            <span class="num flexc" v-if="CartNumber>0">{{CartNumber}}</span>
-          </div>
+        <div class="left" @click="gouBuy">
+          <p>￥{{proInfo.OriginalPrice}}</p>
+          <span>单独购买</span>
         </div>
-        <div class="right flex">
-          <p :class="['flex1 flexc',starTimetype!=1?'dis':'']" >加入购物车</p>
-          <p :class="['flex1 flexc',starTimetype!=1?'dis':'']" >立即购买</p>
+        <div class="right" @click="gouBuy">
+          <p>￥{{proInfo.FightingPrice}}</p>
+          <span>{{proInfo.MinPeopleNum}}人团</span>
         </div>
       </div>
       <div class="topbtn" @click="Top" v-if="isTop"></div>
-      <div v-if="showPopupSku" @click="hidePopup" class="mengban"></div>
+      <!-- <div v-if="showPopupSku" @click="hidePopup" class="mengban"></div>
         <div class="main" id="main" :style="mainHeight" :class="showPopupSku?'show':''">
             <div class="top-box">
                 <div class="one jus-b">
@@ -206,10 +204,8 @@
                     <div class="right jus-b">
                         <div>
                             <p class="tit">{{proInfo.ProductName}}</p>
-                            <span v-if="isLimint">{{proInfo.TimePrice}}</span>
-                            <span v-else><span class="fuhao">￥</span>{{SpecInfo.PunitPrice===undefined?proInfo.ProductPrice:SpecInfo.PunitPrice}}</span>
+                            <span ><span class="fuhao">￥</span>{{!SpecInfo.PunitPrice?proInfo.FightingPrice:SpecInfo.PunitPrice}}</span>
                             <p class="font_four">库存：{{reStock}}</p>
-                                <!-- :SpecInfo.PunitPrice -->
                         </div>
                         <span @click="hidePopup" class="chacha">+</span>
                     </div>
@@ -217,7 +213,6 @@
                 <div class="guige" v-for="(item, index) in specList" :key="index">
                     <p>{{index}}</p>
                     <div class="flex-wrap">
-                        <!-- 下面span选中绑定一个‘active类’ -->
                         <span :class="{'active':ite.name==SpecValue[index]}" @click="cliTag(index,ite.name)" class="ali-c jus-c" v-for="(ite, ind) in item" :key="ind">{{ite.name}}</span>
                     </div>
                 </div>
@@ -231,22 +226,21 @@
                 </div>
             </div>
             <div class="flex bot">
-              <p v-if="isLimint==1&&starTimetype==0" class="flex1 jus-c ali-c">即将开始 敬请期待</p>
-              <p v-else-if="isLimint==1&&starTimetype==2" class="flex1 jus-c ali-c btn_ccc">秒杀已结束</p>
-              <block v-else>
+              <block >
                 <block v-if="reStock>0">
                   <block v-if="showbtntype==0">
-                    <p class="flex1 jus-c ali-c" @click="gocart">加入购物车</p>
-                    <p class="flex1 jus-c ali-c btn_red" @click="gouBuy">立即购买</p>
+                    <p class="flex1 jus-c ali-c" @click="gocart">单独购买</p>
+                    <p class="flex1 jus-c ali-c btn_red" @click="gouBuy">立即开团</p>
                   </block>
                   <p v-else class="flex1 jus-c ali-c btn_red" @click="confirmBtn">确定</p>
                 </block>
                 <p v-else class="flex1 jus-c ali-c">商家补货中</p>
               </block>
             </div>
-        </div>
-        <!-- 优惠券弹窗 -->
-      <uni-popup mode="fixed" :show="showCoupon" :h5Top="true" position="bottom" @hidePopup="hidePopup">
+		</div> -->
+		<!-- 优惠券弹窗 -->
+      
+		<uni-popup mode="fixed" :show="showCoupon" :h5Top="true" position="bottom" @hidePopup="hidePopup">
         <div class="couponbox" style="z-index: 10000;">
           <div class="titlebox">
             <div class="title">优惠券</div>
@@ -277,6 +271,20 @@
           </scroll-view>
         </div>
       </uni-popup>
+      <!-- 拼团规则 -->
+      <div class="rule" v-if="showRule">
+        <div class="ruleMask" @click="showRule=false"></div>
+          <div class="mains">
+            <div class="content">
+              <h3>拼团活动规则</h3>
+              <div v-for="(item,index) in rule" :key="index">
+                <h4>{{item.tit}}</h4>
+                <p v-for="(valItem,valIndex) in item.val" :key="valIndex">{{valItem}}</p>
+              </div>
+            </div>
+            <div class="close" @click="showRule=false">×</div>
+          </div>
+      </div>
   </div>
 </template>
 
@@ -291,15 +299,10 @@ export default {
     return {
       userId: "",
       token: "",
-      proId:"",
-      shopid:"",
+		teamId:"",
+		groupRecordId:'',//参与拼团的记录id
       isTop:false,//是否显示置顶
-      IsCollect:false, //是否收藏该商品
-      isLimint:0,//0非限时购产品，1限时购产品
-      timer:null,
       timeStr:[],//倒计时
-      starTimetype:1,//0秒杀未开始，1一开始，2已结束
-      percentage:0,//已售百分比
       proInfo:{},//商品信息
       bannerindex:0,//当前轮播图
       BannerNum:0,//轮播图数量
@@ -316,20 +319,21 @@ export default {
       showbtntype:0,
       isMatch:false,//是否已匹配sku
       ShareMemberid:"",//分享的会员id
-      showCoupon:false,//是否显示优惠券弹窗
+      // showCoupon:false,//是否显示优惠券弹窗
       reStock:0,//库存
       maxbuy:0,//最大购买量
       minbuy:1, //最小购买量
+      showRule:false,//拼团规则
+      rule:[
+      ],//规则内容
     }
   },
   onLoad(optins){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-  },
-  onShow(){
-    this.shopid = wx.getStorageSync("shopid");
-    this.proId=this.$root.$mp.query.id;
-    this.isLimint=this.$root.$mp.query.isLimint||0;
+    this.teamId=this.$root.$mp.query.id;
+    this.ProductInfo();
+    this.getGroupingList();
     this.goodsNum = 1;
     this.specList=[];
     this.SpecText="";
@@ -338,17 +342,11 @@ export default {
     this.showPopupSku = false;
     this.isMatch=false;
     this.timeStr=[];
-    clearInterval(this.timer);
-    this.ProductInfo();
-    this.GetAllCartNumber();
-    setTimeout(() => {
-      var query = wx.createSelectorQuery();
-      query.select("#main").boundingClientRect((rect)=> {
-        this.seachHeight = rect.height*2
-        this.mainHeight = 'height:'+this.seachHeight+'rpx;bottom:'+(-this.seachHeight-50)+'rpx'
-        console.log('gaodu',rect.height)
-      }).exec();
-    }, 200);
+	 this.showRule = false;
+	 this.onRule();
+	// this.quety();//   设置sku框的高度
+  },
+  onShow(){
   },
   watch:{
     goodsNum(e){
@@ -358,17 +356,49 @@ export default {
     },
   },
   methods: {
-    goCart(){
-      wx.navigateTo({
-        url:'/pages/cart/main'
+	//   设置sku框的高度
+	//   quety(){
+	// 	setTimeout(() => {
+	// 		var query = wx.createSelectorQuery();
+	// 		query.select("#main").boundingClientRect((rect)=> {
+	// 			console.log(rect)
+	// 		this.seachHeight = rect.height*2
+	// 		this.mainHeight = 'height:'+this.seachHeight+'rpx;bottom:'+(-this.seachHeight-50)+'rpx'
+	// 		console.log('gaodu',rect.height)
+	// 		}).exec();
+	// 	}, 200);
+	//   },
+    // 获取产品信息
+    async ProductInfo(){
+      let res=await post("GroupBuy/GroupProductInfo",{
+        userId: this.userId,
+        token: this.token,
+        GroupId: this.teamId
       })
+      this.proInfo=res.data;
+
+      this.BannerNum=res.data.ProductImgList.length;
+      this.specList = JSON.parse(res.data.SpecificationValue);
+      this.reStock=res.data.Stock;
+      this.maxbuy=res.data.MaxBuyNum;//最大购买量
+      this.minbuy=res.data.MinBuyNum; //最小购买量
+      if(!res.data.ProductSpecList.length){
+        this.isMatch=true;
+      }
+      // 优惠券列表
+      // if(this.proInfo.CouponList.length){
+      //   this.proInfo.CouponList.forEach(item=>{
+      //     item.EndTime=item.EndTime.split("T")[0];
+      //   })
+      // }
     },
-    gokefu(){
-      wx.navigateTo({
-        url:"/pages/service/chatRoomSon2/main"
+    async getGroupingList(){
+      const res = await post('GroupBuy/GetGroupRecordList',{
+        GroupId:this.teamId
       });
     },
-    cliTag(name,value){//点击选择规格标签--name:规格名称 value:所选规格值
+	//点击选择规格标签--name:规格名称 value:所选规格值
+    cliTag(name,value){
       this.$set(this.SpecValue,name,value)
       this.proInfo.ProductSpecList.map((item,index)=>{
         const please = JSON.parse(item.SpecValue)
@@ -395,7 +425,6 @@ export default {
         }
         return true;
     },
-    
     // 显示sku
     showSku(type){
       this.showPopupSku = true;
@@ -489,127 +518,83 @@ export default {
     changeBanner(e){
       this.bannerindex=e.detail.current;
     },
-    async ProductInfo(){
-      let res=await post("Goods/ProductInfo",{
-        userId: this.userId,
-        token: this.token,
-        ShopId:this.shopid,
-        proId: this.proId
-      })
-      if(res.code==0){
-        this.proInfo=res.data;
-        this.BannerNum=res.data.ProductImgList.length;
-        this.IsCollect=res.data.IsCollectionPro;
-        this.specList = JSON.parse(res.data.SpecificationValue);
-        this.reStock=res.data.Stock;
-        this.maxbuy=res.data.MaxBuyNum;//最大购买量
-        this.minbuy=res.data.MinBuyNum; //最小购买量
-        this.percentage=res.data.SalesVolume/res.data.Stock*100;
-        if(!res.data.ProductSpecList.length){
-          this.isMatch=true;
-        }
-        if(this.proInfo.CouponList.length){
-          this.proInfo.CouponList.forEach(item=>{
-            item.EndTime=item.EndTime.split("T")[0];
+    //立即开团
+    gouBuy(){
+		this.submit();
+		// ,后台没有做sku，先隐藏，如果后台要的话，再开
+		// 有sku
+      // if(this.proInfo.ProductSpecList&&this.proInfo.ProductSpecList.length>0){
+      //   if(this.isMatch){
+      //   		this.submit();
+      //   }else{
+      //     wx.showToast({
+      //       title: "请选择产品规格",
+      //       icon:"none",
+      //       duration: 1500
+      //     });
+      //   }
+      // }
+      // // 没有sku
+      // else{
+      //   this.submit();
+      // }
+    },
+    // 提交订单
+    submit(){
+      this.checkSubmit().then(res=>{
+			console.log('123',{
+				GroupId:this.teamId,
+				ShopId:this.proInfo.ShopId,
+				Number: this.goodsNum,
+				GroupRecordId: this.groupRecordId
+			})
+			wx.setStorageSync('groupSubmit',{
+				GroupId:this.teamId,
+				ShopId:this.proInfo.ShopId,
+				Number: this.goodsNum,
+				GroupRecordId: this.groupRecordId
+			})
+          wx.navigateTo({
+				url: `/pages/team/confirmOrder/main`
           })
-        }
-        if(this.isLimint==1){
-          //比较秒杀是否开始
-					let dateBegin = new Date(this.proInfo.FlashSaleStartTime.replace(/T/g, " "));
-					let dateNow = new Date(); //获取当前时间
-					let beginDiff = dateNow.getTime() - dateBegin.getTime(); //时间差的毫秒数 
-          var beginDayDiff = Math.floor(beginDiff / (24 * 3600 * 1000)); //计算出相差天数  
-					if(beginDayDiff < 0){
-						this.starTimetype=0;
-						this.GetRTime(this.proInfo.FlashSaleStartTime);
-					}else{
-						this.starTimetype=1;
-						this.GetRTime(this.proInfo.FlashSaleEndTime);
-					}
-					let StartTimestr=this.proInfo.FlashSaleStartTime.split("T")[1].substr(0,5);
-					this.proInfo.FlashSaleStartTime=StartTimestr;
-        }
-        
-      }else{
-        wx.showToast({
-          title: res.msg,
-          icon:"none",
-          duration: 1500
-        });
-      }
-    },
-    //倒计时
-    GetRTime(endTime) {
-      let _this = this;
-      //倒计时
-      let endtime=endTime.replace(/-/g, '/').replace(/T/g, ' ');
-      let EndTime = new Date(endtime); //结束时间
-      this.timer = setInterval(function() {
-      let NowTime = new Date(); //当前时间
-      let t = EndTime.getTime() - NowTime.getTime();
-      if (t > 0) {
-        let d = Math.floor(t / 1000 / 60 / 60 / 24); //天
-        let h = Math.floor((t / 1000 / 60 / 60) % 24); //时
-        let m = Math.floor((t / 1000 / 60) % 60); //分
-        let s = Math.floor((t / 1000) % 60); //秒
-        if (parseInt(d) < 1) {
-        d = "";
-        } else {
-        d = d + "天";
-        }
-        if (parseInt(h) < 10) {
-        h = "0" + h;
-        }
-        if (parseInt(m) < 10) {
-        m = "0" + m;
-        }
-        if (parseInt(s) < 10) {
-        s = "0" + s;
-        }
-        _this.timeStr = [d,h,m,s];
-      } else {
-        this.starTimetype=2;
-        clearInterval(this.timer);
-      }
-      }, 1000);
-    },
-    //获取购物车数
-    async GetAllCartNumber(){
-      let res=await post("Cart/GetAllCartNumber",{
-        userId: this.userId,
-        token: this.token,
-        ShopId:this.shopid
       })
-      if(res.code==0){
-        this.CartNumber=res.data.AllNumber;
-      }
     },
-    //添加取消收藏
-			async collect(){
-				let res = await post("Goods/ProductCollection", {
-					proId: this.proId,
-					userId:this.userId,
-          token:this.token,
-          ShopId:this.shopid
-				  });
-				if(res.code==0){
-					if(this.IsCollect){
-						wx.showToast({
-							title: "已取消收藏！",
-							icon:"none",
-							duration: 1500
-						});
-						this.IsCollect=false;
-					}else{
-						wx.showToast({
-							title: "添加收藏成功！",
-							icon:"none",
-							duration: 1500
-						});
-						this.IsCollect=true;
-					}
-				};
-			},
+    // 检测是否可提交
+    checkSubmit(){
+      return new Promise((resolve,reject)=>{
+        post('GroupBuy/VerificationIsJoin',{
+          UserId: this.userId,
+          Token: this.token,
+          GroupId: this.teamId,
+          ShopId: this.proInfo.ShopId,
+          Number: this.goodsNum,
+          GroupRecordId: ''
+        }).then(()=>{
+          resolve(true)
+        })
+      }) 
+	 },
+	//  规则数据
+	 onRule(){
+		 this.rule=[{
+        tit:'更新时间:',
+        val:['不定期更新，限量放送,售完即止']
+      },{
+        tit:'购买须知:',
+        val:['1.在拼团商品活动页面中选择商品，点击购买进入支付页',
+        '2.在5分钟内完成支付，否则订单自动取消',
+        '3.开团成功后，可将拼团信息分享给好友，指定时间内邀请到成团人数的好友享拼团价,即为拼团成功;否则，系统自动退款'
+        ]
+      },{
+        tit:'活动说明:',
+        val:[
+          '1.拼团商品不与网站其它优惠福利同享',
+          '2.拼团商品不可使用优惠券',
+          '3.同一登录账号、同一手机号、同一终端设备号、同一支付账户、同一收货地址等合理显示为同一用户的情形，均视为同一用户',
+          '4.通过不正当手段参与拼团活动，集店有权撤销相关订单'
+          ]
+      }]
+	 }
   },
   onPageScroll(e){
     if(e.scrollTop>300){
@@ -622,19 +607,28 @@ export default {
     return {
       title: this.proInfo.ProductName, //转发页面的标题
       imageUrl:this.proInfo.ProductImgList[0].PicUrl,
-      path: '/pages/goodsSon/goodsDetail/main?id='+this.proId+'&isLimint='+this.isLimint
+      path: '/pages/goodsSon/goodsDetail/main?id='+this.proId
     }
   }
 }
 </script>
 
 <style scoped lang='scss'>
-.sharebutton{
-  padding: 0;
-  background: #fff!important;
-}
-.sharebutton::after{
-  border: none!important;
+.shareBtn{
+  width:80rpx;
+  height:80rpx;
+  overflow:hidden;
+  .sharebutton{
+    padding: 0;
+    background: #fff!important;
+    img{
+      width:80rpx;
+      height:80rpx;
+    }
+  }
+  .sharebutton::after{
+    border: none!important;
+  }
 }
 .pin{
   background-color: #fff;
@@ -682,7 +676,7 @@ export default {
   .img{
     img{
       width: 690rpx;
-      height: 190rpx;
+      height: 165rpx;
       margin: 10rpx 0
     }
   }
@@ -710,57 +704,26 @@ export default {
   width: 100vw;
   height: 98rpx;
   box-sizing: border-box;
-  padding: 0 30rpx 0 0;
   box-shadow: 0 -3rpx 8rpx 0rpx rgba($color: #000000, $alpha: 0.1);
-  .left div:nth-child(1) img{
-    width: 34rpx;
-	  height: 34rpx;
-  }
-  .left div:nth-child(2) img{
-    width: 32rpx;
-	  height: 32rpx;
-  }
-  .left div:nth-child(3) img{
-    width: 34rpx;
-	  height: 32rpx;
-  }
-  .right{
-    width: 400rpx;
-    height: 70rpx;
-    border-radius: 35rpx;
-    color: #fff;
-    font-size: 26rpx;
-	  font-weight: bold;
-    overflow: hidden;
-  }
-  .right p:nth-child(1){
-    background-color: #fda33a
-  }
-  .right p:nth-child(2){
-    background-color: #ff3333
-  }
-  .right p.dis{
-    opacity: .5;
-  }
-  .left{
-    div{
-      width: 105rpx;
-      text-align: center;
-      font-size: 22rpx;
-      color: #999;
-      position: relative;
+  div{
+    width:50%;
+    text-align:center;
+    font-size:30rpx;
+    height: 98rpx;
+    padding:15rpx 0;
+    p{
+      line-height:1;
     }
     span{
-      position: absolute;
-      width: 26rpx;
-      height: 26rpx;
-      border-radius: 50%;
-      background-color: #fa3d34;
-      color: #fff;
-      font-size: 20rpx;
-      top: -10rpx;
-      right: 23rpx
+      font-size:22rpx;
     }
+  }
+  .left{
+    color:#ff3333;
+  }
+  .right{
+    background:#ff3333;
+    color:#fff;
   }
 }
 .goods-detail{
@@ -869,43 +832,6 @@ export default {
 }
 .top{
   background-color: #fff;
-  padding: 0 30rpx 20rpx;
-  .right{
-    text-align: right;
-    img{
-      width: 88rpx;
-	    height: 88rpx;
-    }
-    p{
-      margin-top: 15rpx; 
-      font-size: 26rpx;
-      color: #999
-    }
-  }
-  .left{
-    width: 500rpx;
-    .price span:nth-child(1){
-      color: #fb4f45;
-      font-size: 30rpx;
-      font-weight: 900
-    }
-    .price span:nth-child(2){
-      color: #fb4f45;
-      font-size: 44rpx;
-      font-weight: 900
-    }
-    .price span:nth-child(3){
-      color: #999;
-      font-size: 22rpx;
-      margin-left: 15rpx;
-      text-decoration:line-through
-    }
-    .tit{
-      font-size: 36rpx;
-      font-weight: bold;
-      margin: 5rpx 0 10rpx;
-    }
-  }
   .txtinfo{
     font-size: 26rpx;
     color: #999
@@ -913,41 +839,106 @@ export default {
   .limitTiem{
     background: #ff3333;
     color: #fff;
-    margin: 0 -30rpx;
-    padding: 20rpx 30rpx;
+    padding: 15rpx 30rpx;
     .limt-left{
-      .active-price{
-        h3{ font-size: 40rpx; margin-right: 10rpx;
-          span{ font-size: 28rpx !important}
-        }
-        p{text-decoration: line-through}
-      } 
+      display:flex;
+      align-items:flex-end;
+      h3{ font-size: 40rpx;
+        span{ font-size: 28rpx !important}
+      }
+      p{
+        text-decoration: line-through;
+        line-height:50rpx;
+        margin:0 15rpx;
+      }
       .percentage{
-          width:210rpx;
-          height:24rpx;
-          line-height:24rpx;
-          font-size:24rpx;
-          background:#ff747a;
+          height:28rpx;
+          line-height:28rpx;
+          font-size:20rpx;
+          padding:0 10rpx;
+          margin-bottom:11rpx;
+          background:#ffaa01;
           border-radius:20rpx;
-          text-align:center;
-          position:relative;
-          overflow: hidden;
-          span{
-            position:absolute;
-            top:0;
-            left:0;
-            height:100%;
-            border-radius:20rpx;
-            background:#ffaa01;
-            display:block;
-            i{ display: inline-block;width: 220rpx}
-          }
         }
     }
-    .limt-right .txt{ font-size: 40rpx; font-weight: bold;text-align: right;}
-    .countDown span{
-      background: #fff; color: #ff3333; border-radius: 4rpx; margin: 0 6rpx; padding: 0 4rpx;
+    .limt-right{
+      color: #fff; 
+      text-align:right;
+     .txt{ 
+      font-size: 20rpx; 
+      text-align: text;
+      border-radius:20rpx;
+      padding:0 20rpx;
+      background:rgba(114, 114, 114, 0.4);
+      display:inline-block;
+      }
+      .timetxt{
+        font-size: 25rpx; 
+      }
     }
+  }
+  .proName{
+    padding:15rpx 30rpx;
+    .proTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .tit{
+      font-size:40rpx;
+    }
+    .jus-b{
+      margin-top:10rpx;
+      span{
+        font-size:24rpx;
+      }
+    }
+  }
+}
+.shopInfoBox{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:30rpx;
+  background:#fff;
+  margin-top: 20rpx;
+  .left{
+    display:flex;
+    align-items:center;
+    &>img{
+      width:88rpx;
+      height:88rpx;
+    }
+    .shopName{
+      margin-left:15rpx;
+      p{
+        font-size:28rpx;
+      }
+      .star{
+        display:flex;
+        align-items:center;
+        background:#ccc;
+        border-radius:15rpx;
+        padding:0 15rpx;
+        font-size:20rpx;
+        color:#fff;
+        margin-top:5rpx;
+        line-height:30rpx;
+        img{
+          margin-left:5rpx;
+          width:20rpx;
+          height:20rpx;
+        }
+      }
+    }
+  }
+  .right{
+    border:1rpx #f75f5f solid;
+    border-radius:30rpx;
+    color:#ff3333;
+    padding:0 20rpx;
+    line-height:52rpx;
+
   }
 }
 .swiper{
@@ -1004,6 +995,7 @@ export default {
     transform: rotate(-135deg);
   }
 }
+// sku弹窗
 .main{
     position: fixed;
     bottom: -950rpx;
@@ -1045,14 +1037,14 @@ export default {
                 span{
                     font-size: 40rpx;
                     font-weight: 900;
-                    color: #333
+                    color: #333;
+                    padding: 0 30rpx;
                 }
                 input{
                    width: 80rpx;
                     height: 44rpx;
                     background-color: #eeeeee;
                     border-radius: 8rpx; 
-                    margin: 0 30rpx;
                     text-align: center;
                     position: relative;
                     top: 5rpx
@@ -1252,5 +1244,57 @@ export default {
 .back_col{
   background-color: #ff3333!important;
 }
+}
+// 拼团规则
+.rule{
+  position:fixed;
+  top:0;
+  left:0;
+  display:flex;
+  width:100%;
+  height:100vh;
+  align-items:center;
+  justify-content:center;
+  .ruleMask{
+    width:100%;
+    height:100vh;
+    background:rgba(0,0,0,.4);
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:100;
+  }
+  .mains{
+    position:relative;
+    z-index:101;
+    width:80%;
+    .content{
+      padding:40rpx;
+      background:#fff;
+      border-radius:15rpx;
+      font-size:26rpx;
+      h3{
+        font-size:32rpx;
+        text-align:center;
+      }
+      h4{
+        line-height:2;
+      }
+      p{
+        color:#999;
+      }
+    }
+    .close{
+      color:#fff;
+      border:1rpx solid #fff;
+      border-radius:50%;
+      width:60rpx;
+      height:60rpx;
+      line-height:55rpx;
+      font-size:50rpx;
+      text-align:center;
+      margin:50rpx auto 0;
+    }
+  }
 }
 </style>

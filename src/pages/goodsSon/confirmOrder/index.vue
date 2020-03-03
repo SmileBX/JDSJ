@@ -185,6 +185,7 @@ export default {
     this.orderRemarksArr="";//清空留言
     if(wx.getStorageSync("addressinfo")){
       this.addressinfo=wx.getStorageSync("addressinfo");
+      wx.setStorageSync("addressinfo",null)
       this.hasaddress=true;
       this.addressId=this.addressinfo.id;
     }else{
@@ -435,7 +436,7 @@ export default {
       let res=await post("Order/BuyNowToFreight",{
         UserId: this.userId,
         Token: this.token,
-        proId:this.cartids,
+        ProId:this.cartids,
         AddressId:AddrId,
         Number:this.buynum
       })
