@@ -66,7 +66,7 @@
             <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
           </div>
         </div> -->
-        <div class="list ali-c jus-b"  @click="showSku(0)">
+        <div class="list ali-c jus-b"  @click="showSku(0)" v-if="false">
           <div class="left ali-c">
             <span>规格</span>
             <p class="quan">{{SpecText||'请选择规格数量'}}</p>
@@ -188,7 +188,7 @@
           <p>￥{{proInfo.OriginalPrice}}</p>
           <span>单独购买</span>
         </div>
-        <div class="right" @click="gouBuy">
+        <div class="right" @click="playGroup">
           <p>￥{{proInfo.FightingPrice}}</p>
           <span>{{proInfo.MinPeopleNum}}人团</span>
         </div>
@@ -299,8 +299,8 @@ export default {
     return {
       userId: "",
       token: "",
-		teamId:"",
-		groupRecordId:'',//参与拼团的记录id
+      teamId:"",
+      groupRecordId:'',//参与拼团的记录id
       isTop:false,//是否显示置顶
       timeStr:[],//倒计时
       proInfo:{},//商品信息
@@ -347,6 +347,8 @@ export default {
 	// this.quety();//   设置sku框的高度
   },
   onShow(){
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
   },
   watch:{
     goodsNum(e){
@@ -392,9 +394,13 @@ export default {
       //   })
       // }
     },
+    // 团购中的列表
     async getGroupingList(){
       const res = await post('GroupBuy/GetGroupRecordList',{
-        GroupId:this.teamId
+        GroupId:this.teamId,
+        userId: this.userId,
+        token: this.token,
+        TopNum:1
       });
     },
 	//点击选择规格标签--name:规格名称 value:所选规格值
@@ -496,13 +502,13 @@ export default {
       this.showPopupSku=false;
       this.showCoupon=false;
     },
-    confirmBtn(){
-      if(this.showbtntype==1){
-        this.gocart();
-      }else if(this.showbtntype==2){
-        this.gouBuy();
-      }
-    },
+    // confirmBtn(){
+    //   if(this.showbtntype==1){
+    //     this.gocart();
+    //   }else if(this.showbtntype==2){
+    //     this.gouBuy();
+    //   }
+    // },
     goUrl(url,param){
       wx.navigateTo({
         url:url+'?id='+param
@@ -518,8 +524,14 @@ export default {
     changeBanner(e){
       this.bannerindex=e.detail.current;
     },
-    //立即开团
+    // 单独购买
     gouBuy(){
+      wx.navigateTo({
+        url:'/pages/goodsSon/goodsDetail/main?id='+this.proInfo.ProductId
+      })
+    },
+    //立即开团
+    playGroup(){
 		this.submit();
 		// ,后台没有做sku，先隐藏，如果后台要的话，再开
 		// 有sku

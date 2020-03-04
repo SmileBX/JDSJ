@@ -112,7 +112,7 @@
         <div class="card">
           <p class="tit ali-c">更多工具</p>
           <div class="icon-box icon-boxb flex-wrap ali-c">
-            <div class="icon flexc" @click="switchPath('/pages/myson/mytuan/main','',0)">
+            <div class="icon flexc" @click="switchPath('/pages/myson/mytuan/main','')">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/12.png" alt="">
                 <p>我的拼团</p>

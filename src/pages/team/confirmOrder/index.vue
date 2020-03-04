@@ -70,37 +70,41 @@
 import {post} from '@/utils';
 export default {
   data () {
-    return {
-      userId: "",
-		token: "", 
-		data:{},
-		options:{},
-		addressinfo:{},
-		hasaddress:false,
-		Freight:0,//邮费
-		Remark:'',//备注
-    }
+      return {
+         userId: "",
+         token: "", 
+         data:{},
+         options:{},
+         addressinfo:{},
+         hasaddress:false,
+         Freight:0,//邮费
+         Remark:'',//备注
+      }
   },
 	computed:{
 		total(){
 			return (this.data.FightingPrice*1+this.Freight*1).toFixed(2);
 		}
-	},
+  },
+  watch:{
+    addressId(){
+    }
+  },
   onLoad(){
 		this.userId = wx.getStorageSync("userId");
 		this.token = wx.getStorageSync("token");
-		this.hasaddress = false;
+      this.WxCode=wx.getStorageSync("wxCode");
+      this.WxOpenid=wx.getStorageSync("openId");
+      this.hasaddress = false;
+      this.addressId='';
       this.getData();
   },
   onShow(){
     if(wx.getStorageSync("addressinfo")){
-		this.addressinfo=wx.getStorageSync("addressinfo");
-		console.log(wx.getStorageSync("addressinfo"))
+      this.addressinfo=wx.getStorageSync("addressinfo");
       wx.setStorageSync("addressinfo",null)
-		this.hasaddress=true;
-		this.BuyNowToFreight();
-    }else{
-      this.getAdress();
+      this.hasaddress=true;
+      this.BuyNowToFreight();
     }
   },
   methods: {
@@ -112,6 +116,7 @@ export default {
 		options.Token = this.token;
 		const res = await post('GroupBuy/ConfirmationGroup',options);
 		this.data = res.data;
+      this.getAdress();
 	 },
 	//  下单
 	 async playOrder(){
@@ -124,8 +129,40 @@ export default {
 			GroupRecordId: this.options.groupRecordId,
 			Remark: this.Remark,
 			IsPayWallet: 0
-		})
+      })
+      this.ConfirmWeiXinSmallPay(res.data.OrderNo,res.data.GroupRecordId);
 	 },
+    //微信支付需参数
+    async ConfirmWeiXinSmallPay(OrderNo,GroupRecordId){
+      const that = this;
+      let result = await post('Pay/WeiXinSmallPayByOrder',{
+        OrderNo:OrderNo,
+        UserId: this.userId,
+        Token: this.token,
+        WxCode:this.WxCode,
+        WxOpenid:this.WxOpenid,
+      })
+      let payData=JSON.parse(result.data.JsParam)
+      if(result.code==0){
+        wx.requestPayment({
+          timeStamp: payData.timeStamp,
+          nonceStr: payData.nonceStr,
+          package: payData.package,
+          signType: payData.signType,
+          paySign: payData.paySign,
+          success(res) {
+              wx.redirectTo({
+                url: `/pages/goodsSon/paysuccess/main?OrderNo=${OrderNo}&GroupId=${that.options.GroupId}&GroupRecordId=${GroupRecordId}`
+              })
+            },
+          fail(res) {
+            wx.redirectTo({
+              url: `/pages/goodsSon/paysuccess/main?OrderNo=${OrderNo}&GroupId=${that.options.GroupId}&GroupRecordId=${GroupRecordId}&msg=fail`
+            })
+          }
+        })
+      }
+    },
     //获取默认地址
     async getAdress(){
       let res=await post("Address/defaultaddress_New",{
@@ -135,8 +172,9 @@ export default {
       if(res.code==0){
         if(res.data){
           this.addressinfo=res.data;
-			 this.hasaddress=true;
-			 this.BuyNowToFreight();
+          this.addressId=res.data.id;
+          this.hasaddress=true;
+          this.BuyNowToFreight();
         }else{
           this.hasaddress=false;
         } 

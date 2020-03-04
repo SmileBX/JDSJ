@@ -43,7 +43,7 @@
     </div>
     <div class="youhui ali-c jus-b">
       <img @click="goUrl('/pages/goodsSon/rob/main')" src="http://jd.wtvxin.com/images/images/index/qianggou.png" alt="">
-      <img @click="goUrl('/pages/team/goods/main',0)" src="http://jd.wtvxin.com/images/images/index/pintuan.png" alt="">
+      <img @click="goUrl('/pages/team/goods/main')" src="http://jd.wtvxin.com/images/images/index/pintuan.png" alt="">
     </div>
     <div class="goods-box" id="goods-box">
       <div class="xd">
@@ -58,7 +58,9 @@
         </div>
       </div>
       <div class="goods jus-b flex-wrap" v-if="hasData">
-        <div class="list" v-for="(item, index) in goodsList" :key="index" @click="goUrl('/pages/goodsSon/goodsDetail/main',item.Id)">
+        <div class="list" v-for="(item, index) in goodsList" :key="index" 
+          @click="goUrl('/pages/goodsSon/goodsDetail/main',item.Id)"
+          >
           <img class="img" :src="item.Pic" :alt="item.Name">
           <div class="text-box">
             <p class="tit oneline">{{item.Name}}</p>

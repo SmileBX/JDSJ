@@ -2,22 +2,26 @@
   <div>
       <div class="pin-box">
         <div class="goods ali-c">
-          <img src="http://jd.wtvxin.com/images/images/index/shop.png" alt="">
+          <img :src="data.GroupImage" alt="">
           <div>
-            <p class="flexc status">拼团进行中</p>
-            <p class="tit oneline">动感单车 运动 女家用型...</p>
+            <p class="flexc status">{{data.GroupStatusStr}}</p>
+            <p class="tit oneline">{{data.GroupTitle}}</p>
             <p class="price">
               <span>￥</span>
-              <span>95.00</span>
-              <span>￥699.00</span>
+              <span>{{data.FightingPrice}}</span>
+              <span>￥{{data.OriginalPrice}}</span>
             </p>
           </div>
         </div>
         <div class="tuan">
-          <p class="one">还差4人即可成团</p>
-          <p class="two flexc">剩余<span>4天23小时</span>结束</p>
+          <p class="one">还差{{data.RemainingNum}}人即可成团</p>
+          <p class="two flexc" v-if="!timeEndOut">剩余<span>{{timeEnd}}</span>结束</p>
+          <p class="two flexc" v-else><span>已结束</span></p>
           <div class="flexc thr">
-            <div v-for="(item, index) in 5" :key="index">
+            <div v-for="(item, index) in data.MemberList" :key="index">
+              <img  :src="item.MemberAvatar||'http://jd.wtvxin.com/images/images/index/defute.png'" alt="">
+            </div>
+            <div v-for="(item, index) in data.RemainingNum" :key="index">
               <img src="http://jd.wtvxin.com/images/images/index/defute.png" alt="">
             </div>
           </div>
@@ -27,29 +31,128 @@
       </div>
       <div class="rule ali-c jus-b">
         <span>拼团规则</span>
-        <div class="ali-c">
+        <div class="ali-c" @click="showRule=true">
           <p>好友拼团 人满发货 人不满退款</p>
           <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
         </div>
+      </div>
+      <!-- 拼团规则 -->
+      <div class="rules" v-if="showRule">
+        <div class="ruleMask" @click="showRule=false"></div>
+          <div class="mains">
+            <div class="content">
+              <h3>拼团活动规则</h3>
+              <div v-for="(item,index) in rule" :key="index">
+                <h4>{{item.tit}}</h4>
+                <p v-for="(valItem,valIndex) in item.val" :key="valIndex">{{valItem}}</p>
+              </div>
+            </div>
+            <div class="close" @click="showRule=false">×</div>
+          </div>
       </div>
   </div>
 </template>
 
 <script>
-import {switchPath,isJump} from '@/utils'
+import {switchPath,post,editTime,get_time_diff} from '@/utils'
 export default {
 
   data () {
     return {
-     showEdit:false,
-      
+      showEdit:false,
+      options:{
+        GroupId:'',
+        GroupRecordId:'',
+      },
+      data:{},
+      showRule:false,//拼团规则
+      rule:[
+      ],//规则内容
+      timeEndOut:false,//倒计时是否已结束
+      timeEnd:'',//时间倒计时
+      interval:null,//倒计时函数
     }
   },
-
+  onLoad(options){
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+    this.options = options;
+    this.showRule= false;
+    this.timeEndOut = false;
+    this.getData();
+	  this.onRule();
+  },
   onShow(){
     
   },
   methods: {
+    async getData(){
+      const res = await post('GroupBuy/GroupMemberInfo',{
+        UserId: this.userId,
+        Token: this.token,
+        GroupId:this.options.GroupId,
+        GroupRecordId:this.options.GroupRecordId
+      });
+      this.data = res.data;
+      this.timeEnds();
+    },
+    timeEnds(){
+      const timeend = new Date(editTime(this.data.EndTime,'time')).getTime();
+      const nowTime = new Date().getTime();
+      const diff = new Date().getTime() - timeend;
+      // 小于0，已过时间
+      if(diff>0){ 
+        this.timeEndOut = true;
+        return;
+      }
+      //每天毫秒数
+      const nd = 1000 * 24 * 60 * 60;
+      //每小时毫秒数
+      const nh = 1000 * 60 * 60;
+      //每分钟毫秒数
+      const nm = 1000 * 60;
+      // 秒数
+      const ns = 1000;
+      // 天
+      let d= parseInt(diff / nd);
+      // 时
+      let h = parseInt(diff % nd / nh);
+      // 分
+      let m = parseInt(diff % nd % nh / nm);
+      // 秒
+      let s = parseInt(diff % nd % nh % nm /ns);
+      let timeText = '';
+      clearInterval(this.interval);
+      this.interval = setInterval(()=>{
+        s-=1;
+        if(s==0&&m>0){
+          m-=1;
+          s=59;
+          if(m==0&&h>0){
+            h-=1;
+            m=59;
+            if(h==0&&d>0){
+              d-=1;
+              h=24;
+            }
+          }
+        }
+        if(d){
+          timeText+=d+'天'
+        }
+        if(h){
+          timeText+=h+'时'
+        }
+        if(m){
+          timeText+=m+'分'
+        }
+        if(s){
+          timeText+=s+'秒'
+        }
+        this.timeEnd =timeText;
+        timeText = '';
+      },1000) 
+    },
     goUrl(url,param){
       this.isJump = true
       setTimeout(() => {
@@ -59,6 +162,27 @@ export default {
         })
       }, 100);
     },
+    //  规则数据
+    onRule(){
+      this.rule=[{
+          tit:'更新时间:',
+          val:['不定期更新，限量放送,售完即止']
+        },{
+          tit:'购买须知:',
+          val:['1.在拼团商品活动页面中选择商品，点击购买进入支付页',
+          '2.在5分钟内完成支付，否则订单自动取消',
+          '3.开团成功后，可将拼团信息分享给好友，指定时间内邀请到成团人数的好友享拼团价,即为拼团成功;否则，系统自动退款'
+          ]
+        },{
+          tit:'活动说明:',
+          val:[
+            '1.拼团商品不与网站其它优惠福利同享',
+            '2.拼团商品不可使用优惠券',
+            '3.同一登录账号、同一手机号、同一终端设备号、同一支付账户、同一收货地址等合理显示为同一用户的情形，均视为同一用户',
+            '4.通过不正当手段参与拼团活动，集店有权撤销相关订单'
+            ]
+        }]
+    }
     
   },
 }
@@ -99,7 +223,8 @@ export default {
       color: #999999;
       margin: 20rpx 0 30rpx;
       span{
-        width: 140rpx;
+        // width: 140rpx;
+        padding:0 15rpx;
         height: 41rpx;
         background-color: #ff3333;
         border-radius: 4rpx;
@@ -166,6 +291,58 @@ export default {
       font-size: 24rpx;
       text-decoration: line-through;
       margin-left: 20rpx;
+    }
+  }
+}
+// 拼团规则
+.rules{
+  position:fixed;
+  top:0;
+  left:0;
+  display:flex;
+  width:100%;
+  height:100vh;
+  align-items:center;
+  justify-content:center;
+  .ruleMask{
+    width:100%;
+    height:100vh;
+    background:rgba(0,0,0,.4);
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:100;
+  }
+  .mains{
+    position:relative;
+    z-index:101;
+    width:80%;
+    .content{
+      padding:40rpx;
+      background:#fff;
+      border-radius:15rpx;
+      font-size:26rpx;
+      h3{
+        font-size:32rpx;
+        text-align:center;
+      }
+      h4{
+        line-height:2;
+      }
+      p{
+        color:#999;
+      }
+    }
+    .close{
+      color:#fff;
+      border:1rpx solid #fff;
+      border-radius:50%;
+      width:60rpx;
+      height:60rpx;
+      line-height:55rpx;
+      font-size:50rpx;
+      text-align:center;
+      margin:50rpx auto 0;
     }
   }
 }
