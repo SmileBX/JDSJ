@@ -97,11 +97,10 @@ export default {
       this.timeEnds();
     },
     timeEnds(){
-      const timeend = new Date(editTime(this.data.EndTime,'time')).getTime();
-      const nowTime = new Date().getTime();
-      const diff = new Date().getTime() - timeend;
+      const timeend = new Date(editTime(this.data.EndTime,'s')).getTime();
+      const diff = timeend - new Date().getTime();
       // 小于0，已过时间
-      if(diff>0){ 
+      if(diff<0){ 
         this.timeEndOut = true;
         return;
       }
@@ -124,34 +123,37 @@ export default {
       let timeText = '';
       clearInterval(this.interval);
       this.interval = setInterval(()=>{
-        s-=1;
         if(s==0&&m>0){
           m-=1;
-          s=59;
+          s=60;
           if(m==0&&h>0){
             h-=1;
             m=59;
             if(h==0&&d>0){
               d-=1;
-              h=24;
+              h=23;
             }
           }
         }
+        s-=1;
         if(d){
-          timeText+=d+'天'
+          timeText+=d+'天 '
         }
         if(h){
-          timeText+=h+'时'
+          timeText+=this.formatNumber(h)+':'
         }
         if(m){
-          timeText+=m+'分'
+          timeText+=this.formatNumber(m)+':'
         }
-        if(s){
-          timeText+=s+'秒'
-        }
+        timeText+=this.formatNumber(s)
         this.timeEnd =timeText;
         timeText = '';
       },1000) 
+    },
+    // 时间格式化工具
+    formatNumber(n) {
+      const str = n.toString()
+      return str[1] ? str : `0${str}`
     },
     goUrl(url){
       if(this.isJump) return;

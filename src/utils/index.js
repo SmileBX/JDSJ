@@ -154,7 +154,14 @@ export function getbase64(urladdress) {
   // });
 
 }
-
+// 全屏查看图片,
+// imgArr一个图片数组,thisImg现在预览的图片
+export function previewImg(imgArr,index){
+  wx.previewImage({
+    urls:imgArr,//array
+    current:imgArr[index],//string
+  })
+}
 export function trim(str) {
   return str.replace(/(^\s*)|(\s*$)/g, "");
 }
@@ -357,12 +364,16 @@ export function getNewMsgDot() {
   }
 }
 // 更改时间格式
-// type:'date'--返回日期；'time'--返回日期+时间
+// type:'date'--返回日期；'time'--返回日期+时间;'s'--返回带秒
 export function editTime(time, type = 'date') {
 
   let newTime = ''
   if (type === 'time') {
     newTime = time.substr(0, time.lastIndexOf(':'))
+    newTime = newTime.replace('T', ' ')
+  }
+  if (type === 's') {
+    newTime = time.substr(0, time.lastIndexOf('.'))
     newTime = newTime.replace('T', ' ')
   }
   if (type === "date") {

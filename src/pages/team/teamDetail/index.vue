@@ -11,7 +11,7 @@
             <div class="limt-left">
                   <h3><span>¥</span>{{proInfo.FightingPrice}}</h3>
                   <p>¥{{proInfo.OriginalPrice}}</p>
-                  <div class="percentage">赚{{proInfo.SalesVolume}}</div>
+                  <!-- <div class="percentage">赚{{proInfo.SalesVolume}}</div> -->
             </div>
             <div class="limt-right">
               <div class="txt">{{proInfo.MinPeopleNum}}人团</div>
@@ -109,24 +109,43 @@
           <img src="http://jd.wtvxin.com/images/images/index/play.png" alt="">
         </div>
       </div>
-      <div class="pin">
-        <div class="tit ali-c">他们都在拼，可直接参团</div>
-        <div class="list ali-c jus-b">
+      <div class="pin" v-if="groupingList.length>0">
+        <div class="tit ali-c">
+          <h3>他们都在拼，可直接参团</h3> 
+          <p @click="showGruopingList = true">查看更多参团</p>
+        </div>
+        <div class="list ali-c jus-b" v-for="(item,index) in groupingList" :key="index" v-show="index<2">
           <div class="left ali-c">
-            <img src="http://jd.wtvxin.com/images/images/index/ok.png" alt="">
+            <img :src="item.MemberHeadImg" alt="">
             <div>
-              <span>如果</span>
-              <p>还差1人成团，剩余<span>02:54:03</span>结束</p>
+              <span>{{item.MemberHeadNick}}</span>
+              <p>还差{{item.RemainingNum}}人成团，剩余<span>{{item.timeEnd}}</span>结束</p>
             </div>
           </div>
-          <p class="flexc right">去参团</p>
+          <p class="flexc right" @click="submit(item.Id)">去参团</p>
         </div>
       </div>
-
+      <!-- 参团列表 -->
+      <div class="groupingBox" v-if="showGruopingList">
+        <div class="masks" @click="showGruopingList=false"></div>
+        <div class="box">
+          <div class="list ali-c jus-b" v-for="(item,index) in groupingList" :key="index">
+            <div class="left ali-c">
+              <img :src="item.MemberHeadImg" alt="">
+              <div>
+                <span>{{item.MemberHeadNick}}</span>
+                <p>还差{{item.RemainingNum}}人成团，剩余<span>{{item.timeEnd}}</span>结束</p>
+              </div>
+            </div>
+            <p class="flexc right" @click="submit(item.Id)">去参团</p>
+          </div>
+        </div>
+      </div>
+      <!-- 参团列表end -->
       <div class="comment">
         <div class="tit ali-c jus-b">
           <p class="left">商品评价<span>({{proInfo.EvaluateCount}})</span></p>
-          <div class="right" v-if="proInfo.EvaluateCount>0" @click="goUrl('/pages/goodsSon/allcomment/main',proId)">
+          <div class="right" v-if="proInfo.EvaluateCount>0" @click="goUrl('/pages/goodsSon/allcomment/main',proInfo.ProductId)">
             <span>查看全部</span>
             <img src="http://jd.wtvxin.com/images/images/index/more_r.png" alt="">
           </div>
@@ -146,6 +165,12 @@
               <p class="detail">
                 {{item.ContentText}}
               </p>
+              <div class="imgList">
+                <img :src="PicItem" alt="" 
+                  v-for="(PicItem,PricIndex) in item.Pic" :key="PricIndex" 
+                  v-show="PricIndex<4" @click="onPreviewImg(item.Pic,PricIndex)"
+                  >
+              </div>
               <p class="time">{{item.AddTime}}</p>
             </div>
           </block>
@@ -289,7 +314,7 @@
 </template>
 
 <script>
-import {post,get} from '@/utils'
+import {post,get,previewImg,editTime} from '@/utils'
 import uniPopup from '@/components/uni-popup.vue';
 export default {
   components: {
@@ -300,7 +325,8 @@ export default {
       userId: "",
       token: "",
       teamId:"",
-      groupRecordId:'',//参与拼团的记录id
+      groupingList:[],//参团列表
+      showGruopingList:false,//显示参团列表
       isTop:false,//是否显示置顶
       timeStr:[],//倒计时
       proInfo:{},//商品信息
@@ -341,6 +367,8 @@ export default {
     this.showPopupSku = false;
     this.isMatch=false;
     this.timeStr=[];
+    this.groupingList=[];
+    this.showGruopingList = false;
 	 this.showRule = false;
 	 this.onRule();
 	// this.quety();//   设置sku框的高度
@@ -376,6 +404,7 @@ export default {
         token: this.token,
         GroupId: this.teamId
       })
+      const data = res.data;
       this.proInfo=res.data;
 
       this.BannerNum=res.data.ProductImgList.length;
@@ -385,6 +414,12 @@ export default {
       this.minbuy=res.data.MinBuyNum; //最小购买量
       if(!res.data.ProductSpecList.length){
         this.isMatch=true;
+      }
+      // 评价
+      if(data.EvaluateList.length>0){
+        data.EvaluateList.map(item=>{
+          item.Pic = item.EvaluateImgList.split(',');
+        })
       }
       // 优惠券列表
       // if(this.proInfo.CouponList.length){
@@ -399,8 +434,64 @@ export default {
         GroupId:this.teamId,
         userId: this.userId,
         token: this.token,
-        TopNum:1
+        TopNum:7
       });
+      const data = res.data;
+      data.map(item=>{
+          const timeend = new Date(editTime(item.EndTime,'s')).getTime();
+          const diff = timeend - new Date().getTime();
+          console.log(timeend,'---',new Date().getTime())
+          item.timeEnd='';
+          //每天毫秒数
+          const nd = 1000 * 24 * 60 * 60;
+          //每小时毫秒数
+          const nh = 1000 * 60 * 60;
+          //每分钟毫秒数
+          const nm = 1000 * 60;
+          // 秒数
+          const ns = 1000;
+          // 天
+          let d= parseInt(diff / nd);
+          // 时
+          let h = parseInt(diff % nd / nh);
+          // 分
+          let m = parseInt(diff % nd % nh / nm);
+          // 秒
+          let s = parseInt(diff % nd % nh % nm /ns);
+          console.log(d,h,m,s)
+          let timeText = '';
+          clearInterval(item.interval);
+          item.interval = setInterval(()=>{
+            if(s==0&&m>0){
+              m-=1;
+              s=60;
+              if(m==0&&h>0){
+                h-=1;
+                m=59;
+                if(h==0&&d>0){
+                  d-=1;
+                  h=23;
+                }
+              }
+            }
+            s-=1;
+            if(d){
+              timeText+=d+'天 '
+            }
+            if(h){
+              timeText+=this.formatNumber(h)+':'
+            }
+            if(m){
+              timeText+=this.formatNumber(m)+':'
+            }
+            timeText+=this.formatNumber(s)
+            item.timeEnd =timeText;
+            timeText = '';
+          },1000);
+      })
+      this.groupingList = data;
+      console.log(data);
+      
     },
 	//点击选择规格标签--name:规格名称 value:所选规格值
     cliTag(name,value){
@@ -551,23 +642,24 @@ export default {
       // }
     },
     // 提交订单
-    submit(){
+    submit(groupRecordId){
       this.checkSubmit().then(res=>{
-			console.log('123',{
-				GroupId:this.teamId,
-				ShopId:this.proInfo.ShopId,
-				Number: this.goodsNum,
-				GroupRecordId: this.groupRecordId
-			})
-			wx.setStorageSync('groupSubmit',{
-				GroupId:this.teamId,
-				ShopId:this.proInfo.ShopId,
-				Number: this.goodsNum,
-				GroupRecordId: this.groupRecordId
-			})
-          wx.navigateTo({
+        console.log('123',{
+          GroupId:this.teamId,
+          ShopId:this.proInfo.ShopId,
+          Number: this.goodsNum,
+          GroupRecordId: groupRecordId
+        })
+        wx.setStorageSync('groupSubmit',{
+          GroupId:this.teamId,
+          ShopId:this.proInfo.ShopId,
+          Number: this.goodsNum,
+          GroupRecordId: groupRecordId||''
+        })
+        this.showGruopingList = false;
+        wx.navigateTo({
 				url: `/pages/team/confirmOrder/main`
-          })
+        })
       })
     },
     // 检测是否可提交
@@ -584,7 +676,16 @@ export default {
           resolve(true)
         })
       }) 
-	 },
+   },
+  //  查看评价图片
+  onPreviewImg(arr,index){
+    previewImg(arr,index);
+  },
+  // 时间格式化工具
+  formatNumber(n) {
+    const str = n.toString()
+    return str[1] ? str : `0${str}`
+  },
 	//  规则数据
 	 onRule(){
 		 this.rule=[{
@@ -647,9 +748,17 @@ export default {
   .tit{
     height: 90rpx;
     border-bottom: 1rpx solid #ededed;
-    font-size: 32rpx;
-	  font-weight: bold;
-    padding: 0 30rpx
+    padding: 0 30rpx;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    h3{
+      font-size: 32rpx;
+      font-weight: bold;
+    }
+    p{
+      color:#999;
+    }
   }
   .list{
     height: 142rpx;
@@ -666,6 +775,7 @@ export default {
     img{
       width: 72rpx;
 	    height: 73rpx;
+      background-color: #eee;
       border-radius: 50%;
       margin-right: 20rpx
     }
@@ -677,6 +787,66 @@ export default {
           color: #ff3333;
         }
       }
+    }
+  }
+}
+.groupingBox{
+  position:fixed;
+  z-index:99;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  .masks{
+    background:rgba(0, 0, 0, 0.5);
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    z-index:100;
+  }
+  .box{
+    position:relative;
+    z-index:101;
+    background:#fff;
+    width:90%;
+    border-radius:20rpx;
+    padding:20rpx 0;
+  }
+  .list{
+    height: 142rpx;
+    border-bottom: 1rpx solid #ededed;
+    padding: 0 30rpx;
+    .right{
+      width: 144rpx;
+      height: 49rpx;
+      background-color: #ff3333;
+      border-radius: 24rpx;
+      font-size: 24rpx;
+      color: #fff
+    }
+    img{
+      width: 72rpx;
+	    height: 73rpx;
+      background-color: #eee;
+      border-radius: 50%;
+      margin-right: 20rpx
+    }
+    .left{
+      p{
+        font-size: 24rpx;
+        color: #666666;
+        span{
+          color: #ff3333;
+        }
+      }
+    }
+    &:last-child{
+      border-bottom:none;
     }
   }
 }
@@ -761,6 +931,18 @@ export default {
       font-size: 26rpx;
       color: #999999;
       line-height: 80rpx;
+    }
+    .imgList{
+      display:flex;
+      align-items:center;
+      margin-right:-16rpx;
+      margin-top:20rpx;
+      img{
+        width:160rpx;
+        height:160rpx;
+        margin-right:15rpx;
+        border-radius:5rpx;
+      }
     }
     .detail{
       color: #212121;

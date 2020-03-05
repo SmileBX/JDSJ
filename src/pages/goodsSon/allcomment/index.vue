@@ -25,7 +25,8 @@
                 <p class="mt1">{{item.ContentText}}</p>
                 <p class="flex flexWrap"  v-if="item.imgArr">
                   <block v-for="(i,e) in item.imgArr" :key="e">
-                    <img v-if="e<3" :src="i" alt="" class="shop_pic" @click="previewImg(item.imgArr,i)">
+                    <img v-if="e<4" :src="i" alt="" 
+						class="shop_pic" @click="previewImg(item.imgArr,i)">
                   </block>
                 </p>
             </div>
@@ -233,9 +234,12 @@ export default {
   }
 }
 .shop_pic{
-  width:210rpx;margin-right:30rpx;height:210rpx;
+  width:160rpx;
+  height:160rpx;
+  margin-right:15rpx;
   margin-top:10rpx;
-  &:nth-child(3n){
+  border-radius:6rpx;
+  &:nth-child(4n){
     margin-right:0
   }
 }
