@@ -97,6 +97,7 @@ export default {
       this.WxOpenid=wx.getStorageSync("openId");
       this.hasaddress = false;
       this.addressId='';
+      this.Freight=0;
       this.getData();
   },
   onShow(){
@@ -174,7 +175,9 @@ export default {
           this.addressinfo=res.data;
           this.addressId=res.data.id;
           this.hasaddress=true;
-          this.BuyNowToFreight();
+          if(this.data.IsPostage){
+            this.BuyNowToFreight();
+          }
         }else{
           this.hasaddress=false;
         } 

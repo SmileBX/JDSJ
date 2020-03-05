@@ -324,8 +324,7 @@ export default {
       maxbuy:0,//最大购买量
       minbuy:1, //最小购买量
       showRule:false,//拼团规则
-      rule:[
-      ],//规则内容
+      rule:[],//规则内容
     }
   },
   onLoad(optins){
@@ -617,9 +616,9 @@ export default {
   },
   onShareAppMessage: function() {
     return {
-      title: this.proInfo.ProductName, //转发页面的标题
+      title: this.proInfo.GroupProductName, //转发页面的标题
       imageUrl:this.proInfo.ProductImgList[0].PicUrl,
-      path: '/pages/goodsSon/goodsDetail/main?id='+this.proId
+      path: '/pages/team/teamDetail/main?id='+this.teamId
     }
   }
 }

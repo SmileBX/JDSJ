@@ -2,7 +2,7 @@
   <div>
       <div class="pin-box">
         <div class="goods ali-c">
-          <img :src="data.GroupImage" alt="">
+          <img :src="data.GroupImage" alt="" @click="goUrl('team/teamDetail')">
           <div>
             <p class="flexc status">{{data.GroupStatusStr}}</p>
             <p class="tit oneline">{{data.GroupTitle}}</p>
@@ -25,7 +25,7 @@
               <img src="http://jd.wtvxin.com/images/images/index/defute.png" alt="">
             </div>
           </div>
-          <p class="fou flexc">邀请好友参团</p>
+          <button class="fou flexc" open-type="share">邀请好友参团</button>
           <p class="fiv">请尽快成团，否则就被抢光了哦！</p>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default {
 
   data () {
     return {
-      showEdit:false,
+      isJump:false,//是否已点击了跳转
       options:{
         GroupId:'',
         GroupRecordId:'',
@@ -153,13 +153,13 @@ export default {
         timeText = '';
       },1000) 
     },
-    goUrl(url,param){
-      this.isJump = true
+    goUrl(url){
+      if(this.isJump) return;
       setTimeout(() => {
-        this.isJump = false
         wx.navigateTo({
-          url:url+'?id='+param
+          url:`/pages/${url}/main?id=${this.options.GroupId}&GroupRecordId=${this.options.GroupRecordId}`
         })
+        this.isJump = false
       }, 100);
     },
     //  规则数据
@@ -185,6 +185,13 @@ export default {
     }
     
   },
+  onShareAppMessage: function() {
+    return {
+      title: this.data.GroupTitle, //转发页面的标题
+      imageUrl:this.data.GroupImage,
+      path: `/pages/team/teamDetail/main?id=${this.options.GroupId}&GroupRecordId=${this.options.GroupRecordId}`
+    }
+  }
 }
 </script>
 

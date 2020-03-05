@@ -4,7 +4,7 @@
         <div class="list ali-c jus-b" v-for="(item,index) in goodsList" :key="index" @click="goUrl(item.Id)">
           <img class="left" :src="item.ProductImg" alt="">
           <div class="right">
-            <p class="tit oneline">{{item.ProductName}}</p>
+            <p class="tit oneline">{{item.Title}}</p>
             <div class="ali-c jus-b hot">
               <div class="one flexc">
                 <img src="http://jd.wtvxin.com/images/images/index/hot.png" alt="">

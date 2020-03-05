@@ -98,9 +98,10 @@ export default {
               title:res.msg
             })
             setTimeout(() => {
-              wx.switchTab({
-                url: '/pages/my/main'
-              })
+              // wx.switchTab({
+              //   url: '/pages/my/main'
+              // })
+              wx.navigateBack();
             }, 300);
           }
         })
