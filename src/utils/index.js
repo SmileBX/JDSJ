@@ -106,10 +106,10 @@ function request(url, data,method, loginFn) {
     })
   })
 }
-export function get(url, data,isLogin, loginFn) {
+export function get(url, data,loginFn,isLogin) {
   return request(url, data, 'GET', loginFn)
 }
-export function post(url, data,isLogin, loginFn) {
+export function post(url, data,loginFn,isLogin) {
   return request(url, data,'POST', loginFn)
 }
 //判断是否登录，未登录做弹窗跳转登录页面
@@ -375,6 +375,7 @@ export function editTime(time, type = 'date') {
   if (type === 's') {
     newTime = time.substr(0, time.lastIndexOf('.'))
     newTime = newTime.replace('T', ' ')
+    newTime = newTime.replace(/-/g, '/')
   }
   if (type === "date") {
     newTime = time.substr(0, time.lastIndexOf('T'))

@@ -141,36 +141,35 @@ export default {
     }
   },
   onLoad(e){
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
-    if(decodeURIComponent(e.shopid)&&decodeURIComponent(e.shopid)!='undefined'){
-      this.shopid = decodeURIComponent(e.shopid);
-      wx.setStorageSync("shopid", this.shopid);
-      this.AddVisitShop();//添加浏览店铺
-    }
+    this.init();
   },
   onShow(){
-    if(wx.getStorageSync("shopid")){
-      this.shopid =wx.getStorageSync("shopid");
-    }else{
-      this.shopid ="50FB070743F1853A";
-    }
-    this.GetMerchantDetail();
-    this.GetShopRecruitment();
-    // 初始化
-    this.hasData=false;
-		this.noDataIsShow=false;//没有数据的提示是否显示
-    this.loadingType=0;
-    this.page=1;
-    this.isLoad=false;
-    this.isOved=false; 
-    this.sFilter=0;//按销量 0:无 1:价格正序 2:价格倒序 ,
-    this.pFilter=0;
-    this.goodsList={};
-    this.GetProductList();
-    getNewMsgDot()
   },
   methods: {
+    init(){
+      this.userId = wx.getStorageSync("userId");
+      this.token = wx.getStorageSync("token");
+      if(wx.getStorageSync("shopid")){
+        this.shopid = wx.getStorageSync("shopid");
+        this.AddVisitShop();//添加浏览店铺
+      }else{
+        this.shopid ="50FB070743F1853A";
+      }
+      this.GetMerchantDetail();
+      this.GetShopRecruitment();
+      // 初始化
+      this.hasData=false;
+      this.noDataIsShow=false;//没有数据的提示是否显示
+      this.loadingType=0;
+      this.page=1;
+      this.isLoad=false;
+      this.isOved=false; 
+      this.sFilter=0;//按销量 0:无 1:价格正序 2:价格倒序 ,
+      this.pFilter=0;
+      this.goodsList={};
+      this.GetProductList();
+      getNewMsgDot()
+    },
     goUrl(url,param){
       if(param==0){
          wx.showToast({
@@ -326,15 +325,12 @@ export default {
     }
   },
   onPullDownRefresh() {
-    //监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
-    let _this=this;
-      _this.shopid =wx.getStorageSync("shopid");
-      _this.page=1;
-      _this.goodsList = {};
-    setTimeout(function () {
-      _this.GetProductList();
-      wx.stopPullDownRefresh();  //停止下拉刷新动画
-    }, 1000);
+			//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
+      let _this=this;
+        _this.page=1;
+				_this.goodsList = {};
+				_this.GetProductList();
+				wx.stopPullDownRefresh();  //停止下拉刷新动画
   },
   onShareAppMessage: function() {
     return {

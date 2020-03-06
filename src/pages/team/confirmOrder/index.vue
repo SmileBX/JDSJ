@@ -127,7 +127,7 @@ export default {
 			GroupId: this.options.GroupId,
 			AddressId: this.addressinfo.id,
 			Number: this.options.Number,
-			GroupRecordId: this.options.groupRecordId,
+			GroupRecordId: this.options.GroupRecordId,
 			Remark: this.Remark,
 			IsPayWallet: 0
       })
