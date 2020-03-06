@@ -80,7 +80,7 @@
       </view>
     </div>
     <movable-area class="move-box-fa">
-      <movable-view class="move-box" direction='all' inertia x='10000' y='0' damping='1000000' friction='1'>
+      <movable-view class="move-box" direction='all' inertia x='1000' y='1000'>
         <img class="car" src="http://jd.wtvxin.com/images/images/index/card.png" alt="" @click="goCart">
       </movable-view>
     </movable-area>
@@ -361,10 +361,6 @@ export default {
 }
 .move-box{
   pointer-events: auto;
-  position: fixed;
-  top: auto;
-  bottom: 30rpx;
-  right: 30rpx;
   width: 130rpx;
 	height: 130rpx;
 }
