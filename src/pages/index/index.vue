@@ -324,14 +324,20 @@ export default {
       }
     }
   },
-   onPullDownRefresh() {
+  onPullDownRefresh() {
 			//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
       let _this=this;
         _this.page=1;
 				_this.goodsList = {};
 				_this.GetProductList();
 				wx.stopPullDownRefresh();  //停止下拉刷新动画
-		}
+  },
+  onShareAppMessage: function() {
+    return {
+      title: this.shopName, //转发页面的标题
+      path: '/pages/index/main?shopid='+this.shopid
+    }
+  }
 }
 </script>
 
