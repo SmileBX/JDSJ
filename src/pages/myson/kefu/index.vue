@@ -18,10 +18,10 @@
           <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
         </div>
         <div class="kf_bottom bg_fff flex justifyContentAround">
-            <div class="cell_kf cell_left"  @click="gophone()">
+            <div class="cell_kf cell_left"  @click="gophone(Mobile)">
                 <p class="flex flexAlignCenter">
                     <img src="http://jd.wtvxin.com/images/images/icons/call.png" alt="" class="call">
-                    <span class="font24 ml1">400-8523-555</span>
+                    <span class="font24 ml1">{{Mobile}}</span>
                 </p>
                 <p class="font20 cg">09:00-22:00</p>
             </div>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import {post} from "@/utils";
+import {post,get} from "@/utils";
 export default {
 
   data () {
@@ -45,12 +45,14 @@ export default {
       showEdit:false,
       page: 1,
       pageSize: 99,
-      list:[]
+      list:[],
+      Mobile:""
     }
   },
 
   onShow(){
     this.getHelpList()
+    this.getMobile()
   },
   methods: {
     getHelpList(){
@@ -65,6 +67,13 @@ export default {
             this.$set(item,'showAll',false)
           })
           this.list = res.data
+        }
+      })
+    },
+    getMobile(){
+      get('system/GetWebConfiguration',{}).then(res=>{
+        if(res.code===0){
+          this.Mobile = res.data.Tel
         }
       })
     },
@@ -84,7 +93,7 @@ export default {
     },
     gophone(phone){
       wx.makePhoneCall({
-        phoneNumber: '1340000' //仅为示例，并非真实的电话号码
+        phoneNumber: phone //仅为示例，并非真实的电话号码
       })
     }
   },
