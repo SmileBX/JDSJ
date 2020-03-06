@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg">
       <img class="top" src="http://jd.wtvxin.com/images/images/index/tehui.png" alt="">
       <div class="list-box" v-if="hasData">
         <div class="list ali-c jus-b" v-for="(item, index) in goodsList" :key="index" @click="goUrl('/pages/goodsSon/goodsDetail/main',item.Id)">
@@ -192,9 +192,15 @@ export default {
   
 }
 .list-box{
-  background-color: #f8aeaa;
   padding: 30rpx;
-  min-height: 590rpx;
+  // min-height: 590rpx;
   margin-top: -10rpx;
+}
+.bg{
+  background-color: #f8aeaa;
+  min-height:100vh;
+  & /deep/ .loading-text{
+    color:#fff!important;
+  }
 }
 </style>
