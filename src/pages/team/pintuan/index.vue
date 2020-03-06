@@ -2,7 +2,7 @@
   <div>
       <div class="pin-box">
         <div class="goods ali-c">
-          <img :src="data.GroupImage" alt="">
+          <img :src="data.GroupImage" alt="" @click="goUrl('team/teamDetail')">
           <div>
             <p class="flexc status">{{data.GroupStatusStr}}</p>
             <p class="tit oneline">{{data.GroupTitle}}</p>
@@ -25,7 +25,7 @@
               <img src="http://jd.wtvxin.com/images/images/index/defute.png" alt="">
             </div>
           </div>
-          <p class="fou flexc">邀请好友参团</p>
+          <button class="fou flexc" open-type="share">邀请好友参团</button>
           <p class="fiv">请尽快成团，否则就被抢光了哦！</p>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default {
 
   data () {
     return {
-      showEdit:false,
+      isJump:false,//是否已点击了跳转
       options:{
         GroupId:'',
         GroupRecordId:'',
@@ -97,11 +97,10 @@ export default {
       this.timeEnds();
     },
     timeEnds(){
-      const timeend = new Date(editTime(this.data.EndTime,'time')).getTime();
-      const nowTime = new Date().getTime();
-      const diff = new Date().getTime() - timeend;
+      const timeend = new Date(editTime(this.data.EndTime,'s')).getTime();
+      const diff = timeend - new Date().getTime();
       // 小于0，已过时间
-      if(diff>0){ 
+      if(diff<0){ 
         this.timeEndOut = true;
         return;
       }
@@ -124,42 +123,45 @@ export default {
       let timeText = '';
       clearInterval(this.interval);
       this.interval = setInterval(()=>{
-        s-=1;
         if(s==0&&m>0){
           m-=1;
-          s=59;
+          s=60;
           if(m==0&&h>0){
             h-=1;
             m=59;
             if(h==0&&d>0){
               d-=1;
-              h=24;
+              h=23;
             }
           }
         }
+        s-=1;
         if(d){
-          timeText+=d+'天'
+          timeText+=d+'天 '
         }
         if(h){
-          timeText+=h+'时'
+          timeText+=this.formatNumber(h)+':'
         }
         if(m){
-          timeText+=m+'分'
+          timeText+=this.formatNumber(m)+':'
         }
-        if(s){
-          timeText+=s+'秒'
-        }
+        timeText+=this.formatNumber(s)
         this.timeEnd =timeText;
         timeText = '';
       },1000) 
     },
-    goUrl(url,param){
-      this.isJump = true
+    // 时间格式化工具
+    formatNumber(n) {
+      const str = n.toString()
+      return str[1] ? str : `0${str}`
+    },
+    goUrl(url){
+      if(this.isJump) return;
       setTimeout(() => {
-        this.isJump = false
         wx.navigateTo({
-          url:url+'?id='+param
+          url:`/pages/${url}/main?id=${this.options.GroupId}&GroupRecordId=${this.options.GroupRecordId}`
         })
+        this.isJump = false
       }, 100);
     },
     //  规则数据
@@ -185,6 +187,13 @@ export default {
     }
     
   },
+  onShareAppMessage: function() {
+    return {
+      title: this.data.GroupTitle, //转发页面的标题
+      imageUrl:this.data.GroupImage,
+      path: `/pages/team/teamDetail/main?id=${this.options.GroupId}&GroupRecordId=${this.options.GroupRecordId}`
+    }
+  }
 }
 </script>
 

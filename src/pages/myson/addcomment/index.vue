@@ -8,7 +8,7 @@
                     <div class="or_left flex flexColumn justifyContentBetween">
                       <div>
                         <p>{{shopInfo.ProductName}}</p>
-                        <p class="cg font24 mt1">规格：{{shopInfo.ProductSkuName}}</p>
+                        <p class="cg font24 mt1" v-if="shopInfo.ProductSkuName">规格：{{shopInfo.ProductSkuName}}</p>
                       </div>
                     </div>
                 </div>
@@ -33,13 +33,13 @@
             </div> -->
             <textarea name="" id="" cols="30" rows="10" class="com_text mt1" placeholder="填写您对商品的评价~" v-model="text"></textarea>
             <div class="p3" style="border-bottom:1rpx solid #ededed">
-            <!-- <div>上传图片（不超过5张）</div> -->
+            <!-- <div>上传图片（不超过4张）</div> -->
                 <div class="fed_pic flex flexWrap">
                   <div v-for="(item,index) in imgList" :key="index" class="picbox">
-                    <span class="flexc" @click="deleteImg(index)">+</span>
+                    <span class="" @click="deleteImg(index)">×</span>
                     <img :src="item.PicUrl" alt="" class="pic_itim">
                   </div>
-                  <div class="picbox upBtnImg" @click="changeImg()" v-if="imgList.length<5">
+                  <div class="picbox upBtnImg" @click="changeImg()" v-if="imgList.length<4">
                     <img src="http://jd.wtvxin.com/images/images/icons/add2.png" alt="" class="pic_itim">
                   </div>
                 </div>
@@ -98,9 +98,10 @@ export default {
               title:res.msg
             })
             setTimeout(() => {
-              wx.switchTab({
-                url: '/pages/my/main'
-              })
+              // wx.switchTab({
+              //   url: '/pages/my/main'
+              // })
+              wx.navigateBack();
             }, 300);
           }
         })
@@ -117,7 +118,7 @@ export default {
     changeImg(){
       let _this = this
       wx.chooseImage({
-        count: 5-this.imgList.length,
+        count: 4-this.imgList.length,
         sizeType: ['original', 'compressed'],
         sourceType: ['album', 'camera'],
         success (res) {
@@ -202,20 +203,23 @@ export default {
     position: relative;
     span{
       position: absolute;
-      width: 30rpx;
-      height: 30rpx;
+      width: 32rpx;
+      height: 32rpx;
       background-color: #ff3333;
       color: #fff;
       border-radius: 50%;
-      top: 0rpx;
+      top: -12rpx;
       right: 0rpx;
-      transform: rotate(45deg);
-      font-weight: 900;
+      // transform: rotate(45deg);
+      // font-weight: 900;
       font-size: 34rpx;
+      line-height:24rpx;
+      text-align:center;
     }
   }
   .pic_itim{
     width:144rpx;height:144rpx;
+    border-radius:7rpx;
   }
   .porela{
     padding:20rpx 0;position: relative;height:104rpx;

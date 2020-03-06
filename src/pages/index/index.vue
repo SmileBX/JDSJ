@@ -400,6 +400,7 @@ export default {
         padding: 0 20rpx;
       }
       .carda{
+        // margin-bottom:15rpx;
         span{
           font-size: 22rpx;
           color: #999999;
@@ -415,7 +416,12 @@ export default {
       }
       .tit{
         color: #000000;
-        line-height: 70rpx;
+        line-height: 60rpx;
+        width:294rpx;
+        white-space:nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display:block!important;
       }
       .price span:nth-child(1){
         font-size: 20rpx;
