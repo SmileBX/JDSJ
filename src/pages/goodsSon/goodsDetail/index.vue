@@ -130,6 +130,13 @@
               <p class="detail">
                 {{item.ContentText}}
               </p>
+              <div class="imgLists">
+                <img :src="imgItem" alt=""
+                  v-for="(imgItem,imgIndex) in item.imgList" :key="imgIndex"
+                  v-show="imgIndex<4"
+                  @click="previewImg(item.imgList,imgIndex)"
+                  >
+              </div>
               <p class="time">{{item.AddTime}}</p>
             </div>
           </block>
@@ -225,7 +232,7 @@
         <div class="couponbox" style="z-index: 10000;">
           <div class="titlebox">
             <div class="title">优惠券</div>
-            <div  @click="hidePopup" class="close">×</div>
+            <!-- <div  @click="hidePopup" class="close">×</div> -->
           </div>
           <div class="tips">可领优惠券<span>领取后可用于该商品</span></div>
           <scroll-view scroll-y style="width: 100%;height: 560rpx;">
@@ -256,7 +263,7 @@
 </template>
 
 <script>
-import {post,get} from '@/utils'
+import {post,get,previewImg} from '@/utils'
 import uniPopup from '@/components/uni-popup.vue';
 export default {
   components: {
@@ -264,6 +271,7 @@ export default {
   },
   data () {
     return {
+      previewImg,
       userId: "",
       token: "",
       proId:"",
@@ -540,6 +548,11 @@ export default {
             item.EndTime=item.EndTime.split("T")[0];
           })
         }
+        const data = res.data;
+        // 评价
+        data.EvaluateList.map(item=>{
+          item.imgList = item.EvaluateImgList.split(',');
+        })
         if(this.isLimint==1){
           //比较秒杀是否开始
 					let dateBegin = new Date(this.proInfo.FlashSaleStartTime.replace(/T/g, " "));
@@ -814,6 +827,21 @@ export default {
       font-size: 26rpx;
       color: #999999;
       line-height: 80rpx;
+    }
+    .imgLists{
+      display: flex;
+      align-items: center;
+      margin-top: 20rpx;
+      img{
+        width: 160rpx;
+        height: 160rpx;
+        margin-right: 15rpx;
+        border-radius: 5rpx;
+      }
+      &:last-child{
+        margin-right:0;
+      }
+
     }
     .detail{
       color: #212121;

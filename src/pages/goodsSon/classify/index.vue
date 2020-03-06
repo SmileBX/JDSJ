@@ -285,6 +285,7 @@ export default {
 .nav-right-item image {
 	width: 100rpx;
 	height: 100rpx;
+  border-radius:6rpx;
 }
 .nav-right-item .txt{
 	font-size: 26rpx;

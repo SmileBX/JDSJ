@@ -1,5 +1,5 @@
 <template>
-  <div class="bg_fff" style="min-height:100vh">
+  <div class="bg_f2" style="min-height:100vh">
       <div class="search_inn bg_fff">
         <div class="sear_iner flex flexAlignCenter">
             <input type="text" :focus="true" placeholder="请输入要搜索的商品" class="flex1" v-model="keyword">
@@ -279,7 +279,7 @@ export default {
       }
       .tit{
         color: #000000;
-        line-height: 70rpx;
+        line-height: 60rpx;
       }
       .price span:nth-child(1){
         font-size: 20rpx;
@@ -346,5 +346,8 @@ export default {
 }
 .loading{
   background: #f2f2f2!important
+}
+.bg_f2{
+  background:#f2f2f2;
 }
 </style>

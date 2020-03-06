@@ -30,13 +30,15 @@ import {post,get} from '@/utils'
 export default {
   data () {
     return {
-      ShopList:{}
+      ShopList:[]
     }
   },
   onLoad(){
-    this.GetVisitShopList();
   },
   onShow(){
+    if(this.ShopList.length<1){
+      this.GetVisitShopList();
+    }
   },
   methods: {
       goshop(id){

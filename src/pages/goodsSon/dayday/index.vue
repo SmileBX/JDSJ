@@ -50,14 +50,22 @@ export default {
     }
   },
   onLoad(){
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
+    this.init();
   },
   onShow(){
-    this.shopid = wx.getStorageSync("shopid");
-    this.GetProductList();
   },
   methods: {
+    init(){
+      this.page = 1;
+      this.isLoad = false;
+      this.isOved = false;
+      this.noDataIsShow = false;
+      this.hasData = false;
+      this.userId = wx.getStorageSync("userId");
+      this.token = wx.getStorageSync("token");
+      this.shopid = wx.getStorageSync("shopid");
+      this.GetProductList();
+    },
     goUrl(url,param){
       wx.navigateTo({
         url:url+'?id='+param

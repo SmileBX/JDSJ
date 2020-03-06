@@ -23,7 +23,8 @@
             </div>
         </div>
       </div>
-      
+      <div class="notData" v-if="!notData&&list.length<1">暂无数据</div>
+      <div class="notData" v-if="notData">已经到底了</div>
   </div>
 </template>
 
@@ -36,25 +37,42 @@ export default {
       userId: "",
       token: "",
       list:[],
+      page:1,
+      pageSize:12,
+      notData:false,
     }
   },
   onLoad(){
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
-    this.getData();
+    this.init();
   },
   onShow(){
   },
   methods: {
+    init(){
+      this.userId = wx.getStorageSync("userId");
+      this.token = wx.getStorageSync("token");
+      this.page = 1;
+      this.notData = false;
+      this.list = [];
+      this.getData();
+    },
     async getData(){
       const res = await post('GroupBuy/GroupRecordList',{
         UserId: this.userId,
         Token: this.token,
-        Page:1,
-        PageSize:12,
+        Page:this.page,
+        PageSize:this.pageSize,
         GroupStatus:0
       })
-      this.list = res.data;
+      const data = res.data;
+      if(this.page===1){
+        this.list = data;
+      }else{
+        this.list.push(...data);
+      }
+      if(data.length<this.pageSize){
+        this.notData = true;
+      }
     },
     goOrderDetail(orderNo){
         wx.navigateTo({
@@ -68,6 +86,16 @@ export default {
     },
     
   },
+  onReachBottom: function() {
+    if(!this.notData){
+      this.page +=1;
+      this.getData();
+    }
+  },
+  onPullDownRefresh() {
+    this.init();
+    wx.stopPullDownRefresh();  //停止下拉刷新动画
+  }
 }
 </script>
 
@@ -107,5 +135,10 @@ export default {
     margin-left:20rpx;
     border-radius:5rpx;
   }
+}
+.notData{
+  color:#999;
+  text-align:center;
+  line-height:3;
 }
 </style>

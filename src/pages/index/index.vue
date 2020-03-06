@@ -2,7 +2,7 @@
   <div>
     <div class="top">
       <div class="search ali-c">
-        <p class="oneline shopName">{{shopName}}</p>
+        <p class="oneline shopName" @click="goUrl('/pages/shop/index/main')">{{shopName}}</p>
         <div class="right flexc flex1" @click="goUrl('/pages/goodsSon/goodsSearch/main')">
           <img src="http://jd.wtvxin.com/images/images/index/search.png" alt="">
           <span>搜索</span>
@@ -144,6 +144,9 @@ export default {
     this.init();
   },
   onShow(){
+      if(wx.getStorageSync("shopid")!==this.shopid){
+        this.init();
+      }
   },
   methods: {
     init(){
