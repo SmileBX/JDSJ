@@ -55,13 +55,22 @@ export default {
     }
   },
 
-  onShow(){
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
-    this.shopid=wx.getStorageSync("shopid");
-    this.GetProductList()
+  onLoad(){
+    this.init();
+    this.GetProductList();
   },
   methods: {
+    init(){
+      this.userId = wx.getStorageSync("userId");
+      this.token = wx.getStorageSync("token");
+      this.shopid=wx.getStorageSync("shopid");
+      this.page =1;
+      this.isLoad = false;
+      this.isOved = false;
+      this.loadingType = 0;
+      this.hasData = false;
+      this.noDataIsShow = false;
+    },
     async GetProductList(){
       let res=await post("GroupBuy/GetGroupProductList",{
         Page: this.page,
@@ -128,6 +137,11 @@ export default {
         this.isOved = false;
       }
     }
+  },
+  onPullDownRefresh() {
+    this.init();
+    this.GetProductList();
+    wx.stopPullDownRefresh();  //停止下拉刷新动画
   }
 }
 </script>

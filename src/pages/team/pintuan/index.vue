@@ -15,7 +15,7 @@
         </div>
         <div class="tuan">
           <p class="one">还差{{data.RemainingNum}}人即可成团</p>
-          <p class="two flexc" v-if="!timeEndOut">剩余<span>{{timeEnd}}</span>结束</p>
+          <p class="two flexc" v-if="timeEnd">剩余<span>{{timeEnd}}</span>结束</p>
           <p class="two flexc" v-else><span>已结束</span></p>
           <div class="flexc thr">
             <div v-for="(item, index) in data.MemberList" :key="index">
@@ -68,7 +68,6 @@ export default {
       showRule:false,//拼团规则
       rule:[
       ],//规则内容
-      timeEndOut:false,//倒计时是否已结束
       timeEnd:'',//时间倒计时
       interval:null,//倒计时函数
     }
@@ -78,7 +77,7 @@ export default {
     this.token = wx.getStorageSync("token");
     this.options = options;
     this.showRule= false;
-    this.timeEndOut = false;
+    this.timeEnd='';
     this.getData();
 	  this.onRule();
   },
@@ -101,7 +100,7 @@ export default {
       const diff = timeend - new Date().getTime();
       // 小于0，已过时间
       if(diff<0){ 
-        this.timeEndOut = true;
+        this.timeEnd ='';
         return;
       }
       //每天毫秒数
@@ -123,13 +122,13 @@ export default {
       let timeText = '';
       clearInterval(this.interval);
       this.interval = setInterval(()=>{
-        if(s==0&&m>0){
+        if(s<1&&m>0){
           m-=1;
           s=60;
-          if(m==0&&h>0){
+          if(m<1&&h>0){
             h-=1;
             m=59;
-            if(h==0&&d>0){
+            if(h<1&&d>0){
               d-=1;
               h=23;
             }
@@ -145,7 +144,7 @@ export default {
         if(m){
           timeText+=this.formatNumber(m)+':'
         }
-        timeText+=this.formatNumber(s)
+        timeText+=this.formatNumber(s);
         this.timeEnd =timeText;
         timeText = '';
       },1000) 

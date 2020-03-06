@@ -153,9 +153,9 @@ export default {
       // orderList:['待付款','待发货','待收货','待评价','退款/售后']
     }
   },
-  onShow(){
-    this.getInfo()
-    getNewMsgDot()
+  onLoad(){
+    this.getInfo();
+    getNewMsgDot();
   },
   computed: {
     domStyle(){
@@ -197,6 +197,11 @@ export default {
       }, 0);
     }
   },
+   onPullDownRefresh() {
+    this.getInfo();
+    getNewMsgDot();
+    wx.stopPullDownRefresh();  //停止下拉刷新动画
+   }
 }
 </script>
 

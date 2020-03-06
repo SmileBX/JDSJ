@@ -20,7 +20,7 @@
       <div class="footbox">
         <div class="footItem" @click="goUrl(1)">购物须知</div>
         <div class="footItem" @click="goUrl(2)">服务条款</div>
-        <div class="footItem">物流查询</div>
+        <div class="footItem" @click="notUrl">物流查询</div>
       </div>
   </div>
 </template>
@@ -30,18 +30,13 @@ import {post,get} from '@/utils'
 export default {
   data () {
     return {
-      userId: "",
-      token: "",
       ShopList:{}
     }
   },
   onLoad(){
-   
+    this.GetVisitShopList();
   },
   onShow(){
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
-    this.GetVisitShopList();
   },
   methods: {
       goshop(id){
@@ -64,22 +59,25 @@ export default {
       // 店铺列表
       async GetVisitShopList(){
         let res=await post("User/GetVisitShopList",{
-          userId: this.userId,
-          token: this.token,
-        })
+          userId: wx.getStorageSync("userId"),
+          token: wx.getStorageSync("token"),
+        },this.GetVisitShopList)
         if(res.code==0){
           this.ShopList=res.data
         }
+      },
+      notUrl(){
+        wx.showToast({
+          title:'该功能暂未开放，敬请期待',
+          icon:'none'
+        })
       }
   },
   onPullDownRefresh() {
     //监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
-    let _this=this;
     this.ShopList={};
-    setTimeout(function () {
-      _this.GetVisitShopList();
-      wx.stopPullDownRefresh();  //停止下拉刷新动画
-    }, 1000);
+    this.GetVisitShopList();
+    wx.stopPullDownRefresh();  //停止下拉刷新动画
   }
 }
 </script>
@@ -102,6 +100,7 @@ export default {
         &>img{
           width:120rpx;
           height:120rpx;
+          border-radius:7rpx;
         }
         .item_r{
           margin-left:30rpx;
@@ -139,6 +138,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-radius:7rpx;
       .footItem{
         text-align: center;
         width: 30%;
