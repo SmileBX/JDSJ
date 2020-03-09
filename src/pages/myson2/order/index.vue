@@ -415,6 +415,7 @@ export default {
   }
   .shop{
     width:161rpx;height:161rpx;
+    border-radius:7rpx;
   }
   .or_item{
     margin-top:20rpx;

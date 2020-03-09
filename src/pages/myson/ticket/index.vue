@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import {switchPath,isJump,post,get} from '@/utils'
+import {switchPath,isJump,post,get,editTime} from '@/utils'
 export default {
 
   data () {
@@ -64,7 +64,7 @@ export default {
       if(res.code==0){
         if(res.data.length>0){
           res.data.map(item=>{
-            item.endTime=item.endTime.replace(/T/,' ')
+            item.endTime=editTime(item.endTime,'time');
           })
         }
         this.list = res.data;
