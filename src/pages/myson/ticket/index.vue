@@ -51,7 +51,7 @@ export default {
     this.GetMyCouponList()
   },
   methods: {
-    async GetMyCouponList(){console.log(this.tabIndex)
+    async GetMyCouponList(){
       let res=await post("Coupon/MyCouponList",{
         "UserId": this.userId,
         "Token": this.token,

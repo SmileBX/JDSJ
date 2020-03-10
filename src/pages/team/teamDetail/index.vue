@@ -114,7 +114,9 @@
           <h3>他们都在拼，可直接参团</h3> 
           <p @click="showGruopingList = true">查看更多参团</p>
         </div>
-        <div class="list ali-c jus-b" v-for="(item,index) in groupingList" :key="index" v-show="index<2">
+        <div class="list ali-c jus-b" v-for="(item,index) in groupingList" :key="index" 
+          v-show="index<2&&item.RemainingNum>0"
+          >
           <div class="left ali-c">
             <img :src="item.MemberHeadImg" alt="">
             <div>
@@ -129,7 +131,7 @@
       <div class="groupingBox" v-if="showGruopingList">
         <div class="masks" @click="showGruopingList=false"></div>
         <div class="box">
-          <div class="list ali-c jus-b" v-for="(item,index) in groupingList" :key="index">
+          <div class="list ali-c jus-b" v-for="(item,index) in groupingList" :key="index" v-show="item.RemainingNum>0">
             <div class="left ali-c">
               <img :src="item.MemberHeadImg" alt="">
               <div>
@@ -325,6 +327,7 @@ export default {
       userId: "",
       token: "",
       teamId:"",
+      GroupRecordId:'',
       groupingList:[],//参团列表
       showGruopingList:false,//显示参团列表
       isTop:false,//是否显示置顶
@@ -357,6 +360,7 @@ export default {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.teamId=this.$root.$mp.query.id;
+    this.GroupRecordId=this.$root.$mp.query.GroupRecordId||'';
     this.ProductInfo();
     this.getGroupingList();
     this.goodsNum = 1;
@@ -432,6 +436,7 @@ export default {
     async getGroupingList(){
       const res = await post('GroupBuy/GetGroupRecordList',{
         GroupId:this.teamId,
+        GroupRecordId:this.GroupRecordId,
         userId: this.userId,
         token: this.token,
         TopNum:7
