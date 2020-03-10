@@ -1,7 +1,7 @@
 <template>
   <div class="p30">
-      <img class="shopImg" src="http://jd.wtvxin.com/images/images/shop/joinShop.png" alt="" @click="joinShop">
-      <h3>为你收集港澳台心意店铺</h3>
+      <img class="shopImg" src="http://jd.wtvxin.com/images/images/shop/joinShop.png" alt="" @click="goUrl('/pages/news/newslist/main')">
+      <h3>为你收集港澳台心意店铺<span class="red" @click="goUrl('/pages/shop/join/main')">(开店)</span></h3>
       <div class="list">
         <block v-for="(item,index) in ShopList" :key="index">
           <div class="item flex-center-start" @click="goshop(item.Id)">
@@ -18,8 +18,8 @@
       </div>
       <div style="height:90rpx"></div>
       <div class="footbox">
-        <div class="footItem" @click="goUrl(1)">购物须知</div>
-        <div class="footItem" @click="goUrl(2)">服务条款</div>
+        <div class="footItem" @click="goUrl('/pages/news/newsdetail/main?type=1')">购物须知</div>
+        <div class="footItem" @click="goUrl('/pages/news/newsdetail/main?type=2')">服务条款</div>
         <div class="footItem" @click="notUrl">物流查询</div>
       </div>
   </div>
@@ -47,15 +47,9 @@ export default {
         })
         wx.setStorageSync("shopid", id);
       },
-      goUrl(type){
+      goUrl(str){
         wx.navigateTo({
-          url:'/pages/news/newsdetail/main?type='+type
-        })
-      },
-      // 加入店铺
-      joinShop(){console.log('1111111')
-        wx.navigateTo({
-          url:"/pages/news/newslist/main"
+          url:str
         })
       },
       // 店铺列表

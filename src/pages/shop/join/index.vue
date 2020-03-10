@@ -35,6 +35,12 @@
         </div>
       </div>
       <div class="cell bb1">
+        <h4>身份证号：</h4>
+        <div class="right">
+          <input type="text" placeholder="请输入您的身份证号" v-model="Idcard">
+        </div>
+      </div>
+      <div class="cell bb1">
         <h4>推荐码：</h4>
         <div class="right">
           <input type="text" placeholder="非必填" v-model="referralCode">
@@ -76,7 +82,7 @@
 </template>
 
 <script>
-import {post,get} from '@/utils'
+import {post,get,valPhone} from '@/utils'
 export default {
   data () {
     return {
@@ -87,6 +93,7 @@ export default {
         MasterProduct:"",
         Address:"",
         Mobile:"",
+        Idcard:"",//身份证号
         logo:"",
         logoUrl:"",
         IdcardPositive:"",
@@ -158,12 +165,23 @@ export default {
         })
         return false
       }
-      if(this.Mobile==""){
+      if(valPhone(this.Mobile)==false){
+        return false
+      }
+      if(this.Idcard==""){
         wx.showToast({
-          title:"请输入您的手机号",
+          title:"请输入您的身份证号",
           icon:"none"
         })
         return false
+      }
+      let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+      if(reg.test(this.Idcard) === false){
+        wx.showToast({
+          title: "请输入正确证件格式",
+          icon: "none"
+        });
+        return false;
       }
       if(this.IdcardPositive==""){
         wx.showToast({
@@ -196,7 +214,7 @@ export default {
           "MasterProduct": this.MasterProduct,
           "Address": this.Address,
           "Remarks": this.Remarks,
-          "Idcard": "",
+          "Idcard": this.Idcard,
           "IdcardPositive": this.IdcardPositive,
           "IdcardNegative": this.IdcardNegative,
           "BusinessLicense": this.yyzz,
