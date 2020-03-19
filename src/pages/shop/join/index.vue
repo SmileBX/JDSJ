@@ -18,8 +18,13 @@
       </div>
       <div class="cell bb1">
         <h4>主营产品：</h4>
-        <div class="right">
-          <input type="text" placeholder="比如美妆" v-model="MasterProduct">
+        <div class="right flex flex-center-between">
+          <picker class="pickerbox" @change="bindPickerChange" :value="typeindex" :range="ThemeArr">
+            <view :class="['picker',typeindex<0?'c-999':'']">
+              {{MasterProduct}}
+            </view>
+          </picker>
+          <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right mr1">
         </div>
       </div>
       <div class="cell bb1">
@@ -70,8 +75,8 @@
     <div class="remark bfff plr30">
       <h4>备注</h4>
       <div class="texta">
-        <textarea name="" id="" cols="30" rows="10" placeholder="简单描述一下您的行业，商品类型，业务范围等信息" v-model="Remarks"></textarea>
-        <span>0/150</span>
+        <textarea maxlength="150" @input="limitInput" cols="30" rows="10" placeholder="简单描述一下您的行业，商品类型，业务范围等信息" v-model="Remarks"></textarea>
+        <span>{{inputTxtLength}}/150</span>
       </div>
     </div>
 
@@ -90,7 +95,7 @@ export default {
         token: "",
         ShopName:"",
         ShopNick:"",
-        MasterProduct:"",
+        MasterProduct:"请选择主营产品",
         Address:"",
         Mobile:"",
         Idcard:"",//身份证号
@@ -103,21 +108,27 @@ export default {
         yyzz:"",//营业执照
         yyzzUrl:"",//营业执照
         Remarks:"",
-        referralCode:""//推荐人
+        referralCode:"",//推荐人
+        ThemeList:[],//主营产品列表
+        ThemeArr:[],
+        typeindex:-1,
+        inputTxtLength:0,//当前输入字数
     }
   },
   onShow(){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
+    this.GetThemeList();
   },
   methods: {
     //初始化
     init(){
       this.ShopName="";
       this.ShopNick="";
-      this.MasterProduct="";
+      this.MasterProduct="请选择主营产品";
       this.Address="";
       this.Mobile="";
+      this.Idcard="";
       this.logo="";
       this.logoUrl="";
       this.IdcardPositive="";
@@ -151,9 +162,9 @@ export default {
         })
         return false
       }
-      if(this.MasterProduct==""){
+      if(this.typeindex<0){
         wx.showToast({
-          title:"请输入店铺主营产品！",
+          title:"请选择店铺主营产品！",
           icon:"none"
         })
         return false
@@ -278,6 +289,27 @@ export default {
             
         })
     },
+    //获取主营产品
+    GetThemeList(){
+      post('Shop/GetThemeList',{}).then(res=>{
+        if(res.code==0){
+          this.ThemeList=res.data;
+          res.data.map(item=>{
+            this.ThemeArr.push(item.Theme)
+          })
+        }
+      })
+    },
+    selectTheme(){
+
+    },
+    bindPickerChange(e){
+     this.typeindex=e.mp.detail.value;
+     this.MasterProduct=this.ThemeList[this.typeindex].Theme;
+    },
+    limitInput() {
+      this.inputTxtLength = this.Remarks.length;
+    },
   },
 }
 </script>
@@ -347,4 +379,5 @@ export default {
       }
     }
   }
+  .pickerbox{ width: 100%}
 </style>
