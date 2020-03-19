@@ -74,6 +74,10 @@
           <h3>运费</h3>
           <h4>{{Freight>0?'+¥'+Freight:'免邮'}}</h4>
         </div>
+        <div class="item" v-if="Taxes>0">
+          <h3>税费</h3>
+          <h4>+¥{{Taxes}}</h4>
+        </div>
         <div class="msg">
           <h3>买家留言</h3>
           <textarea v-model="orderRemarksArr" @click="bindContentBlur" v-if="isInputContentFocus" v-bind:focus="isFocus" cols="30" rows="10" placeholder="填写内容需与商家协商并确认，45字以内"></textarea>
@@ -163,6 +167,7 @@ export default {
       allprice:0,//商品总金额
       couponprice:0,//商品优惠金额
       Freight:0,//运费
+      Taxes:0,//税费
       totalMoney:0,//实付金额
       ShareMemberId:"",
       OrderNo:"",
@@ -390,6 +395,7 @@ export default {
        this.couponprice=_res.DiscountedMoney;//优惠
        this.allprice=_res.OrderTotal;//商品金额
        this.Freight=_res.ShopFreight;//运费
+       this.Taxes=_res.Taxes;
        this.totalMoney=_res.OrderMoney;//实付金额
        this.closeCoupon();
       }else{
@@ -421,6 +427,7 @@ export default {
       if(res.code==0){
        this.prolist=res.data;
        this.shopName=res.data.ShopName;
+       this.Taxes=res.data.Taxes;
        this.allprice=parseFloat(res.data.Price * this.buynum).toFixed(2);
        this.getCouponList();
       }else{
@@ -444,7 +451,7 @@ export default {
       this.BuyNowOrderMoney();
     },
     BuyNowOrderMoney(){
-      let number=parseFloat(this.allprice)+parseFloat(this.Freight)-parseFloat(this.couponprice);
+      let number=parseFloat(this.allprice)+parseFloat(this.Freight)-parseFloat(this.couponprice)+parseFloat(this.Taxes);
       this.totalMoney=Math.round(number * 100)/100;
       this.closeCoupon();
     },
