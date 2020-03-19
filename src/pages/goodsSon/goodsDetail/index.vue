@@ -471,13 +471,16 @@ export default {
           ShareMemberId: this.ShareMemberid
         })
         if(res.code==0){
-          this.GetAllCartNumber();
            wx.showToast({
             title: res.msg,
             icon:"none",
             duration: 1500
           });
+          setTimeout(()=>{
+          this.GetAllCartNumber();
           this.showPopupSku=false;
+          },1500)
+         
         }else{
           wx.showToast({
             title: res.msg,
