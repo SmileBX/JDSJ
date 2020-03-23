@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="cell bb1">
-        <h4>主营产品：</h4>
+        <h4>店铺类型：</h4>
         <div class="right flex flex-center-between">
           <picker class="pickerbox" @change="bindPickerChange" :value="typeindex" :range="ThemeArr">
             <view :class="['picker',typeindex<0?'c-999':'']">
@@ -176,9 +176,16 @@ export default {
         })
         return false
       }
-      if(valPhone(this.Mobile)==false){
+      if(this.Mobile==""){
+        wx.showToast({
+          title:"请输入手机号码",
+          icon:"none"
+        })
         return false
       }
+      // if(valPhone(this.Mobile)==false){
+      //   return false
+      // }
       if(this.Idcard==""){
         wx.showToast({
           title:"请输入您的身份证号",
@@ -187,13 +194,13 @@ export default {
         return false
       }
       let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-      if(reg.test(this.Idcard) === false){
-        wx.showToast({
-          title: "请输入正确证件格式",
-          icon: "none"
-        });
-        return false;
-      }
+      // if(reg.test(this.Idcard) === false){
+      //   wx.showToast({
+      //     title: "请输入正确证件格式",
+      //     icon: "none"
+      //   });
+      //   return false;
+      // }
       if(this.IdcardPositive==""){
         wx.showToast({
           title:"请上传身份证正面照！",

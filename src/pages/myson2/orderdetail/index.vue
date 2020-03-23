@@ -2,9 +2,9 @@
   <div class="ticket">
       <div class="or_list">
         <div class="bg_statu">{{info.StatusName}}</div>
-        <div class="pp2 flexc  bg_fff bor_tit">
+        <div class="pp2 flexc  bg_fff bor_tit" v-if="info.StatusId==2||info.StatusId==3">
             <img src="http://jd.wtvxin.com/images/images/icons/kc.png" alt="" class="kc_icon">
-            <div class="flex flex1 flexAlignCenter" v-if="info.StatusId==2||info.StatusId==3" @click="goUrl('/pages/myson2/orderRoute/main',info.OrderNumber)">
+            <div class="flex flex1 flexAlignCenter" @click="goUrl('/pages/myson2/orderRoute/main',info.OrderNumber)">
                 <div class="flex1">
                   <block v-if="logistics.data">  
                     <p class="cr twoline">
@@ -38,18 +38,27 @@
                 </div>
             </div>
             <div class="bor_tit pp2">
+                <p class="flex justifyContentBetween mt1">
+                    <span>商品合计</span>
+                    <span>¥{{info.TotalAmount}}</span>
+                </p>
+                <p class="flex justifyContentBetween mt1" v-if="info.DiscountedAmount>0">
+                    <span>优惠</span>
+                    <span>-¥{{info.DiscountedAmount}}</span>
+                </p>
+                
                 <p class="flex justifyContentBetween">
                     <span>运费(快递)</span>
-                    <span>¥0.00</span>
+                    <span>+¥{{info.ExpressPrice}}</span>
                 </p>
-                <p class="flex justifyContentBetween mt1">
-                    <span>订单总价</span>
-                    <span>¥{{info.TotalPrice}}</span>
+                <p class="flex justifyContentBetween" v-if="info.Taxes>0">
+                    <span>税费</span>
+                    <span>+¥{{info.Taxes}}</span>
                 </p>
             </div>
             <div class="flex justifyContentBetween mt1 pp2">
                 <span>需付款</span>
-                <span class="cr">¥{{info.TotalAmount}}</span>
+                <span class="cr">¥{{info.TotalPrice}}</span>
             </div>
         </div>
       </div>

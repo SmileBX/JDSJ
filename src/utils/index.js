@@ -49,19 +49,22 @@ function request(url, data,method, loginFn) {
             if (!wx.getStorageSync("userId") || !wx.getStorageSync("token")) {
               if(!status){
                 status = true;
-                wx.showModal({
-                  title:'是否跳转到登录页面？',
-                  success(res){
-                    if(res.confirm){
-                      wx.navigateTo({
-                        url: LoginPath
-                      })
-                    }
-                  },
-                  complete(){
-                    status = false;
-                  }
+                wx.navigateTo({
+                  url: LoginPath
                 })
+                // wx.showModal({
+                //   title:'是否跳转到登录页面？',
+                //   success(res){
+                //     if(res.confirm){
+                //       wx.navigateTo({
+                //         url: LoginPath
+                //       })
+                //     }
+                //   },
+                //   complete(){
+                //     status = false;
+                //   }
+                // })
               }
             } else {
               // 设置需要重新登录执行的函数

@@ -159,6 +159,7 @@ export default {
       checklen:0,//有效产品数量
       selectlen:0,//累计选中的产品
       allPrice:0,//累计选中产品的金额
+      subbuynum:0,//结算数量
       showCoupon:false,
       couponlist:{},//优惠券列表
       proInfo:{},//弹出商品信息
@@ -235,11 +236,13 @@ export default {
       let eaditallPrice =0;
       let eaditnum =0;
       let singelPrice=0;
+      let singenum=0;
       _this.cartList.forEach(function(item){
         if(item.select==true){
           singelPrice =Number(item.SalePrice)*parseInt(item.Number);
           eaditallPrice += singelPrice;
           eaditnum++;
+          singenum+=parseInt(item.Number)
         }
       });
       if(eaditnum==this.checklen){
@@ -247,6 +250,7 @@ export default {
       }else{
         this.allSelect=false;
       }
+      this.subbuynum=singenum;
       this.selectlen=eaditnum;
       this.allPrice= parseFloat(eaditallPrice).toFixed(2);
     },
@@ -541,9 +545,19 @@ export default {
       if(idString.length){
         wx.setStorageSync("addressinfo",'');
         wx.setStorageSync("invoiceinfo","");
-        wx.navigateTo({ 
-          url: "/pages/goodsSon/confirmOrder/main?cartItem=" + idString.join(",")+'&orderSType=1'
+        //console.log(this.subbuynum);
+        if(this.subbuynum<25){
+          wx.navigateTo({ 
+            url: "/pages/goodsSon/confirmOrder/main?cartItem=" + idString.join(",")+'&orderSType=1'
+          });
+        }else{
+          wx.showToast({
+          title: "商品结算总数要小于25个！",
+          icon: "none",
+          duration: 1500
         });
+        }
+        
       }else{
         wx.showToast({
           title: "请选择你要购买的产品！",
