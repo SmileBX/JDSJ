@@ -39,6 +39,7 @@ function request(url, data,method, loginFn) {
             break;
           case code.resCode1:
             resolve(res.data);
+
             break;
           case code.notRegister:
             wx.showToast({
