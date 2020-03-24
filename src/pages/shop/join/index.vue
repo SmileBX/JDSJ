@@ -18,12 +18,15 @@
       </div>
       <div class="cell bb1">
         <h4>店铺类型：</h4>
-        <div class="right flex flex-center-between">
-          <picker class="pickerbox" @change="bindPickerChange" :value="typeindex" :range="ThemeArr">
+        <div class="right flex flex-center-between" @click="showEdit=true">
+          <view :class="['picker',MasterProduct=='请选择店铺类型'?'c-999':'']">
+              {{MasterProduct}}
+          </view>
+          <!-- <picker class="pickerbox" @change="bindPickerChange" :value="typeindex" :range="ThemeArr">
             <view :class="['picker',typeindex<0?'c-999':'']">
               {{MasterProduct}}
             </view>
-          </picker>
+          </picker> -->
           <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right mr1">
         </div>
       </div>
@@ -83,19 +86,22 @@
     <div class="p30">
       <div class="ans-maxBtn" @click="MerchantRegister">立即申请</div>
     </div>
+     <pickers v-if="showEdit" :arr="ThemeList" :show.sync="showEdit" @success="bindPickerChange"></pickers>
   </div>
 </template>
 
 <script>
 import {post,get,valPhone} from '@/utils'
+import pickers from '@/components/pickers';
 export default {
+  components: {pickers},
   data () {
     return {
         userId: "",
         token: "",
         ShopName:"",
         ShopNick:"",
-        MasterProduct:"请选择主营产品",
+        MasterProduct:"请选择店铺类型",
         Address:"",
         Mobile:"",
         Idcard:"",//身份证号
@@ -109,8 +115,9 @@ export default {
         yyzzUrl:"",//营业执照
         Remarks:"",
         referralCode:"",//推荐人
+        showEdit:false,
         ThemeList:[],//主营产品列表
-        ThemeArr:[],
+        //ThemeArr:[],
         typeindex:-1,
         inputTxtLength:0,//当前输入字数
     }
@@ -125,7 +132,7 @@ export default {
     init(){
       this.ShopName="";
       this.ShopNick="";
-      this.MasterProduct="请选择主营产品";
+      this.MasterProduct="请选择店铺类型";
       this.Address="";
       this.Mobile="";
       this.Idcard="";
@@ -300,10 +307,11 @@ export default {
     GetThemeList(){
       post('Shop/GetThemeList',{}).then(res=>{
         if(res.code==0){
-          this.ThemeList=res.data;
+          let ThemeArr=[];
           res.data.map(item=>{
-            this.ThemeArr.push(item.Theme)
+            ThemeArr.push({message:item.Theme})
           })
+           this.ThemeList=ThemeArr;
         }
       })
     },
@@ -311,8 +319,9 @@ export default {
 
     },
     bindPickerChange(e){
-     this.typeindex=e.mp.detail.value;
-     this.MasterProduct=this.ThemeList[this.typeindex].Theme;
+     //this.typeindex=e.mp.detail.value;
+     this.MasterProduct=e.message;
+
     },
     limitInput() {
       this.inputTxtLength = this.Remarks.length;
