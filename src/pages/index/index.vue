@@ -88,7 +88,7 @@
 
 <script>
 import {post,get} from '@/utils'
-import noData from "@/components/noData"; //没有数据的通用提示。
+import noData from "@/components/noData"; //没有数据的通用提示
 import LoadMore from '@/components/load-more';
 export default {
   components: {
