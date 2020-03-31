@@ -54,7 +54,11 @@
         </div>
         <div class="item" @click="ChooseInvoice">
           <h3>开票类型</h3>
-          <h4 class="flex-center">{{Invoicetxt}}<span @click.stop="delInvoicet" class="delinvoice">×</span><span class="icon"><van-icon name="arrow" color="#999"/></span> </h4>
+          <h4 class="flex-center">{{Invoicetxt}}<span v-if="InvoiceId>0" @click.stop="delInvoicet" class="delinvoice">×</span><span class="icon"><van-icon name="arrow" color="#999"/></span> </h4>
+        </div>
+        <div class="item" v-if="InvoiceId>0&&InvoiceType==2">
+          <h3>接收邮箱</h3>
+          <h4 class="flex-center"><input type="text" v-model="InvoiceEmail" style="text-align: right;" placeholder="请填写接收发票邮箱"></h4>
         </div>
       </div>
       <div class="price-box plr30">
@@ -70,9 +74,16 @@
           <h3>运费</h3>
           <h4>{{Freight>0?'+¥'+Freight:'免邮'}}</h4>
         </div>
+        <div class="item" v-if="Taxes>0">
+          <h3>税费</h3>
+          <h4>+¥{{Taxes}}</h4>
+        </div>
         <div class="msg">
           <h3>买家留言</h3>
-          <textarea name="" v-model="orderRemarksArr" id="" cols="30" rows="10" placeholder="填写内容需与商家协商并确认，45字以内"></textarea>
+          <textarea v-model="orderRemarksArr" @click="bindContentBlur" v-if="isInputContentFocus" v-bind:focus="isFocus" cols="30" rows="10" placeholder="填写内容需与商家协商并确认，45字以内"></textarea>
+          <scroll-view scroll-y class="msgcontent" v-text="orderRemarksArr" @click="bindContentFocus" v-if="isContentFocus">
+            <div class="placeholder" v-if="!orderRemarksArr">填写内容需与商家协商并确认，45字以内</div>
+          </scroll-view>
         </div>
       </div>
     </div>
@@ -93,7 +104,7 @@
 						<div class="couponitem" @click="selectCoupon(-1)">
 							<div class="couponname">不使用优惠券</div>
 							<div style="margin: 0;">
-                <input type="checkbox" class="checkbox-cart" :checked="couponindex<0">
+                <span :class="['checkbox',couponindex<0?'checked':'']"></span>
               </div>
 						</div>
 						<div class="couponitem" v-for="(item,index) in CouponList" :key="index" @click="selectCoupon(index)">
@@ -102,7 +113,7 @@
                 <block v-else>{{item.Denomination*10}}折</block>
 							</div>
 							<div style="margin: 0;">
-                <input type="checkbox" class="checkbox-cart" :checked="couponindex==index">
+                <span :class="['checkbox',couponindex==index?'checked':'']"></span>
               </div>
 						</div>
 					</div>
@@ -117,7 +128,7 @@
 </template>
 
 <script>
-import {post,get,getUrlParam} from '@/utils'
+import {post,get,trim} from '@/utils'
 import uniPopup from '@/components/uni-popup.vue';
 export default {
   components: {
@@ -148,11 +159,15 @@ export default {
       showCoupon:false,//显示优惠券弹窗
       isLimint: 0, //是否是限时购
       orderRemarksArr:"",//备注
+      isContentFocus: true,
+      isInputContentFocus: false,
+      isFocus: false,
       buynum:1,//立即购买数量
       SpecText:"",//立即购买产品规格
       allprice:0,//商品总金额
       couponprice:0,//商品优惠金额
       Freight:0,//运费
+      Taxes:0,//税费
       totalMoney:0,//实付金额
       ShareMemberId:"",
       OrderNo:"",
@@ -167,14 +182,15 @@ export default {
     this.WxOpenid=wx.getStorageSync("openId");
     this.sourceType=this.$root.$mp.query.orderSType;
     this.cartids=this.$root.$mp.query.cartItem;
-    
   },
   onShow(){
     this.shopid = wx.getStorageSync("shopid");
     this.couponprice=0;
     this.Freight=0;
+    this.orderRemarksArr="";//清空留言
     if(wx.getStorageSync("addressinfo")){
       this.addressinfo=wx.getStorageSync("addressinfo");
+      wx.setStorageSync("addressinfo",null)
       this.hasaddress=true;
       this.addressId=this.addressinfo.id;
     }else{
@@ -199,6 +215,16 @@ export default {
     }
   },
   methods: {
+    bindContentFocus(e) {
+      this.isFocus = true; //触发焦点
+      this.isContentFocus = false; //聚焦时隐藏内容文本标签
+      this.isInputContentFocus = true;
+    },
+    bindContentBlur(e) {
+      this.isContentFocus = true; //聚焦时隐藏内容文本标签
+      this.isInputContentFocus = false;
+      this.isFocus = false; //失去焦点
+    },
     goshop(){
       wx.switchTab({
         url: '/pages/index/main'
@@ -232,6 +258,7 @@ export default {
       })
     },
     delInvoicet(){
+      wx.setStorageSync("invoiceinfo","");
       this.InvoiceId=0;//发票的id
       this.InvoiceType=0;//发票的类型
       this.Invoicetxt="不开发票";
@@ -245,7 +272,8 @@ export default {
           UserId: this.userId,
           Token: this.token,
           CartIds:this.cartids,
-          Type: 1
+          Type: 1,
+          ShopId:this.shopid
         };
       }else{
         para = {
@@ -254,7 +282,8 @@ export default {
           ProductId: this.cartids,
           ProductNumber:this.buynum,
           ProductSpec:this.SpecText,
-          Type: 0
+          Type: 0,
+          ShopId:this.shopid
         };
       }
       let res=await post("Order/GetCouponList",para)
@@ -271,7 +300,7 @@ export default {
                 this.couponprice=this.allprice;
               }
             }else {
-              this.couponprice=this.allprice*(1-res.data[0].Denomination);
+              this.couponprice=this.allprice*(1-res.data[0].Denomination).toFixed(2);
             }
           }
         }else{
@@ -318,7 +347,7 @@ export default {
       if(this.sourceType==1){
         this.BuyCartShopMoney();
       }else{
-        if(this.couponindex>0){
+        if(this.couponindex>=0){
           if(this.couponItem.DiscountType==1){
             if(this.couponItem.MeetConditions!=0){
               this.couponprice=this.couponItem.Denomination;
@@ -327,8 +356,9 @@ export default {
             }
 					}else if(this.couponItem.DiscountType==2){
 						this.couponprice=this.allprice*(1-this.couponItem.Denomination);
-					}
+          }
         }
+        
         this.BuyNowOrderMoney();
       }
     },
@@ -365,6 +395,7 @@ export default {
        this.couponprice=_res.DiscountedMoney;//优惠
        this.allprice=_res.OrderTotal;//商品金额
        this.Freight=_res.ShopFreight;//运费
+       this.Taxes=_res.Taxes;
        this.totalMoney=_res.OrderMoney;//实付金额
        this.closeCoupon();
       }else{
@@ -396,6 +427,7 @@ export default {
       if(res.code==0){
        this.prolist=res.data;
        this.shopName=res.data.ShopName;
+       this.Taxes=res.data.Taxes;
        this.allprice=parseFloat(res.data.Price * this.buynum).toFixed(2);
        this.getCouponList();
       }else{
@@ -411,7 +443,7 @@ export default {
       let res=await post("Order/BuyNowToFreight",{
         UserId: this.userId,
         Token: this.token,
-        proId:this.cartids,
+        ProId:this.cartids,
         AddressId:AddrId,
         Number:this.buynum
       })
@@ -419,7 +451,8 @@ export default {
       this.BuyNowOrderMoney();
     },
     BuyNowOrderMoney(){
-      this.totalMoney=this.allprice+this.Freight-this.couponprice;
+      let number=parseFloat(this.allprice)+parseFloat(this.Freight)-parseFloat(this.couponprice)+parseFloat(this.Taxes);
+      this.totalMoney=Math.round(number * 100)/100;
       this.closeCoupon();
     },
     //购物车下单
@@ -439,7 +472,7 @@ export default {
         this.OrderNo=res.data;
         this.ConfirmWeiXinSmallPay();
       }else if(res.code==200){
-        wx.navigateTo({ 
+        wx.redirectTo({ 
           url: "/pages/goodsSon/paysuccess/main?orderNo=" + res.data+'&status='+res.code+'&price=0'
         });
       }else{
@@ -477,7 +510,7 @@ export default {
         this.OrderNo=res.data;
         this.ConfirmWeiXinSmallPay();
       }else if(res.code==200){
-        wx.navigateTo({ 
+        wx.redirectTo({ 
           url: "/pages/goodsSon/paysuccess/main?orderNo=" + res.data+'&status='+res.code+'&price=0'
         });
       }else{
@@ -494,10 +527,12 @@ export default {
         RemarksArr=[{"ShopId":this.shopid,"Text":this.orderRemarksArr}];
       }
       if (this.addressId) {
-        if(this.sourceType==1){
-         this.BuyCart(RemarksArr);
-        }else{
-          this.NowSubmitOrder();
+        if(this.valmail()){
+          if(this.sourceType==1){
+          this.BuyCart(RemarksArr);
+          }else{
+            this.NowSubmitOrder();
+          }
         }
       } else {
         wx.showToast({
@@ -507,7 +542,31 @@ export default {
         });
       }
     },
-    
+    //使用公司邮箱验证邮箱
+    valmail(){
+      if(this.InvoiceType==2){
+        if(trim(this.InvoiceEmail)==""){
+          wx.showToast({
+            title: '请填写邮箱地址!',
+            icon: "none",
+            duration: 1000
+          });
+          return false;
+        }
+        if (
+            !/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.InvoiceEmail)
+          ) {
+            wx.showToast({
+              title: "请输入正确的邮箱地址！",
+              icon: "none",
+              duration: 1500
+            });
+            return false;
+          }
+         return true
+      }
+        return true
+    },
     //微信支付需参数
     async ConfirmWeiXinSmallPay(){
       let result = await post('Pay/WeiXinSmallPayByOrder',{
@@ -677,11 +736,14 @@ export default {
     }
   }
   .msg{
-    textarea{
+    textarea,.msgcontent{
       width:100%;
       height:160rpx;
+      color: #666;
+      font-size: 30rpx;
     }
     padding-bottom:20rpx;
+    .placeholder{ color: #999}
   }
 
   .footer{

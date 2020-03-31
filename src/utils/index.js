@@ -39,6 +39,7 @@ function request(url, data,method, loginFn) {
             break;
           case code.resCode1:
             resolve(res.data);
+
             break;
           case code.notRegister:
             wx.showToast({
@@ -49,19 +50,22 @@ function request(url, data,method, loginFn) {
             if (!wx.getStorageSync("userId") || !wx.getStorageSync("token")) {
               if(!status){
                 status = true;
-                wx.showModal({
-                  title:'是否跳转到登录页面？',
-                  success(res){
-                    if(res.confirm){
-                      wx.navigateTo({
-                        url: LoginPath
-                      })
-                    }
-                  },
-                  complete(){
-                    status = false;
-                  }
+                wx.navigateTo({
+                  url: LoginPath
                 })
+                // wx.showModal({
+                //   title:'是否跳转到登录页面？',
+                //   success(res){
+                //     if(res.confirm){
+                //       wx.navigateTo({
+                //         url: LoginPath
+                //       })
+                //     }
+                //   },
+                //   complete(){
+                //     status = false;
+                //   }
+                // })
               }
             } else {
               // 设置需要重新登录执行的函数
@@ -106,10 +110,10 @@ function request(url, data,method, loginFn) {
     })
   })
 }
-export function get(url, data,isLogin, loginFn) {
+export function get(url, data,loginFn,isLogin) {
   return request(url, data, 'GET', loginFn)
 }
-export function post(url, data,isLogin, loginFn) {
+export function post(url, data,loginFn,isLogin) {
   return request(url, data,'POST', loginFn)
 }
 //判断是否登录，未登录做弹窗跳转登录页面
@@ -154,7 +158,14 @@ export function getbase64(urladdress) {
   // });
 
 }
-
+// 全屏预览图片,
+// imgArr一个图片数组,thisImg现在预览的图片
+export function previewImg(imgArr,index){
+  wx.previewImage({
+    urls:imgArr,//array
+    current:imgArr[index],//string
+  })
+}
 export function trim(str) {
   return str.replace(/(^\s*)|(\s*$)/g, "");
 }
@@ -317,14 +328,58 @@ export function wx_pay(param) {
   })
 }
 
+// 获取新消息红点
+export function getNewMsgDot() {
+  let shopid=wx.getStorageSync("shopid");
+  if (wx.getStorageSync("userId") && wx.getStorageSync("token")) {
+    post("WebSocket/GetShopMessageList", {
+      UserId: wx.getStorageSync("userId"),
+      Token: wx.getStorageSync("token"),
+      ShopId:shopid
+    }).then(res => {
+      if (res.code === 0) {
+        const _res = res.data
+        const IsShopServie=_res.IsShopServie;
+        if(IsShopServie==1){
+          let num = _res.DataTable[0].SumCount;
+          if(num&&num>0){
+            num>99?num = '99+':num = String(num);
+            wx.setTabBarBadge({
+              index: 1,
+              text:num
+            });
+          }
+        }else{
+          let num = _res.DataTable[0].Count;
+          if(num&&num>0){
+            num>99?num = '99+':num = String(num);
+            wx.setTabBarBadge({
+              index: 1,
+              text:num
+            });
+          }
+        }
+      }else{
+          wx.removeTabBarBadge({
+            index: 1
+          });
+      }
+    });
+  }
+}
 // 更改时间格式
-// type:'date'--返回日期；'time'--返回日期+时间
+// type:'date'--返回日期；'time'--返回日期+时间;'s'--返回带秒
 export function editTime(time, type = 'date') {
 
   let newTime = ''
   if (type === 'time') {
     newTime = time.substr(0, time.lastIndexOf(':'))
     newTime = newTime.replace('T', ' ')
+  }
+  if (type === 's') {
+    newTime = time.substr(0, time.lastIndexOf('.'))
+    newTime = newTime.replace('T', ' ')
+    newTime = newTime.replace(/-/g, '/')
   }
   if (type === "date") {
     newTime = time.substr(0, time.lastIndexOf('T'))

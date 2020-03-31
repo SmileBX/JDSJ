@@ -10,9 +10,12 @@
     "pages/shop/join/main",
     "pages/login/main",
     "pages/login/register/main",
-    "pages/service/chatRoomSon/main"
+    "pages/service/chatRoomSon/main",
+    "pages/service/chatRoomSon2/main",
+    "pages/news/newslist/main",
+    "pages/news/newsdetail/main"
   ],
-  "subpackages":[
+  "subPackages":[
     {
       "root":"pages/myson/",
       "pages":[
@@ -35,12 +38,12 @@
       "root":"pages/myson2/",
       "pages":[
         "order/main",
+        "orderTui/main",
         "orderRoute/main",
         "orderdetail/main",
         "orderapply/main",
         "sertydetail/main",
         "sertype/main"
-        
       ]
     },
     {
@@ -49,7 +52,8 @@
         "goods/main",
         "pintuan/main",
         "orderdetail/main",
-        "confirmOrder/main"
+        "confirmOrder/main",
+        "teamDetail/main"
       ]
     },
     {
@@ -64,7 +68,8 @@
         "goodsDetail/main",
         "paysuccess/main",
         "goodsSearch/main",
-        "confirmOrder/main"
+        "confirmOrder/main",
+        "allcomment/main"
       ]
     }
   ],
@@ -76,7 +81,7 @@
   },
   "tabBar": {
     "color": "#999",
-    "backgroundColor": "#fafafa",
+    "backgroundColor": "#fff",
     "selectedColor": "#f00",
     "borderStyle": "white",
 

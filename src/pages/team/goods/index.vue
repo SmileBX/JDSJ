@@ -1,50 +1,42 @@
 <template>
   <div>
-      <!-- <div class="list ali-c jus-b">
-        <img class="left" src="http://jd.wtvxin.com/images/images/index/icon4.png" alt="">
-        <div class="right">
-          <p class="tit oneline">动感单车 运动 女家用型</p>
-          <div class="ali-c jus-b hot">
-            <div class="one flexc">
-              <img src="http://jd.wtvxin.com/images/images/index/hot.png" alt="">
-              <span>已拼1623件</span>
+      <block v-if="hasData">
+        <div class="list ali-c jus-b" v-for="(item,index) in goodsList" :key="index" @click="goUrl(item.Id)">
+          <img class="left" :src="item.ProductImg" alt="">
+          <div class="right">
+            <p class="tit oneline">{{item.Title}}</p>
+            <div class="ali-c jus-b hot">
+              <div class="one flexc">
+                <img src="http://jd.wtvxin.com/images/images/index/hot.png" alt="">
+                <span>已拼{{item.SuccessGroup}}件</span>
+              </div>
+              <p class="flexc">{{item.MinPeopleNum}}人团</p>
             </div>
-            <p class="flexc">3人团</p>
-          </div>
-          <div class="price ali-c jus-b">
-            <p>
-              <span>￥</span><span>19.90</span><span>￥29.90</span>
-            </p>
-            <div class="flexc">去开团</div>
+            <div class="price ali-c jus-b">
+              <p>
+                <span>￥</span><span>{{item.FightingPrice}}</span><span>￥{{item.OriginalPrice}}</span>
+              </p>
+              <div class="flexc">去开团</div>
+            </div>
           </div>
         </div>
-      </div> -->
-      <div class="list ali-c jus-b" v-for="(item,index) in goodsList" :key="index">
-        <img class="left" :src="item.ProductImg" alt="">
-        <div class="right">
-          <p class="tit oneline">{{item.ProductName}}</p>
-          <div class="ali-c jus-b hot">
-            <div class="one flexc">
-              <img src="http://jd.wtvxin.com/images/images/index/hot.png" alt="">
-              <span>已拼{{item.SuccessGroup}}件</span>
-            </div>
-            <p class="flexc">{{item.MinPeopleNum}}人团</p>
-          </div>
-          <div class="price ali-c jus-b">
-            <p>
-              <span>￥</span><span>{{item.FightingPrice}}</span><span>￥{{item.OriginalPrice}}</span>
-            </p>
-            <div class="flexc">去开团</div>
-          </div>
-        </div>
-      </div>
+      </block>
+      <noData :isShow="noDataIsShow"></noData>
+      <view class="loading" v-if="hasData">
+        <load-more :loadingType="loadingType"></load-more>
+      </view>
   </div>
 </template>
 
 <script>
-import {post,switchPath,isJump} from '@/utils'
+import {post} from '@/utils'
+import noData from "@/components/noData"; //没有数据的通用提示
+import LoadMore from '@/components/load-more';
 export default {
-
+  components: {
+		noData,
+		LoadMore
+  },
   data () {
     return {
       userId: "",
@@ -63,21 +55,27 @@ export default {
     }
   },
 
-  onShow(){
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
-    this.shopid=wx.getStorageSync("shopid");
-    this.GetProductList()
+  onLoad(){
+    this.init();
+    this.GetProductList();
   },
   methods: {
+    init(){
+      this.userId = wx.getStorageSync("userId");
+      this.token = wx.getStorageSync("token");
+      this.shopid=wx.getStorageSync("shopid");
+      this.page =1;
+      this.isLoad = false;
+      this.isOved = false;
+      this.loadingType = 0;
+      this.hasData = false;
+      this.noDataIsShow = false;
+    },
     async GetProductList(){
       let res=await post("GroupBuy/GetGroupProductList",{
         Page: this.page,
         PageSize: this.pageSize,
         ShopId: this.shopid,
-        // SalesVolumeFilter: this.sFilter,
-        // PriceFilter: this.pFilter,
-        // Key: ""
       })
       if(res.code==0){
           let _this=this;
@@ -118,17 +116,33 @@ export default {
         });
 			 }
     },
-    goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
-        wx.navigateTo({
-          url:url+'?id='+param
-        })
-      }, 100);
+    goUrl(param){
+      wx.navigateTo({
+        url:'/pages/team/teamDetail/main?id='+param
+      })
     },
     
   },
+  onReachBottom: function() {
+    if (this.isLoad) {
+			this.loadingType = 1;
+      this.isOved = false;
+      this.page++;
+      this.GetProductList();
+    } else {
+			this.loadingType = 2;
+      if (this.page > 1) {
+        this.isOved = true;
+      } else {
+        this.isOved = false;
+      }
+    }
+  },
+  onPullDownRefresh() {
+    this.init();
+    this.GetProductList();
+    wx.stopPullDownRefresh();  //停止下拉刷新动画
+  }
 }
 </script>
 

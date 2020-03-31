@@ -5,14 +5,14 @@
     </div>
     <div class="p30 content">
       <div class="address p30">
-          <div class="flex-column-center-center notAddress" v-if="false">
+          <div class="flex-column-center-center notAddress" v-if="!hasaddress" @click="goUrl('/pages/myson/address/main?pagetype=confirm')">
               <img src="http://jd.wtvxin.com/images/images/goods/address-icon.png" alt="">
               <p>暂无收货地址，点击添加</p>
           </div>
-          <div class="addressShow flex-center-between">
+          <div class="addressShow flex-center-between" v-else @click="goUrl('/pages/myson/address/main?pagetype=confirm&checkId='+addressinfo.id)">
             <div class="left">
-              <div class="name flex-center-start" ><p>啊啊啊</p><p>1501401111</p></div>
-              <div class="addressInfo ellipsis2"> 广东省 深圳市 龙华新区 民治街道展滔科技大厦C座716</div>
+              <div class="name flex-center-start" ><p>{{addressinfo.name}}</p><p>{{addressinfo.tel}}</p></div>
+              <div class="addressInfo ellipsis2">{{addressinfo.addressinfo}}</div>
             </div>
             <div class="right">
               <van-icon name="arrow" color="#999"/>
@@ -20,20 +20,20 @@
           </div>
       </div>
       <div class="pro plr30">
-        <h3 class="flex-center-start">炫宝迪旗舰店<span class="icon"><van-icon name="arrow" color="#999"/></span></h3>
+        <h3 class="flex-center-start" @click="goshop">{{data.ShopName}}<span class="icon"><van-icon name="arrow" color="#999"/></span></h3>
         <div class="item flex-center-between">
-          <img src="http://jd.wtvxin.com/images/images/shop.png" alt="">
+          <img :src="data.ProductImage" alt="">
           <div class="right">
-            <h4 class="ellipsis2">床头灯智能家用卧室宿舍阳台书桌装饰氛围LED小台灯家用卧室宿舍阳台书桌装饰氛围LED小台灯</h4>
-            <div class="sku">白色</div>
+            <h4 class="ellipsis2">{{data.GroupProductName}}</h4>
+            <!-- <div class="sku">白色</div> -->
             <div class="num-price flex-center-between">
-              <p>x1</p>
-              <h4 class="c-primary"><span>￥</span>128.00</h4>
+              <p>x{{options.Number}}</p>
+              <h4 class="c-primary"><span>￥</span>{{data.FightingPrice}}</h4>
             </div>
           </div>
         </div>
       </div>
-      <div class="coupon plr30">
+      <!-- <div class="coupon plr30">
         <div class="item">
           <h3>优惠劵</h3>
           <h4 class="c-999 flex-center">暂无可用优惠劵 <span class="icon"><van-icon name="arrow" color="#999"/></span></h4>
@@ -42,43 +42,169 @@
           <h3>开票类型</h3>
           <h4 class="flex-center">不开发票<span class="icon"><van-icon name="arrow" color="#999"/></span> </h4>
         </div>
-      </div>
+      </div> -->
       <div class="price-box plr30">
         <div class="item">
           <h3>商品金额</h3>
-          <h4>¥107.80</h4>
-        </div>
-        <div class="item">
-          <h3>优惠券</h3>
-          <h4>-¥0.00</h4>
+          <h4>¥{{data.FightingPrice}}</h4>
         </div>
         <div class="item">
           <h3>运费</h3>
-          <h4>+¥0.00</h4>
+          <h4>{{Freight*1?'+¥'+Freight:'包邮'}}</h4>
         </div>
         <div class="msg">
           <h3>买家留言</h3>
-          <textarea name="" id="" cols="30" rows="10" placeholder="填写内容需与商家协商并确认，45字以内"></textarea>
+          <textarea v-model="Remark" name="" id="" cols="30" rows="10" placeholder="填写内容需与商家协商并确认，45字以内"></textarea>
         </div>
       </div>
     </div>
 
     <div class="footer flex-center-between">
-      <p>总计：<span class="c-primary">¥107.80</span></p>
-      <div class="confirm">去付款</div>
+      <p>总计：<span class="c-primary">¥{{total}}</span></p>
+      <div class="confirm" @click="playOrder">去付款</div>
     </div>
   </div>
 </template>
 
 <script>
+import {post} from '@/utils';
 export default {
   data () {
-    return {
-        
+      return {
+         userId: "",
+         token: "", 
+         data:{},
+         options:{},
+         addressinfo:{},
+         hasaddress:false,
+         Freight:0,//邮费
+         Remark:'',//备注
+      }
+  },
+	computed:{
+		total(){
+			return (this.data.FightingPrice*1+this.Freight*1).toFixed(2);
+		}
+  },
+  watch:{
+    addressId(){
     }
   },
-  
+  onLoad(){
+		this.userId = wx.getStorageSync("userId");
+		this.token = wx.getStorageSync("token");
+      this.WxCode=wx.getStorageSync("wxCode");
+      this.WxOpenid=wx.getStorageSync("openId");
+      this.hasaddress = false;
+      this.addressId='';
+      this.Freight=0;
+      this.getData();
+  },
+  onShow(){
+    if(wx.getStorageSync("addressinfo")){
+      this.addressinfo=wx.getStorageSync("addressinfo");
+      wx.setStorageSync("addressinfo",null)
+      this.hasaddress=true;
+      this.BuyNowToFreight();
+    }
+  },
   methods: {
+    async getData(){
+		const options = wx.getStorageSync('groupSubmit');
+		this.options = options;
+		wx.setStorageSync('groupSubmit',{});
+		options.UserId = this.userId;
+		options.Token = this.token;
+		const res = await post('GroupBuy/ConfirmationGroup',options);
+		this.data = res.data;
+      this.getAdress();
+	 },
+	//  下单
+	 async playOrder(){
+		const res = await post('GroupBuy/CreateGroupOrder',{
+			UserId: this.userId,
+			Token: this.token,
+			GroupId: this.options.GroupId,
+			AddressId: this.addressinfo.id,
+			Number: this.options.Number,
+			GroupRecordId: this.options.GroupRecordId,
+			Remark: this.Remark,
+			IsPayWallet: 0
+      })
+      this.ConfirmWeiXinSmallPay(res.data.OrderNo,res.data.GroupRecordId);
+	 },
+    //微信支付需参数
+    async ConfirmWeiXinSmallPay(OrderNo,GroupRecordId){
+      const that = this;
+      let result = await post('Pay/WeiXinSmallPayByOrder',{
+        OrderNo:OrderNo,
+        UserId: this.userId,
+        Token: this.token,
+        WxCode:this.WxCode,
+        WxOpenid:this.WxOpenid,
+      })
+      let payData=JSON.parse(result.data.JsParam)
+      if(result.code==0){
+        wx.requestPayment({
+          timeStamp: payData.timeStamp,
+          nonceStr: payData.nonceStr,
+          package: payData.package,
+          signType: payData.signType,
+          paySign: payData.paySign,
+          success(res) {
+              wx.redirectTo({
+                url: `/pages/goodsSon/paysuccess/main?OrderNo=${OrderNo}&GroupId=${that.options.GroupId}&GroupRecordId=${GroupRecordId}`
+              })
+            },
+          fail(res) {
+            wx.redirectTo({
+              url: `/pages/goodsSon/paysuccess/main?OrderNo=${OrderNo}&GroupId=${that.options.GroupId}&GroupRecordId=${GroupRecordId}&msg=fail`
+            })
+          }
+        })
+      }
+    },
+    //获取默认地址
+    async getAdress(){
+      let res=await post("Address/defaultaddress_New",{
+        UserId: this.userId,
+        Token: this.token
+      })
+      if(res.code==0){
+        if(res.data){
+          this.addressinfo=res.data;
+          this.addressId=res.data.id;
+          this.hasaddress=true;
+          if(this.data.IsPostage){
+            this.BuyNowToFreight();
+          }
+        }else{
+          this.hasaddress=false;
+        } 
+      }
+    },
+    //立即购买运费
+    async BuyNowToFreight(){
+      let res=await post("Order/BuyNowToFreight",{
+        UserId: this.userId,
+        Token: this.token,
+        ProId:this.data.ProductId,
+        AddressId:this.addressinfo.id,
+        Number:this.options.Number
+      })
+      this.Freight=res.data.toFixed(2);
+      // this.BuyNowOrderMoney();
+    },
+    goshop(){
+      wx.switchTab({
+        url: '/pages/index/main'
+      })
+    },
+    goUrl(url){
+      wx.navigateTo({
+        url:url
+      })
+    },
   }
 }
 </script>

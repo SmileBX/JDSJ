@@ -57,7 +57,7 @@
                 <span class="flexc" v-if="orderNum.Received!=0">{{orderNum.Received}}</span>
               </div>
             </div>
-            <div class="icon2 flexc" @click="switchPath('/pages/myson2/order/main')">
+            <div class="icon2 flexc" @click="switchPath('/pages/myson2/orderTui/main')">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/5.png" alt="">
                 <p>退款/售后</p>
@@ -101,7 +101,7 @@
                 <p>店铺列表</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/shop/join/main')">
+            <div class="icon flexc" style="display:none" @click="switchPath('/pages/shop/join/main')">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/11.png" alt="">
                 <p>申请店铺</p>
@@ -112,7 +112,7 @@
         <div class="card">
           <p class="tit ali-c">更多工具</p>
           <div class="icon-box icon-boxb flex-wrap ali-c">
-            <div class="icon flexc" @click="switchPath('/pages/myson/mytuan/main')">
+            <div class="icon flexc" @click="switchPath('/pages/myson/mytuan/main','')">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/12.png" alt="">
                 <p>我的拼团</p>
@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import {post} from "@/utils";
+import {post,getNewMsgDot} from "@/utils";
 export default {
 
   data () {
@@ -153,8 +153,9 @@ export default {
       // orderList:['待付款','待发货','待收货','待评价','退款/售后']
     }
   },
-  onShow(){
-    this.getInfo()
+  onLoad(){
+    this.getInfo();
+    getNewMsgDot();
   },
   computed: {
     domStyle(){
@@ -180,7 +181,15 @@ export default {
         }
       })
     },
-    switchPath(path,type){
+    switchPath(path,type,no){
+      if(no==0){
+         wx.showToast({
+          title: "该功能暂未开放，敬请期待",
+          icon: "none",
+          duration: 2000
+        });
+        return false
+      }
       setTimeout(() => {
         wx.navigateTo({
           url:path+'?type='+type
@@ -188,6 +197,11 @@ export default {
       }, 0);
     }
   },
+   onPullDownRefresh() {
+    this.getInfo();
+    getNewMsgDot();
+    wx.stopPullDownRefresh();  //停止下拉刷新动画
+   }
 }
 </script>
 

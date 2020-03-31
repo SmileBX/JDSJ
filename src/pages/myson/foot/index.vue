@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import {post,switchPath,isJump} from '@/utils'
+import {post} from '@/utils'
 export default {
 
   data () {
@@ -106,21 +106,21 @@ export default {
         this.list.forEach(function(item) {
           that.$set(item,"hascheck",false)
         });
-        console.log(this.list)
+        
       }else{
         this.allSelect=true;
         this.selectlen=this.list.length;
         this.list.forEach(function(item) {
           that.$set(item,"hascheck",true)
         });
-        console.log(this.list)
+        
       }
     },
     //单选
     selectInv(index){
       var that=this
-      var selectId=!this.list[index].hascheck;console.log(selectId)
-      this.$set(this.list[index],"hascheck",selectId);console.log(this.list)
+      var selectId=!this.list[index].hascheck;
+      this.$set(this.list[index],"hascheck",selectId);
       if(selectId){
         this.selectlen++
       }else{
@@ -143,12 +143,12 @@ export default {
       }else{
         var that=this;
         var OrderId=[];
-        that.list.forEach(function(item) {console.log(item)
+        that.list.forEach(function(item) {
           if(item.hascheck){
             OrderId.push(item.Id);
           }
         });
-        that.IdTxt=OrderId.join(",");console.log(that.IdTxt)
+        that.IdTxt=OrderId.join(",");
         that.SureDel()
       }
     },
@@ -172,13 +172,9 @@ export default {
       });
     },
     goUrl(url,param){
-      this.isJump = true
-      setTimeout(() => {
-        this.isJump = false
-        wx.navigateTo({
-          url:url+'?id='+param
-        })
-      }, 100);
+      wx.navigateTo({
+        url:url+'?id='+param
+      })
     },
   },
   onReachBottom() {

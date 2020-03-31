@@ -78,7 +78,7 @@ export default {
         const res = await post('User/MemberFeedBack',{
             UserId:wx.getStorageSync('userId'),
             Token:wx.getStorageSync('token'),
-            Type:this.Type,
+            Type:this.type,
             Content:this.Content,
             PicList:base64Arr,
             Mobile:this.Mobile,

@@ -2,19 +2,22 @@
   <div class="ticket">
       <div class="or_list">
         <div class="bg_statu">{{info.StatusName}}</div>
-        <div class="pp2 flex justifyContentBetween  bg_fff bor_tit flexAlignEnd">
+        <div class="pp2 flexc  bg_fff bor_tit" v-if="info.StatusId==2||info.StatusId==3">
             <img src="http://jd.wtvxin.com/images/images/icons/kc.png" alt="" class="kc_icon">
-            <div class="flex flex1 flexAlignCenter">
+            <div class="flex flex1 flexAlignCenter" @click="goUrl('/pages/myson2/orderRoute/main',info.OrderNumber)">
                 <div class="flex1">
-                    <p class="cr">
-                         [深圳市] 投递并签收，签收人：他人收 韵达，感谢使用 EMS经济快递，期待...
+                  <block v-if="logistics.data">  
+                    <p class="cr twoline">
+                        {{logistics.data[0].context}} 
                     </p>
-                    <p class=" cg mt1">2019-09-26 18:52:10</p>
+                    <p class=" cg mt1">{{logistics.data[0].time}}</p>
+                  </block>
+                  <p class="cr" v-else>该订单暂无物流信息返回</p>
                 </div>
                 <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right mr2">
             </div>
         </div>
-        <div class="pp2 flex justifyContentBetween flexWrap flexAlignEnd bg_fff">
+        <div class="pp2 flexc bg_fff">
             <img src="http://jd.wtvxin.com/images/images/icons/lc.png" alt="" class="icon_lc">
             <div class="flex1">
                 <p>
@@ -24,7 +27,7 @@
             </div>
         </div>
         <div class="or_item bg_fff ">
-            <div class="pp3 flex bor_tit" v-for="(item, index) in info.orderDetails" :key="index">
+            <div class="pp3 flex bor_tit" @click="goUrl('/pages/goodsSon/goodsDetail/main',item.ProductId)" v-for="(item, index) in info.orderDetails" :key="index">
                 <img :src="item.ProductImg" alt="" class="shop">
                 <div class="flex1 flex flexAlignCenter mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
@@ -35,18 +38,27 @@
                 </div>
             </div>
             <div class="bor_tit pp2">
+                <p class="flex justifyContentBetween mt1">
+                    <span>商品合计</span>
+                    <span>¥{{info.TotalAmount}}</span>
+                </p>
+                <p class="flex justifyContentBetween mt1" v-if="info.DiscountedAmount>0">
+                    <span>优惠</span>
+                    <span>-¥{{info.DiscountedAmount}}</span>
+                </p>
+                
                 <p class="flex justifyContentBetween">
                     <span>运费(快递)</span>
-                    <span>¥0.00</span>
+                    <span>+¥{{info.ExpressPrice}}</span>
                 </p>
-                <p class="flex justifyContentBetween mt1">
-                    <span>订单总价</span>
-                    <span>¥{{info.TotalPrice}}</span>
+                <p class="flex justifyContentBetween" v-if="info.Taxes>0">
+                    <span>税费</span>
+                    <span>+¥{{info.Taxes}}</span>
                 </p>
             </div>
             <div class="flex justifyContentBetween mt1 pp2">
                 <span>需付款</span>
-                <span class="cr">¥{{info.TotalAmount}}</span>
+                <span class="cr">¥{{info.TotalPrice}}</span>
             </div>
         </div>
       </div>
@@ -67,14 +79,14 @@
           <p class="flex btn_menu justifyContentCenter flexAlignCenter" @click="call(info.ShopMobile)">
               <img src="http://jd.wtvxin.com/images/images/icons/ch.png" alt="" class="icon_ch"><span>拨打电话</span>
           </p>
-          <p class="flex btn_menu justifyContentCenter flexAlignCenter">
+          <p class="flex btn_menu justifyContentCenter flexAlignCenter" @click="gokefu">
               <img src="http://jd.wtvxin.com/images/images/icons/er.png" alt="" class="icon_ch"><span>在线客服</span>
           </p>
       </div>
-      <div class="flex justifyContentEnd pp2 bg_fff mt2 bb_fix">
+      <!-- <div class="flex justifyContentEnd pp2 bg_fff mt2 bb_fix">
           <p class="btn btn_gray">取消</p>
           <p class="btn btn_red" @click="ConfirmWeiXinSmallPay()">去支付</p>
-      </div>
+      </div> -->
   </div>
 </template>
 
@@ -84,7 +96,8 @@ export default {
 
   data () {
     return {
-      info:{}
+      info:{},
+      logistics: {}, //物流信息
     }
   },
   onShow(){
@@ -112,14 +125,33 @@ export default {
         url:url+'?id='+param
       })
     },
+    gokefu(){
+      wx.switchTab({
+        url:"/pages/service/chatRoom/main"
+      });
+    },
     getDetail(){
       post('Order/OrderDetails',{
         UserId:wx.getStorageSync("userId"),
         Token:wx.getStorageSync("token"),
-        OrderNo:this.$mp.query.id
+        OrderNo:this.$mp.query.id||'202001180957399227156'
       }).then(res=>{
-        this.info = res.data
+        this.info = res.data;
+        if (this.info.StatusId == 2 || this.info.StatusId == 3) {
+						this.getLogistics();
+					}
       })
+    },
+    //物流信息
+    async getLogistics() {
+      let result = await post("Order/GetLogistics", {
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token"),
+        OrderNo: this.$mp.query.id||'202001180957399227156'
+      });
+      if (result.code == 0) {
+        this.logistics = result.data.kuaidiInfo;
+      }
     },
     //微信支付需参数
     async ConfirmWeiXinSmallPay(){

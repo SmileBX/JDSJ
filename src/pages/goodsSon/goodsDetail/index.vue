@@ -35,7 +35,7 @@
             <p class="tit">{{proInfo.ProductName}}</p>
           </div>
           <div class="right">
-            <img src="http://jd.wtvxin.com/images/images/index/fenxiang.png" alt="">
+            <button open-type='share' class="sharebutton"><img src="http://jd.wtvxin.com/images/images/index/fenxiang.png" alt=""></button>
           </div>
         </div>
         <div class="jus-b ali-c">
@@ -106,36 +106,11 @@
           </div>
         </div>
       </div>
-      <div class="play" v-if="isPin==1">
-        <div class="tit ali-c jus-b">
-          <p>拼团玩法</p>
-          <div class="ali-c">
-            <span>详细规则</span>
-            <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="">
-          </div>
-        </div>
-        <div class="flexc img">
-          <img src="http://jd.wtvxin.com/images/images/index/play.png" alt="">
-        </div>
-      </div>
-      <div class="pin" v-if="isPin==1">
-        <div class="tit ali-c">他们都在拼，可直接参团</div>
-        <div class="list ali-c jus-b">
-          <div class="left ali-c">
-            <img src="http://jd.wtvxin.com/images/images/index/ok.png" alt="">
-            <div>
-              <span>如果</span>
-              <p>还差1人成团，剩余<span>02:54:03</span>结束</p>
-            </div>
-          </div>
-          <p class="flexc right">去参团</p>
-        </div>
-      </div>
 
       <div class="comment">
         <div class="tit ali-c jus-b">
           <p class="left">商品评价<span>({{proInfo.EvaluateCount}})</span></p>
-          <div class="right" v-if="proInfo.EvaluateCount>0">
+          <div class="right" v-if="proInfo.EvaluateCount>0" @click="goUrl('/pages/goodsSon/allcomment/main',proId)">
             <span>查看全部</span>
             <img src="http://jd.wtvxin.com/images/images/index/more_r.png" alt="">
           </div>
@@ -155,6 +130,13 @@
               <p class="detail">
                 {{item.ContentText}}
               </p>
+              <div class="imgLists">
+                <img :src="imgItem" alt=""
+                  v-for="(imgItem,imgIndex) in item.imgList" :key="imgIndex"
+                  v-show="imgIndex<4"
+                  @click="previewImg(item.imgList,imgIndex)"
+                  >
+              </div>
               <p class="time">{{item.AddTime}}</p>
             </div>
           </block>
@@ -175,7 +157,7 @@
       <div style="height: 100rpx;"></div>
       <div class="foot ali-c jus-b">
         <div class="left ali-c">
-          <div>
+          <div @click="gokefu">
             <img src="http://jd.wtvxin.com/images/images/index/ans.png" alt="">
             <p>客服</p>
           </div>
@@ -250,7 +232,7 @@
         <div class="couponbox" style="z-index: 10000;">
           <div class="titlebox">
             <div class="title">优惠券</div>
-            <div  @click="hidePopup" class="close">×</div>
+            <!-- <div  @click="hidePopup" class="close">×</div> -->
           </div>
           <div class="tips">可领优惠券<span>领取后可用于该商品</span></div>
           <scroll-view scroll-y style="width: 100%;height: 560rpx;">
@@ -281,7 +263,7 @@
 </template>
 
 <script>
-import {post,get} from '@/utils'
+import {post,get,previewImg} from '@/utils'
 import uniPopup from '@/components/uni-popup.vue';
 export default {
   components: {
@@ -289,6 +271,7 @@ export default {
   },
   data () {
     return {
+      previewImg,
       userId: "",
       token: "",
       proId:"",
@@ -300,7 +283,6 @@ export default {
       timeStr:[],//倒计时
       starTimetype:1,//0秒杀未开始，1一开始，2已结束
       percentage:0,//已售百分比
-      isPin:0,//0非拼团产品，1拼团产品
       proInfo:{},//商品信息
       bannerindex:0,//当前轮播图
       BannerNum:0,//轮播图数量
@@ -323,7 +305,7 @@ export default {
       minbuy:1, //最小购买量
     }
   },
-  onLoad(){
+  onLoad(optins){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
   },
@@ -337,6 +319,7 @@ export default {
     this.SpecValue={};
     this.SpecInfo={};
     this.showPopupSku = false;
+    this.isMatch=false;
     this.timeStr=[];
     clearInterval(this.timer);
     this.ProductInfo();
@@ -362,6 +345,11 @@ export default {
       wx.navigateTo({
         url:'/pages/cart/main'
       })
+    },
+    gokefu(){
+      wx.navigateTo({
+        url:"/pages/service/chatRoomSon2/main"
+      });
     },
     cliTag(name,value){//点击选择规格标签--name:规格名称 value:所选规格值
       this.$set(this.SpecValue,name,value)
@@ -483,13 +471,16 @@ export default {
           ShareMemberId: this.ShareMemberid
         })
         if(res.code==0){
-          this.GetAllCartNumber();
            wx.showToast({
             title: res.msg,
             icon:"none",
             duration: 1500
           });
+          setTimeout(()=>{
+          this.GetAllCartNumber();
           this.showPopupSku=false;
+          },1500)
+         
         }else{
           wx.showToast({
             title: res.msg,
@@ -560,6 +551,11 @@ export default {
             item.EndTime=item.EndTime.split("T")[0];
           })
         }
+        const data = res.data;
+        // 评价
+        data.EvaluateList.map(item=>{
+          item.imgList = item.EvaluateImgList.split(',');
+        })
         if(this.isLimint==1){
           //比较秒杀是否开始
 					let dateBegin = new Date(this.proInfo.FlashSaleStartTime.replace(/T/g, " "));
@@ -577,6 +573,12 @@ export default {
 					this.proInfo.FlashSaleStartTime=StartTimestr;
         }
         
+      }else{
+        wx.showToast({
+          title: res.msg,
+          icon:"none",
+          duration: 1500
+        });
       }
     },
     //倒计时
@@ -630,7 +632,8 @@ export default {
 				let res = await post("Goods/ProductCollection", {
 					proId: this.proId,
 					userId:this.userId,
-					token:this.token
+          token:this.token,
+          ShopId:this.shopid
 				  });
 				if(res.code==0){
 					if(this.IsCollect){
@@ -658,10 +661,24 @@ export default {
       this.isTop=false;
     }
   },
+  onShareAppMessage: function() {
+    return {
+      title: this.proInfo.ProductName, //转发页面的标题
+      imageUrl:this.proInfo.ProductImgList[0].PicUrl,
+      path: '/pages/goodsSon/goodsDetail/main?id='+this.proId+'&isLimint='+this.isLimint
+    }
+  }
 }
 </script>
 
 <style scoped lang='scss'>
+.sharebutton{
+  padding: 0;
+  background: #fff!important;
+}
+.sharebutton::after{
+  border: none!important;
+}
 .pin{
   background-color: #fff;
   margin-top: 20rpx;
@@ -813,6 +830,21 @@ export default {
       font-size: 26rpx;
       color: #999999;
       line-height: 80rpx;
+    }
+    .imgLists{
+      display: flex;
+      align-items: center;
+      margin-top: 20rpx;
+      img{
+        width: 160rpx;
+        height: 160rpx;
+        margin-right: 15rpx;
+        border-radius: 5rpx;
+      }
+      &:last-child{
+        margin-right:0;
+      }
+
     }
     .detail{
       color: #212121;

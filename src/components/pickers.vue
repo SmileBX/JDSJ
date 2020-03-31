@@ -62,7 +62,8 @@ export default {
       this.$emit("update:show", false);
     },
     // 改变选择的值时
-    onChange(e) {console.log(e)
+    onChange(e) {
+      console.log(e)
       this.value = this.arr[e.mp.detail.value[0]];
     }
   }

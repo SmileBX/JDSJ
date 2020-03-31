@@ -9,7 +9,7 @@
             <div class="flex pp2 justifyContentBetween">
                 <p class="flex flexAlignCenter">
                     <img src="http://jd.wtvxin.com/images/images/icons/shop_logo.png" alt="" class="shop_logo">
-                    <span class="ml1">{{shopName}}</span>
+                    <span class="ml1">{{item.ShopName}}</span>
                 </p>
                 <p class="cr">{{item.StatusName}}</p>
             </div>
@@ -27,8 +27,10 @@
             <div class="flex justifyContentEnd pp2">
                 <p class="btn btn_gray" @click="cliListBtn(btna[0],item.OrderNumber)" v-if="item.StatusId==0">{{btna[0]}}</p>
                 <p class="btn btn_red" @click="cliListBtn(btnb[0],item.OrderNumber)" v-if="item.StatusId==0">{{btnb[0]}}</p>
+                <p class="btn btn_gray" @click="cliListBtn(btna[3],item.OrderNumber,item.orderDetails)" v-if="item.StatusId==1">{{btna[3]}}</p>
                 <p class="btn btn_red" @click="cliListBtn(btnb[1],item.OrderNumber)" v-if="item.StatusId==1">{{btnb[1]}}</p>
                 <p class="btn btn_gray" @click="cliListBtn(btna[2],item.OrderNumber)" v-if="item.StatusId==2">{{btna[2]}}</p>
+                <p class="btn btn_gray" @click="cliListBtn(btna[4],item.OrderNumber,item.orderDetails)" v-if="item.StatusId==2">{{btna[4]}}</p>
                 <p class="btn btn_red" @click="cliListBtn(btnb[2],item.OrderNumber)" v-if="item.StatusId==2">{{btnb[2]}}</p>
                 <p class="btn btn_red" @click="cliListBtn(btnb[3],item.OrderNumber,item.orderDetails)" v-if="item.StatusId==3">{{btnb[3]}}</p>
             </div>
@@ -48,7 +50,7 @@
 
       <div class="change-goods flexc" v-if="showChange" @click="showChange=false">
         <div class="main">
-          <div class="tit">请选择要评价的商品</div>
+          <div class="tit">请选择要操作的商品</div>
           <div class="list ali-c jus-b" v-for="(item, index) in needChangeGoods" @click.stop="changeGoods(item.Id)" :key="index">
             <img :src="item.ProductImg" alt="">
             <p>{{item.ProductName}}</p>
@@ -68,7 +70,7 @@ export default {
   data () {
     return {
       tabList:['全部','待付款','待发货','待收货','待评价'],
-      btna:['取消','取消','查看物流'],
+      btna:['取消','取消','查看物流','申请退款','申请退货'],
       btnb:['去支付','提醒发货','确认收货','去评价'],
       tabIndex:0,
       isJump:false,
@@ -121,7 +123,14 @@ export default {
   },
   methods: {
     changeGoods(id){
-      this.goUrl('/pages/myson/addcomment/main',this.changeNumId,id)
+      if(this.tabIndex==2){
+        this.goUrl('/pages/myson2/orderapply/main',this.changeNumId,id,1)
+      }else if(this.tabIndex==3){
+        this.goUrl('/pages/myson2/orderapply/main',this.changeNumId,id,2)
+      }else if(this.tabIndex==4){
+        this.goUrl('/pages/myson/addcomment/main',this.changeNumId,id)
+      }
+      
     },
     getCancelList(){
       get('Order/CancelReason').then(res=>{
@@ -170,7 +179,22 @@ export default {
           this.needChangeGoods = goods
           this.changeNumId = id
         }
-        
+      }else if(str=='申请退款'){
+        if(goods.length==1){
+          this.goUrl('/pages/myson2/orderapply/main',id,goods[0].Id,1)
+        }else{
+          this.showChange = true
+          this.needChangeGoods = goods
+          this.changeNumId = id
+        }
+      }else if(str=='申请退货'){
+        if(goods.length==1){
+          this.goUrl('/pages/myson2/orderapply/main',id,goods[0].Id,2)
+        }else{
+          this.showChange = true
+          this.needChangeGoods = goods
+          this.changeNumId = id
+        }
       }
     },
     confirmCencel(){//确认取消
@@ -233,9 +257,10 @@ export default {
         }
       })
     },
-    goUrl(url,param,param2){
+    goUrl(url,param,param2,param3){
+      console.log(url,param,param2,param3)
         wx.navigateTo({
-          url:url+'?id='+param+'&goodsId='+param2
+          url:url+'?id='+param+'&goodsId='+param2+'&type='+param3
         })
     },
     cliServer(index){
@@ -390,6 +415,7 @@ export default {
   }
   .shop{
     width:161rpx;height:161rpx;
+    border-radius:7rpx;
   }
   .or_item{
     margin-top:20rpx;

@@ -18,7 +18,7 @@
           <span>{{list.LikeNum}}</span>
           <button open-type='share' class="button"><img class="two" src="http://jd.wtvxin.com/images/images/index/zhuanfa.png" alt=""></button>
         </div>
-        <p class="flexc mai" @click="goUrl('/pages/goodsSon/goodsDetail/main',list.ProductInfo[0].Id)">立即购买</p>
+        <p class="flexc mai" v-if="list.ProductInfo.length" @click="goUrl('/pages/goodsSon/goodsDetail/main',list.ProductInfo[0].Id)">立即购买</p>
       </div>
   </div>
 </template>

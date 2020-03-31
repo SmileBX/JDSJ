@@ -17,11 +17,12 @@
           </div>
         </div>
       </div>
+      <div v-if="list.length==0" style="text-align: center; color:#999; margin-top:200rpx" >暂无数据</div>
   </div>
 </template>
 
 <script>
-import {switchPath,isJump,post,get} from '@/utils'
+import {switchPath,isJump,post,get,editTime} from '@/utils'
 export default {
 
   data () {
@@ -50,7 +51,7 @@ export default {
     this.GetMyCouponList()
   },
   methods: {
-    async GetMyCouponList(){console.log(this.tabIndex)
+    async GetMyCouponList(){
       let res=await post("Coupon/MyCouponList",{
         "UserId": this.userId,
         "Token": this.token,
@@ -63,7 +64,7 @@ export default {
       if(res.code==0){
         if(res.data.length>0){
           res.data.map(item=>{
-            item.endTime=item.endTime.replace(/T/,' ')
+            item.endTime=editTime(item.endTime,'time');
           })
         }
         this.list = res.data;

@@ -2,7 +2,7 @@
   <div>
     <div class="top">
       <div class="search ali-c">
-        <p class="oneline shopName">{{shopName}}</p>
+        <p class="oneline shopName" @click="goUrl('/pages/shop/index/main')">{{shopName}}</p>
         <div class="right flexc flex1" @click="goUrl('/pages/goodsSon/goodsSearch/main')">
           <img src="http://jd.wtvxin.com/images/images/index/search.png" alt="">
           <span>搜索</span>
@@ -58,7 +58,9 @@
         </div>
       </div>
       <div class="goods jus-b flex-wrap" v-if="hasData">
-        <div class="list" v-for="(item, index) in goodsList" :key="index" @click="goUrl('/pages/goodsSon/goodsDetail/main',item.Id)">
+        <div class="list" v-for="(item, index) in goodsList" :key="index" 
+          @click="goUrl('/pages/goodsSon/goodsDetail/main',item.Id)"
+          >
           <img class="img" :src="item.Pic" :alt="item.Name">
           <div class="text-box">
             <p class="tit oneline">{{item.Name}}</p>
@@ -78,7 +80,7 @@
       </view>
     </div>
     <movable-area class="move-box-fa">
-      <movable-view class="move-box" direction='all' inertia x='10000' y='0' damping='1000000' friction='1'>
+      <movable-view class="move-box" direction='all' inertia x='1000' y='1000'>
         <img class="car" src="http://jd.wtvxin.com/images/images/index/card.png" alt="" @click="goCart">
       </movable-view>
     </movable-area>
@@ -87,8 +89,8 @@
 </template>
 
 <script>
-import {post,get} from '@/utils'
-import noData from "@/components/noData"; //没有数据的通用提示
+import {post,get,getNewMsgDot} from '@/utils'
+import noData from "@/components/noData"; //没有数据的通用提示。
 import LoadMore from '@/components/load-more';
 export default {
   components: {
@@ -120,47 +122,69 @@ export default {
         },
         {
           name: "销量",
-          sortorder: "", //0：倒序；1:为顺序
+          sortorder: 0, //2：倒序；1:为顺序
           sortname: "s",
           isSortorder: true,
           active: false
         },
         {
           name: "价格",
-          sortorder: "", //0：倒序；1:为顺序
+          sortorder: 0, //2：倒序；1:为顺序
           sortname: "j",
           isSortorder: true,
           active: false
         }
       ],
       sortname: "m", //j：价格排序；s：销量排序；m：默认排序
-      sFilter:"",//按销量
-      pFilter:""//按价格
+      sFilter:0,//按销量 0:无 1:价格正序 2:价格倒序 ,
+      pFilter:0//按价格
     }
   },
   onLoad(e){
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
-    if(decodeURIComponent(e.shopid)&&decodeURIComponent(e.shopid)!='undefined'){
-      this.shopid = decodeURIComponent(e.shopid);
-      wx.setStorageSync("shopid", this.shopid);
-    }
+    this.init();
   },
   onShow(){
-    if(wx.getStorageSync("shopid")){
-      this.shopid =wx.getStorageSync("shopid");
-    }else{
-      this.shopid ="50FB070743F1853A";
-    }
-    this.GetMerchantDetail();
-    this.GetShopRecruitment();
-    this.GetProductList();
+      if(wx.getStorageSync("shopid")!==this.shopid){
+        this.init();
+      }
   },
   methods: {
+    init(){
+      this.userId = wx.getStorageSync("userId");
+      this.token = wx.getStorageSync("token");
+      if(wx.getStorageSync("shopid")){
+        this.shopid = wx.getStorageSync("shopid");
+        this.AddVisitShop();//添加浏览店铺
+      }else{
+        this.shopid ="50FB070743F1853A";
+      }
+      this.GetMerchantDetail();
+      this.GetShopRecruitment();
+      // 初始化
+      this.hasData=false;
+      this.noDataIsShow=false;//没有数据的提示是否显示
+      this.loadingType=0;
+      this.page=1;
+      this.isLoad=false;
+      this.isOved=false; 
+      this.sFilter=0;//按销量 0:无 1:价格正序 2:价格倒序 ,
+      this.pFilter=0;
+      this.goodsList={};
+      this.GetProductList();
+      getNewMsgDot()
+    },
     goUrl(url,param){
-      wx.navigateTo({
-        url:url+'?id='+param
-      })
+      if(param==0){
+         wx.showToast({
+          title: "该功能暂未开放，敬请期待",
+          icon: "none",
+          duration: 2000
+        });
+      }else{
+        wx.navigateTo({
+          url:url+'?id='+param
+        })
+      }
     },
     goCart(){
       wx.navigateTo({
@@ -175,6 +199,15 @@ export default {
       if(res.code==0){
         this.shopName=res.data.ShopInfo.shopNick;
       }
+    },
+    //添加浏览店铺
+    async AddVisitShop(){
+      let res=await post("Login/AddVisitShop",{
+        OpenId:wx.getStorageSync("openId"),
+        ShopId:this.shopid,
+        Lng:"",
+        Lat:""
+      })
     },
     async GetShopRecruitment(){
       let res=await post("Shop/GetShopRecruitment",{
@@ -236,48 +269,38 @@ export default {
 			 }
     },
     filter(index){
-
-      // wx.pageScrollTo({
-      //   selector: '#goods-box',
-      //   duration: 300,
-      //   success(res){
-      //     console.log(res)
-      //   }
-      // })
-
       let _this=this;
-
       _this.filterTab.forEach(function(item, subIndex) {
         if (subIndex === index) {
           _this.$set(item, 'active', true);
           if (item.isSortorder) {
-            if (item.sortorder == "") {
-              _this.$set(item, 'sortorder', "0");
+            if (item.sortorder == 0) {
+              _this.$set(item, 'sortorder', 1);
               return false;
-            } else if (item.sortorder == "0") {
-              _this.$set(item, 'sortorder', "1");
+            } else if (item.sortorder == 1) {
+              _this.$set(item, 'sortorder', 2);
               return false;
-            } else {
-              _this.$set(item, 'sortorder', "0");
+            } else if (item.sortorder == 2){
+              _this.$set(item, 'sortorder', 1);
               return false;
             }
           }
         } else {
           _this.$set(item, 'active', false);
-          _this.$set(item, 'sortorder', "");
+          _this.$set(item, 'sortorder', 0);
           return false;
         }
       });
       _this.sortname = _this.filterTab[index].sortname;
         if(_this.sortname=="s"){
           _this.sFilter=_this.filterTab[index].sortorder;
-          _this.pFilter="";
+          _this.pFilter=0;
         }else if(_this.sortname=="j"){
-          _this.sFilter="";
+          _this.sFilter=0;
           _this.pFilter=_this.filterTab[index].sortorder;
         }else{
-          _this.sFilter="";
-          _this.pFilter="";
+          _this.sFilter=0;
+          _this.pFilter=0;
         }
 				_this.page = 1;
 				_this.goodsList = {};
@@ -303,6 +326,20 @@ export default {
         this.isOved = false;
       }
     }
+  },
+  onPullDownRefresh() {
+			//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
+      let _this=this;
+        _this.page=1;
+				_this.goodsList = {};
+				_this.GetProductList();
+				wx.stopPullDownRefresh();  //停止下拉刷新动画
+  },
+  onShareAppMessage: function() {
+    return {
+      title: this.shopName, //转发页面的标题
+      path: '/pages/index/main?shopid='+this.shopid
+    }
   }
 }
 </script>
@@ -324,12 +361,8 @@ export default {
 }
 .move-box{
   pointer-events: auto;
-  position: fixed;
-  top: auto;
-  bottom: 30rpx;
-  right: 30rpx;
-  width: 98rpx;
-	height: 98rpx;
+  width: 130rpx;
+	height: 130rpx;
 }
 // .xd{
 //   transition: all 0.3s;
@@ -343,8 +376,8 @@ export default {
 //   left: 0;
 // }
 .car{
-  width: 98rpx;
-	height: 98rpx;
+  width: 100%;
+	height: 100%;
 }
 .goods-box{
   background-color: #fff;
@@ -362,6 +395,7 @@ export default {
         padding: 0 20rpx;
       }
       .carda{
+        // margin-bottom:15rpx;
         span{
           font-size: 22rpx;
           color: #999999;
@@ -377,7 +411,12 @@ export default {
       }
       .tit{
         color: #000000;
-        line-height: 70rpx;
+        line-height: 60rpx;
+        width:294rpx;
+        white-space:nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display:block!important;
       }
       .price span:nth-child(1){
         font-size: 20rpx;
@@ -427,10 +466,10 @@ export default {
         border-top: 10rpx solid #999;
       }
     }
-    .f_0 .icon-top{
+    .f_1 .icon-top{
       border-bottom-color: #ff3333
     }
-    .f_1 .icon-down{
+    .f_2 .icon-down{
       border-top-color: #ff3333
     }
   }

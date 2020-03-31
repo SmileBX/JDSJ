@@ -1,3 +1,4 @@
 {
-  "navigationBarTitleText": "集店"
+  "navigationBarTitleText": "集店",
+  "enablePullDownRefresh": true
 }

@@ -8,6 +8,7 @@
           <div class="mt2"><span class="font20">￥</span><span class="font30 fb">{{TotalPrice}}</span></div>
           <div class="mt2 flex btn_tt justifyContentAround">
               <p class="btn_ccc" @click="goshop">返回首页</p>
+              <p class="btn_ccc" v-if="GroupId" @click="goGroup">查看拼团</p>
               <p class="btn_ccc" @click="goOrder">查看订单</p>
           </div>
       </div>
@@ -64,12 +65,16 @@ export default {
 			isLoad: false,
 			isOved:false,       //显示已经到底了
 			loadingType: 0, //0加载前，1加载中，2没有更多了
-      goodsList:{} 
+      goodsList:{},
+      GroupId:'',
+      GroupRecordId:'',
     }
   },
-  onLoad(){
+  onLoad(options){
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
+    this.GroupId = options.GroupId||'';
+    this.GroupRecordId = options.GroupRecordId||'';
   },
   onShow(){
     this.OrderNo=this.$root.$mp.query.OrderNo;
@@ -88,13 +93,13 @@ export default {
     
     //查询订单金额
     async GetOrdersMoney(){
-      let res=await post("Order/GetOrdersMoney",{
+      let res=await post("Order/GetPayAfterOrdersMoney",{
           OrderNo: this.OrderNo,
           UserId: this.userId,
           Token: this.token
       })
       if(res.code==0){
-        this.TotalPrice=res.data.TotalPrice;
+        this.TotalPrice=res.data;
       }
     },
     goshop(){
@@ -102,13 +107,18 @@ export default {
         url: '/pages/index/main'
       })
     },
+    goGroup(){
+        wx.navigateTo({
+          url:`/pages/team/pintuan/main?GroupId=${this.GroupId}&GroupRecordId=${this.GroupRecordId}`
+        })
+    },
     goOrder(){
       if(this.NOarr.length>1){
-        wx.navigateTo({
+        wx.redirectTo({
           url:'/pages/myson2/order/main?type=0'
         })
       }else{
-        wx.navigateTo({
+        wx.redirectTo({
           url:'/pages/myson2/orderdetail/main?id='+this.OrderNo
         })
       }
