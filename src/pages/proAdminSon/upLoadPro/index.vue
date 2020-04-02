@@ -53,7 +53,7 @@
     </div>
     <div class="slider"></div>
     <div class="other_item pw3 bg_fff">
-        <div class="item flex justifyContentBetween flexAlignCenter">
+        <div class="flex justifyContentBetween flexAlignCenter p25">
           <div>商品分类</div>
           <div class="flex flexAlignCenter">
              <input type="text" placeholder="请选择商品分类" class="text_right">
@@ -61,14 +61,14 @@
           </div>
         </div>
         <!--品牌功能暂时不做-->
-        <!-- <div class="item flex justifyContentBetween flexAlignCenter">
+        <!-- <div class="flex p25 justifyContentBetween flexAlignCenter">
           <div>商品品牌</div>
           <div class="flex flexAlignCenter">
              <input type="text" placeholder="请选择商品品牌" class="text_right">
              <img src="/static/arrow_r.png" alt="" class="arrow_r mr2">
           </div>
         </div> -->
-        <div class="item flex justifyContentBetween flexAlignCenter bt">
+        <div class=" p25 flex justifyContentBetween flexAlignCenter bt">
           <div>重量</div>
           <input type="text" disabled placeholder="非必填" class="text_right">
         </div>
@@ -172,6 +172,9 @@ export default {
       background: #ff3333;color:#ffff;
       width:690rpx;margin:50rpx auto;text-align: center;
       border-radius:25rpx;
+    }
+    .p25{
+      padding:25upx 0;
     }
   }
 </style>
