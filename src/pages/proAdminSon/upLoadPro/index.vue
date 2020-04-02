@@ -7,7 +7,7 @@
     </div>
     <div class="slider"></div>
     <div class="pw3 img_list bg_fff">
-      <div class="title boxSize">商品图片</div>
+      <div class="title boxSize solid_b">商品图片</div>
       <div class="list">
           <div class="img">
              <img src="/static/upImg.png" alt="">
@@ -16,7 +16,7 @@
     </div>
     <div class="slider"></div>
     <div class="pro_price pw3 bg_fff">
-        <div class="title boxSize">商品售价</div>
+        <div class="title boxSize solid_b">商品售价</div>
         <div class="flex flexAlignCenter mt2">
           <div class="item_left">价格</div>
           <div class="flex flex1 item_rr flexAlignCenter">
@@ -52,8 +52,8 @@
         </div>
     </div>
     <div class="slider"></div>
-    <div class="other_item pw3 bg_fff">
-        <div class="flex justifyContentBetween flexAlignCenter p25">
+    <div class="other_item bg_fff">
+        <div class="flex justifyContentBetween flexAlignCenter item">
           <div>商品分类</div>
           <div class="flex flexAlignCenter">
              <input type="text" placeholder="请选择商品分类" class="text_right">
@@ -61,18 +61,18 @@
           </div>
         </div>
         <!--品牌功能暂时不做-->
-        <!-- <div class="flex p25 justifyContentBetween flexAlignCenter">
+        <!-- <div class="flex item justifyContentBetween flexAlignCenter">
           <div>商品品牌</div>
           <div class="flex flexAlignCenter">
              <input type="text" placeholder="请选择商品品牌" class="text_right">
              <img src="/static/arrow_r.png" alt="" class="arrow_r mr2">
           </div>
         </div> -->
-        <div class=" p25 flex justifyContentBetween flexAlignCenter bt">
+        <div class="item flex justifyContentBetween flexAlignCenter bt">
           <div>重量</div>
           <input type="text" disabled placeholder="非必填" class="text_right">
         </div>
-        <div class="img_list bt">
+        <div class="img_list bt pw3">
             <div class="title boxSize">商品图片</div>
             <div class="list">
                 <div class="img">
@@ -121,7 +121,10 @@ export default {
     }
     .title{
         padding:25rpx 0;
-        border-bottom: 1rpx solid #f5f5f5;
+        
+    }
+    .solid_b{
+      border-bottom: 1rpx solid #f5f5f5;
     }
     .img_list{
        box-sizing: border-box;
