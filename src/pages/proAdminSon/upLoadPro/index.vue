@@ -60,6 +60,14 @@
              <img src="/static/arrow_r.png" alt="" class="arrow_r mr2">
           </div>
         </div>
+        <!--品牌功能暂时不做-->
+        <!-- <div class="item flex justifyContentBetween flexAlignCenter">
+          <div>商品品牌</div>
+          <div class="flex flexAlignCenter">
+             <input type="text" placeholder="请选择商品品牌" class="text_right">
+             <img src="/static/arrow_r.png" alt="" class="arrow_r mr2">
+          </div>
+        </div> -->
         <div class="item flex justifyContentBetween flexAlignCenter bt">
           <div>重量</div>
           <input type="text" disabled placeholder="非必填" class="text_right">
