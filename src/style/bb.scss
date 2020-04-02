@@ -29,6 +29,38 @@
     transform: translate(-50%, -50%) scale(1);
     -webkit-transform: translate(-50%, -50%) scale(1);
 }
+/*样式1：选中后中间为圆点*/
+/*外面的边框可以这样*/
+radio .wx-radio-input{
+    height: 35rpx;
+    width: 35rpx;
+    border-radius: 50%;
+    border:1rpx solid #ececec;///替换边框 隐藏原有边框
+}
+radio .wx-radio-input.wx-radio-input-checked {
+    border: 1rpx solid #ff3333!important;
+}
+/*中间圆点   选中的背景需要是xml中设置*/
+radio .wx-radio-input.wx-radio-input-checked::before {
+  border-radius: 50%;
+  /* 圆角 */
+  width: 20rpx;
+  /* 选中后对勾大小，不要超过背景的尺寸 */
+  height: 20rpx;
+  /* 选中后对勾大小，不要超过背景的尺寸 */
+  text-align: center;
+  line-height:30rpx!important;
+  font-size: 0;
+  /* 对勾大小 30rpx */
+  color: #fff;
+  /* 对勾颜色 白色 */
+  background-color: #ff3333;
+  transform: translate(-50%, -50%) scale(1);
+  -webkit-transform: translate(-50%, -50%) scale(1);
+  radio .wx-radio-input{
+      border:1rpx solid #ff3333;
+  }
+}
 /*复选框清除默认样式*/
 .checkbox-cart .wx-checkbox-input {
     width: 38rpx;
@@ -521,18 +553,6 @@
   left:0;
 }
 */
-.title{
-    position:relative;
-  }
-  .title::after{
-    height:2rpx;
-    width:750rpx;
-    position: absolute;
-    content: "";
-    background: #f2f2f2;
-    bottom: 0;
-    left:0;
-  }
   .dui{
       width:24rpx;
       height:24rpx;

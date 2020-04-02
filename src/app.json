@@ -57,6 +57,16 @@
       ]
     },
     {
+      "root":"pages/proAdminSon/",
+      "pages":[
+        "choseTypeOne/main",
+        "choseTypeTwo/main",
+        "choseBrand/main",
+        "upLoadPro/main"
+       
+      ]
+    },
+    {
       "root":"pages/goodsSon/",
       "pages":[
         "rob/main",
