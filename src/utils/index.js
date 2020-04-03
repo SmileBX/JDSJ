@@ -487,6 +487,13 @@ export function getUrlParam(name) {
 	if(r != null) return unescape(r[2]);
 	return null;
 }
+export function wxToast(str){
+  wx.showToast({
+    title:str,
+    icon:'none',
+    duration:1500,
+  })
+}
 // module.exports = {
 //   dateUtils: dateUtils,
 // }

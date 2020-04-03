@@ -84,14 +84,12 @@
         </div>
     </div>
 
-    <div class="btn_up">立即上传</div>
-    
-    <noData :isShow="noDataIsShow"></noData>
+    <div class="btn_up" @click="upPro">立即上传</div>
   </div>
 </template>
 
 <script>
-import {post,get} from '@/utils';
+import {post,get,wxToast} from '@/utils';
 import { pathToBase64 } from "@/utils/image-tools";
 import noData from "@/components/noData"; //没有数据的通用提示
 export default {
@@ -121,8 +119,8 @@ export default {
         IsHot: 0,
         IsNewProduct: 0,
         IsExplosive: 0,
-        TypeId: 0,
-        ClassId: 0,
+        TypeId: 0,//商品类型 都为0
+        ClassId: 0, //二级分类id
         ProductBrandId: 0,
         Synopsis:"",
         ContentDetail: ""
@@ -133,9 +131,78 @@ export default {
   onShow(){
     this.query.UserId=wx.getStorageSync("userId");
     this.query.Token=wx.getStorageSync("token");
+    this.query.ShopId = wx.getStorageSync("shopid");
+    // console.log(this.$mp.query.TypeId,"this.$mp.TypeId")
+    // if(this.$mp.query.TypeId){
+    //   this.query.TypeId = this.$mp.query.TypeId
+    // }
+    if(this.$mp.query.ClassId){
+       this.query.ClassId = this.$mp.query.ClassId
+    }
+    if(this.$mp.query.TypeStr){
+       this.TypeStr = this.$mp.query.TypeStr
+    }
    
   },
   methods: {
+      async submit(imglist){
+         const res = await post('Shop/AddProduct',this.query)
+         if(res.code == 0){
+           wx.showToast({title:'上传成功！'})
+           this.initData()
+         }
+      }, 
+      async upPro(){
+        if(this.valOther()){
+          let baseArr = await this.base64Img(this.PicList);
+          let baseDetailPic = await this.base64Img(this.detailPic)
+          this.query.Pictures = JSON.stringify(baseArr)
+          this.query.ContentDetail = baseDetailPic[0].PicUrl
+          this.submit()
+
+        }
+      },
+      async base64Img(arr) {
+        let afterArr = [];
+        for (let i = 0; i < arr.length; i += 1) {
+            const res = await pathToBase64(arr[i]);
+            afterArr.push({
+              PicUrl: res
+            });
+        }
+        return afterArr;
+      },
+      valOther(){
+        if(this.query.Name == ''){
+            wxToast('请输入商品名称！')
+            return false
+        }
+        if(this.PicList.length<=0){
+            wxToast('请上传商品图片！')
+            return false
+        }
+        if(this.Price==''){
+            wxToast('请输入商品价格！')
+            return false
+        }
+        if(this.Stock==''){
+            wxToast('请输入商品库存！')
+            return false
+        }
+        if(this.Unit==''){
+            wxToast('请输入商品重量！')
+            return false
+        }
+        if(this.query.TypeId == 0){
+            wxToast('请选择商品分类！')
+            return false
+        }
+        if(this.detailPic==''){
+            wxToast('请上传商品详情图！')
+            return false
+        }
+        return true
+      },
       //商品标签
       chose(i){
         this.activeIndex = i
@@ -196,7 +263,7 @@ export default {
                       _this.isUploadBtn = false;
                     }
                   }else{
-                    _this.detailPic = res.tempFilePaths[0]
+                    _this.detailPic = res.tempFilePaths
                   }
                   
               }
@@ -215,6 +282,32 @@ export default {
         wx.navigateTo({
           url:path
         })
+      },
+      initData(){
+        this.PicList = []
+        this.detailPic = ''
+        this.activeIndex = 0
+        this.TypeStr = ''
+        this.query = {
+          UserId: "",
+          Token: "",
+          ShopId: "",
+          Name: "",
+          Pictures: "",
+          Price: '',
+          Stock: '',
+          Unit: "",
+          SalesStatus: true,
+          IsRecommend: 1,
+          IsHot: 0,
+          IsNewProduct: 0,
+          IsExplosive: 0,
+          TypeId: 0,//一级分类
+          ClassId: 0, //二级分类
+          ProductBrandId: 0,
+          Synopsis:"",
+          ContentDetail: ""
+        }
       }
   },
 }
