@@ -36,15 +36,6 @@
       ]
     },
     {
-      "root":"pages/proAdminSon/",
-      "pages":[
-        "orderList/main",
-        "orderDetail/main",
-        "editAddress/main",
-        "ship/main"
-      ]
-    },
-    {
       "root":"pages/myson2/",
       "pages":[
         "order/main",
@@ -69,13 +60,14 @@
     {
       "root":"pages/proAdminSon/",
       "pages":[
-        "index/main",
-        "order/main",
         "choseTypeOne/main",
         "choseTypeTwo/main",
         "choseBrand/main",
-        "upLoadPro/main"
-       
+        "upLoadPro/main",
+        "orderList/main",
+        "orderDetail/main",
+        "editAddress/main",
+        "ship/main"
       ]
     },
     {
