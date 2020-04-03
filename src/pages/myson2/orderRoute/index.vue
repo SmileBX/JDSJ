@@ -4,7 +4,7 @@
       <img :src="logo" alt="">
       <div>
         <p><span>物流公司：</span>{{companyName}}</p>
-        <p class="ali-c"><span>物流单号：</span>{{nu}}<span class="copy ali-c jus-c" @click="cop">复制</span></p>
+        <p class="ali-c"><span>物流单号：</span>{{nu||''}}<span class="copy ali-c jus-c" @click="cop" v-if="nu">复制</span></p>
         <!-- <p>预计8月22日送达</p> -->
       </div>
     </div>
@@ -71,7 +71,7 @@ export default {
       post('Order/GetLogistics',{//物流信息
         UserId:wx.getStorageSync("userId"),
         Token:wx.getStorageSync("token"),
-        OrderNo:this.$mp.query.id||'202001180957399227156'
+        OrderNo:this.$mp.query.id
       }).then(res=>{
         this.logo=res.data.logo;
         this.companyName=res.data.kuaidiInfo.companyName;

@@ -60,13 +60,14 @@
     {
       "root":"pages/proAdminSon/",
       "pages":[
-        "index/main",
-        "order/main",
         "choseTypeOne/main",
         "choseTypeTwo/main",
         "choseBrand/main",
-        "upLoadPro/main"
-       
+        "upLoadPro/main",
+        "orderList/main",
+        "orderDetail/main",
+        "editAddress/main",
+        "ship/main"
       ]
     },
     {
