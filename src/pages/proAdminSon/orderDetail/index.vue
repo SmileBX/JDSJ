@@ -23,7 +23,7 @@
                 <p>
                     <span>{{info.contactName}}</span><span class="mr5">{{info.tel}}</span>
                 </p>
-                <p class="font24 cg mt1">{{info.AreaName}} {{info.addr}}</p>
+                <p class="font24 cg mt1">{{info.areaName}} {{info.addr}}</p>
             </div>
         </div>
         <div class="or_item bg_fff ">

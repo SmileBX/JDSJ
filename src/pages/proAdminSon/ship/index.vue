@@ -1,9 +1,12 @@
 <template>
   <div class="ca">
       <div class="bpm-box">
-          <div class="list ali-c">
+          <div class="list ali-c jus-b" @tap="showInc = true">
             <span>快递公司</span>
-            <input type="text" placeholder="请选择快递公司" v-model="inc">
+            <div class="ali-c flex1">
+              <input type="text" placeholder="请选择快递公司" class="flex1" disabled v-model="express.text">
+              <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
+            </div>
           </div>
           <div class="list ali-c">
             <span>快递号</span>
@@ -11,12 +14,24 @@
           </div>
           <p class="btn" @tap="submit">立即发货</p>
       </div>
+      <van-popup
+        :show="showInc"
+        position="bottom"
+        custom-style="height: 500rpx;"
+        @close="onClose"
+      >
+        <van-picker :columns="expressList" 
+        @change="onChange" 
+        :show-toolbar="true"
+        @confirm="confirm"
+        @cancel="showInc=false"
+        />
+      </van-popup>
   </div>
 </template>
 
 <script>
-import {post} from '@/utils';
-
+import {post,get} from '@/utils';
 
 export default {
   data () {
@@ -24,8 +39,14 @@ export default {
       token: "",
       userId: "",
       OrderId:'',//订单号
-      inc:'',//快递公司
+      express:{
+        id:'',
+        text:'',
+        code:''
+      },//快递公司
+      expressList:[],//快递公司列表
       no:'',//快递单号
+      showInc:false,
     }
   },
   onLoad(){
@@ -39,63 +60,21 @@ export default {
   },
   methods:{
     getData(){
-      post('Shop/GetOrderDetail',{
-        UserId:wx.getStorageSync("userId"),
-        Token:wx.getStorageSync("token"),
-        OrderId:this.OrderId
-      }).then(res=>{
-        const data= res.data.OrderInfo;
-        this.detail = data;
-        this.defaultArea = data.area;
-        // 省
-        const province_list = this.areaList.province_list;
-        Object.keys(province_list).map(item=>{
-           if(item==data.province){
-             this.ProvinceCode = item;
-             this.ProvinceName = province_list[item];
-             this.address+=province_list[item];
-           }
-        })
-        // 市
-        const city_list = this.areaList.city_list;
-        Object.keys(city_list).map(item=>{
-           if(item==data.city){
-             this.CityCode = item;
-             this.CityName = city_list[item];
-             this.address+=city_list[item];
-           }
-        })
-        // 区
-        const county_list = this.areaList.county_list;
-        Object.keys(county_list).map(item=>{
-           if(item==data.area){
-             this.DistrictCode = item;
-             this.DistrictName = county_list[item];
-             this.address+=county_list[item];
-           }
+      get('Order/GetExpressCompanyList').then(res=>{
+        const list  = JSON.parse(res.data);
+        list.map(item=>{
+          this.expressList.push({
+            id:item.Id,
+            text:item.company,
+            code:item.code
+          })
         })
       })
     },
-    confirmArea(area){
-        this.showArea = false
-        let text = ''
-        const areas = area.mp.detail.values
-        for(let i=0;i<areas.length;i++){
-          text+=areas[i].name
-        }
-        if(areas[2]){
-          this.defaultArea = areas[2].code;
-        }else{
-          this.defaultArea = areas[1].code;
-        }
-        this.ProvinceCode=areas[0].code||'',
-        this.CityCode=areas[1].code||'',
-        this.DistrictCode=areas[2].code||'',
-        this.ProvinceName=areas[0].name||'',
-        this.CityName=areas[1].name||'',
-        this.DistrictName=areas[2].name||'',
-        this.address = text;
-
+    // 完成选择快递公司
+    confirm(e){
+      this.express = e.mp.detail.value;
+      this.showInc= false;
     },
     submit(){
         const toast = this.jiaoyan();
@@ -107,13 +86,12 @@ export default {
             });
             return false;
         }
-        const detail = this.detail;
         post('Shop/Dlivery',{
-            userId:this.userId,
+            UserId:this.userId,
             Token: this.token,
             OrderId:this.OrderId,
             "ExpressId": this.no,
-            "ExpressCompany": "string"
+            "ExpressCompany": this.express.id
           }).then(res=>{
             wx.showToast({
               title: res.msg
@@ -126,17 +104,11 @@ export default {
     },
     jiaoyan(){
       const detail =this.detail;
-      if(!detail.contactName){
-          return '请输入收货人'
+      if(!this.express.id){
+          return '请选择快递公司'
       }
-      if(!(/^1[3|4|5|6|7|8][0-9]\d{4,8}$/.test(detail.tel))){
-          return '请输入正确的手机号码'
-      }
-      if(!this.address){
-         return '请选择地区'
-      }
-      if(!detail.addr){
-        return '请输入详细地址'
+      if(!this.no){
+          return '请输入快递号'
       }
       return false;
     },
