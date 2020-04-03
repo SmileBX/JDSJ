@@ -2,9 +2,9 @@
   <div class="ticket">
       <div class="or_list">
         <div class="bg_statu">{{info.StatusName}}</div>
-        <div class="pp2 flexc  bg_fff bor_tit" v-if="info.StatusId==2||info.StatusId==3">
+        <div class="pp2 flexc  bg_fff bor_tit" v-if="info.statue==2||info.statue==3||info.statue==4">
             <img src="http://jd.wtvxin.com/images/images/icons/kc.png" alt="" class="kc_icon">
-            <div class="flex flex1 flexAlignCenter" @click="goUrl('/pages/myson2/orderRoute/main',info.OrderNumber)">
+            <div class="flex flex1 flexAlignCenter" @click="goUrl('/pages/myson2/orderRoute/main',info.orderid)">
                 <div class="flex1">
                   <block v-if="logistics.data">  
                     <p class="cr twoline">
@@ -23,7 +23,7 @@
                 <p>
                     <span>{{info.contactName}}</span><span class="mr5">{{info.tel}}</span>
                 </p>
-                <p class="font24 cg mt1">{{info.addr}}</p>
+                <p class="font24 cg mt1">{{info.AreaName}} {{info.addr}}</p>
             </div>
         </div>
         <div class="or_item bg_fff ">
@@ -52,7 +52,7 @@
                     <span>运费(快递)</span>
                     <span>+¥{{info.expressprice}}</span>
                 </p>
-                <p class="flex justifyContentBetween" v-if="info.Taxes>0">
+                <p class="flex justifyContentBetween" v-if="info.taxes>0">
                     <span>税费</span>
                     <span>+¥{{info.taxes}}</span>
                 </p>
@@ -79,9 +79,12 @@
           </div>
       </div>
       <div class="flex justifyContentEnd pp2 bg_fff mt2 bb_fix">
-          <p class="btn btn_gray">修改地址</p>
-          <p class="btn btn_gray">查看物流</p>
-          <p class="btn btn_red">发货</p>
+          <p class="btn btn_gray" v-if="info.statue ==1"
+            @click="editAddress">修改地址</p>
+          <p class="btn btn_gray" v-if="info.statue==2||info.statue==3||info.statue==4" 
+            @click="goLogistics" >查看物流</p>
+          <p class="btn btn_red" v-if="info.statue ==1"
+            @click="ship(info.orderid)">发货</p>
       </div>
   </div>
 </template>
@@ -97,7 +100,6 @@ export default {
     }
   },
   onShow(){
-    console.log(this.$mp.query.id)
     this.getDetail()
   },
   methods: {
@@ -130,7 +132,7 @@ export default {
       post('Shop/GetOrderDetail',{
         UserId:wx.getStorageSync("userId"),
         Token:wx.getStorageSync("token"),
-        OrderId:this.$mp.query.id||'202004011425515955371'
+        OrderId:this.$mp.query.id
       }).then(res=>{
         const data= res.data;
         let p = data.OrderInfo;
@@ -159,10 +161,15 @@ export default {
         p.fahuodate = editTime(p.fahuodate,'time');
         p.barterDate = editTime(p.barterDate,'time');
         this.info = p;
-        console.log(this.info,'info')
-        if (this.info.StatusId == 2 || this.info.StatusId == 3) {
+        if (this.info.statue == 2 || this.info.statue == 3|| this.info.statue == 4) {
 						this.getLogistics();
 					}
+      })
+    },
+    // 跳转发货
+    ship(orderId){
+      wx.navigateTo({
+        url:`/pages/proAdminSon/ship/main?OrderId=${orderId}`
       })
     },
     //物流信息
@@ -170,44 +177,22 @@ export default {
       let result = await post("Order/GetLogistics", {
         UserId:wx.getStorageSync("userId"),
         Token:wx.getStorageSync("token"),
-        OrderNo: this.$mp.query.id||'202004011425515955371'
+        OrderNo: this.$mp.query.id||''
       });
       if (result.code == 0) {
         this.logistics = result.data.kuaidiInfo;
       }
     },
-    //微信支付需参数
-    async ConfirmWeiXinSmallPay(){
-      let result = await post('Pay/WeiXinSmallPayByOrder',{
-        OrderNo:this.$mp.query.id,
-        UserId:wx.getStorageSync("userId"),
-        Token:wx.getStorageSync("token"),
-        WxCode:wx.getStorageSync("wxCode"),
-				WxOpenid:wx.getStorageSync("openId")
-      })
-      let payData=JSON.parse(result.data.JsParam)
-      if(result.code==0){
-        let _this=this;
-        wx.requestPayment({
-          timeStamp: payData.timeStamp,
-          nonceStr: payData.nonceStr,
-          package: payData.package,
-          signType: payData.signType,
-          paySign: payData.paySign,
-          success(res) {
-              wx.redirectTo({
-                url: "/pages/goodsSon/paysuccess/main?OrderNo="+_this.$mp.query.id
-              })
-            },
-          fail(res) {
-            console.log(res);
-            wx.redirectTo({
-              url: "/pages/goodsSon/paysuccess/main?OrderNo="+_this.$mp.query.id+"&msg=fail"
-            })
-          }
-        })
-      }
+    // 查看物流
+    goLogistics(){
+        this.goUrl('/pages/myson2/orderRoute/main',this.info.orderid);
     },
+    // 修改地址
+    editAddress(){
+      wx.navigateTo({
+        url:`/pages/proAdminSon/editAddress/main?OrderId=${this.$mp.query.id}`
+      })
+    }
 
   },
 }

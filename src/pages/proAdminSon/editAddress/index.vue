@@ -1,21 +1,42 @@
 <template>
   <div class="ca">
       <div class="bpm-box">
-          <div class="list ali-c">
-            <span>快递公司</span>
-            <input type="text" placeholder="请选择快递公司" v-model="inc">
+        <div class="list ali-c">
+          <span>收货人</span>
+          <input type="text" placeholder="请输入收货人姓名" v-model="detail.contactName">
+        </div>
+        <div class="list ali-c">
+          <span>手机号码</span>
+          <input type="text" placeholder="请输入收货人电话" v-model="detail.tel">
+        </div>
+        <div class="list ali-c jus-b" @tap="showArea = true">
+          <span>所在地区</span>
+          <div class="ali-c flex1">
+            <input type="text" placeholder="请选择地区" class="flex1" disabled v-model="address">
+            <img src="http://jd.wtvxin.com/images/images/icons/right.png" alt="" class="icon_right">
           </div>
-          <div class="list ali-c">
-            <span>快递号</span>
-            <input type="text" placeholder="请输入快递号" v-model="no">
-          </div>
-          <p class="btn" @tap="submit">立即发货</p>
+        </div>
+        <div class="list ali-c">
+          <span>详细地址</span>
+          <input type="text" placeholder="请输入街道门牌等信息" v-model="detail.addr">
+        </div>
+        <!-- <checkbox-group class="ddd" @tap="change">
+          <label class="checkbox">
+            <checkbox :checked="isDefault == 1" /><text>设为默认收货地址</text>
+          </label>
+        </checkbox-group> -->
+        <p class="btn" @tap="submit">提交</p>
       </div>
+      <van-popup :show="showArea" position="bottom" :overlay="true" @close="showArea = false">
+        <van-area :area-list="areaList" @cancel="showArea = false" :value="defaultArea" title="请选择区域" @confirm="confirmArea"/>
+      </van-popup>
   </div>
 </template>
 
 <script>
+import areaList from "@/utils/areaList";
 import {post} from '@/utils';
+import { formatTime } from '@/utils/index';
 
 
 export default {
@@ -23,21 +44,41 @@ export default {
     return {
       token: "",
       userId: "",
+      ProvinceCode:0,
+      ProvinceName:"",
+      CityCode:0,
+      CityName:"",
+      DistrictCode:0,
+      DistrictName:"",
+      address:"",//地区展示
+      areaList,
+      showArea: false,
       OrderId:'',//订单号
-      inc:'',//快递公司
-      no:'',//快递单号
+      detail:'',//订单详情
+      defaultArea:'',//默认地区
     }
   },
   onLoad(){
-    wx.setNavigationBarTitle({
-      title: "发货"
-    });
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.OrderId=this.$mp.query.OrderId||'';
+    
+    this.initData()
     this.getData();
+    wx.setNavigationBarTitle({
+      title: "编辑收货地址"
+    });
   },
   methods:{
+    initData(){
+      this.ProvinceCode = ''
+      this.ProvinceName = ''
+      this.CityCode =''
+      this.CityName = ''
+      this.DistrictCode = ''
+      this.DistrictName = ''
+      this.address = ''
+    },
     getData(){
       post('Shop/GetOrderDetail',{
         UserId:wx.getStorageSync("userId"),
@@ -108,12 +149,16 @@ export default {
             return false;
         }
         const detail = this.detail;
-        post('Shop/Dlivery',{
+        post('Shop/UpdateShippingAddress',{
             userId:this.userId,
             Token: this.token,
             OrderId:this.OrderId,
-            "ExpressId": this.no,
-            "ExpressCompany": "string"
+            ContactName:detail.contactName,
+            Tel: detail.tel,
+            Addr: detail.addr,
+            "Province": this.ProvinceCode,
+            "City": this.CityCode,
+            "Area": this.DistrictCode
           }).then(res=>{
             wx.showToast({
               title: res.msg

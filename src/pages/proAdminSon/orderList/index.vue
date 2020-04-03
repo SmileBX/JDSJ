@@ -25,11 +25,11 @@
             </div>
             <div class="address">收货人：{{item.OrderInfo.Name}}</div>
             <div class="text_right font24 bor_tit">共{{item.OrderInfo.Number}}件商品 合计 <span class="cr font30">  ¥{{item.OrderInfo.Total}}</span></div>
-            <div class="flex justifyContentEnd pp2">
+            <div class="flex justifyContentEnd pp2" v-if="item.OrderInfo.Statue<4&&item.OrderInfo.Statue>0">
                 <!-- 0待付款,  1待发货,  2已发货,  3已收货,   4已评价,  -->
-                <p class="btn btn_gray" @click="cliListBtn(item,2)" v-if="item.OrderInfo.Statue==1">修改地址</p>
+                <!-- <p class="btn btn_gray" @click="cliListBtn(item,2)" v-if="item.OrderInfo.Statue==1">修改地址</p> -->
                 <p class="btn btn_gray" @click="cliListBtn(item,3)" v-if="item.OrderInfo.Statue==2||item.OrderInfo.Statue==3">查看物流</p>
-                <p class="btn btn_red" @click="cliListBtn(item,1)" v-if="item.OrderInfo.Statue==1">发货</p>
+                <p class="btn btn_red" @click="ship(item.OrderInfo.OrderId)" v-if="item.OrderInfo.Statue==1">发货</p>
             </div>
         </div>
       </div>
@@ -82,20 +82,6 @@ export default {
     this.getList()
   },
   methods: {
-    // 按钮点击
-      // Statue  0待付款,  1待发货,  2已发货,  3已收货,   4已评价
-    // btnIndex  1发货； 2修改地址； 3查看物流
-    cliListBtn(item,btnIndex){
-      const info = item.OrderInfo;
-      if(btnIndex===1){
-        this.showCancel = true
-        this.cancelGoodsId = id
-      }else if(btnIndex===2){
-        this.goUrl('/pages/myson2/orderRoute/main',info.OrderId)
-      }else if(btnIndex===3){
-        this.goUrl('/pages/myson2/orderRoute/main',info.OrderId)
-      }
-    },
     getList(){
       post('Shop/GetOrderList',{
         UserId:wx.getStorageSync("userId"),
@@ -148,6 +134,26 @@ export default {
       this.list = []
       this.getList()
       // console.log(this.tabIndex,"this.tabIndex")
+    },
+    // 查看物流
+      // Statue  0待付款,  1待发货,  2已发货,  3已收货,   4已评价
+    cliListBtn(item,btnIndex){
+      const info = item.OrderInfo;
+      // if(btnIndex===1){
+      //   this.showCancel = true
+      //   this.cancelGoodsId = id
+      // }else if(btnIndex===2){
+      //   this.goUrl('/pages/myson2/orderRoute/main',info.OrderId)
+      // }else 
+      if(btnIndex===3){
+        this.goUrl('/pages/myson2/orderRoute/main',info.OrderId)
+      }
+    },
+    // 跳转发货
+    ship(orderId){
+      wx.navigateTo({
+        url:`/pages/proAdminSon/ship/main?OrderId=${orderId}`
+      })
     },
   },
   onReachBottom(){
