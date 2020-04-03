@@ -38,8 +38,9 @@
     {
       "root":"pages/proAdminSon/",
       "pages":[
-        "index/main",
-        "order/main"
+        "orderList/main",
+        "orderDetail/main",
+        "ship/main"
       ]
     },
     {

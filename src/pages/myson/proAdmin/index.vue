@@ -1,175 +1,162 @@
 <template>
-  <div class="ticket">
-    <block v-if="hasData">
-      <div class="list jus-b" v-for="(item,index) in list" :key="index">
-        <div class="left flex">
-          <div class="price">
-            {{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span>
-          </div>
-          <div>
-            <p v-if="item.DiscountType==1">满{{item.MeetConditions}}元减{{item.Denomination}}元券</p>
-            <p v-else>满{{item.MeetConditions}}元打{{item.Denomination*10}}折券</p>
-            <span>有效期至{{item.EndTime}}</span>
-          </div>
-          <div class="flexc back_col">{{item.DiscountType==1?'减满券':'折扣券'}}</div>
+  <div class="admin">
+      <div class="tabs">
+        <div class="left" @click="goUrl('proAdminSon/orderList')">
+          <img src="/static/icons/order.png" alt="">
+          <p>订单管理</p>
         </div>
-        <div class="right flexc back_col" @click="ReceiveCoupon(item.Id)">
-          <div>
-            <!-- <p>20<span>元</span></p>
-            <span>满100可使用</span> -->
-            <p>立即领取</p>
+        <div class="right">
+          <img src="/static/icons/shop.png" alt="">
+          <p>店铺管理</p>
+        </div>
+      </div>
+      <div class="content">
+        <div class="dataBox">
+          <h2>今日数据</h2>
+          <div class="data">
+            <div class="list1">
+              <p>访客数</p>
+              <span>{{today.VisitCountToday}}</span>
+            </div>
+            <div class="list2">
+              <p>订单数</p>
+              <span>{{today.TodayOrderCount}}</span>
+            </div>
+            <div class="list1">
+              <p>订单金额</p>
+              <span>{{today.TodayAmount}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dataBox">
+          <h2>总计数据</h2>
+          <div class="data">
+            <div class="list1">
+              <p>访客数</p>
+              <span>{{shop.VisitCount}}</span>
+            </div>
+            <div class="list2">
+              <p>订单数</p>
+              <span>{{shop.AllOrderCount}}</span>
+            </div>
+            <div class="list1">
+              <p>订单金额</p>
+              <span>{{shop.AllAmount}}</span>
+            </div>
           </div>
         </div>
       </div>
-    </block>
-    <noData :isShow="noDataIsShow"></noData>
   </div>
 </template>
 
 <script>
-import {post,get} from '@/utils'
-import noData from "@/components/noData"; //没有数据的通用提示
+import {post,get} from '@/utils';
 export default {
-  components: {
-		noData,
-  },
   data () {
     return {
       userId: "",
 			token: "",
       shopid:"",
-      hasData:false,
-      noDataIsShow:false,
-      page: 1,
-      pageSize: 99,
-      list:[],
+      shop:{},
+      today:{},
     }
   },
   onShow(){
     this.shopid=wx.getStorageSync("shopid");
     this.userId=wx.getStorageSync("userId");
     this.token=wx.getStorageSync("token");
-    this.GetCouponCenter()
+    this.getShopData()
+    this.getTodayData()
   },
   methods: {
-    async GetCouponCenter(){
-      let res=await post("Coupon/CouponCenter",{
+    async getShopData(){
+      let res=await post("Shop/GetStatisticsInfo",{
         "UserId": this.userId,
         "Token": this.token,
-        "page": this.page,
-        "pageSize": this.pageSize,
         "ShopId": this.shopid,
-        "ProClassId": 0,
-        "Enable": 3
       })
-      if(res.code==0){
-        if (res.count == 0) {
-						this.noDataIsShow = true;
-						this.hasData = false;
-					}else{
-            this.hasData = true;
-            this.noDataIsShow = false;
-          }
-        this.list = res.data;
-      }
+      this.shop = res.data;
     },
-    async ReceiveCoupon(id){
-      let res=await post("Coupon/ReceiveCoupon",{
+    async getTodayData(id){
+      let res=await post("Shop/GetStatisticsInfoToday",{
         "UserId": this.userId,
         "Token": this.token,
-        "CouponId": id
+        "ShopId": this.shopid,
       })
-        wx.showToast({
-          title: res.msg,
-          icon: 'none',
-        })
+      this.today = res.data;
     },
+    goUrl(url){
+      wx.navigateTo({
+        url:'/pages/'+url+'/main'
+      })
+    }
   },
 }
 </script>
 
 <style scoped lang='scss'>
-.list::after{
-  content:'';
-  display: inline-block;
-  position: absolute;
-  top: -20rpx;
-  left: 440rpx;
-  width: 40rpx;
-  height: 40rpx;
-  border-radius: 50%;
-  background-color: #f5f5f5;
-}
-.list::before{
-  content:'';
-  display: inline-block;
-  position: absolute;
-  bottom: -20rpx;
-  left: 440rpx;
-  width: 40rpx;
-  height: 40rpx;
-  border-radius: 50%;
-  background-color: #f5f5f5;
-}
-.list{
-  width: 690rpx;
-  height: 180rpx;
-  border-radius: 15rpx;
-  margin: 30rpx;
-  background-color: #fff;
-  overflow: hidden;
-  position: relative;
-  .use{
-    background-color: #d4d5d6!important
-  }
-  .left{
-    width: 460rpx;
-    padding: 60rpx 0 0 35rpx;
-    position: relative;
-    .price{
-      color: #f00;
-      font-size: 48rpx;
-      margin-right: 20rpx;
-      span{
-        font-size: 30rpx!important;
-        color: #f00;
+  .tabs{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40rpx 0;
+    margin:20rpx 0;
+    background:#fff;
+    &>div{
+      margin:0 100rpx;
+      img{
+        display:flex;
+        flex-flow:column nowrap;
+        align-items:center;
+        width:100rpx;
+        height:100rpx;
+      }
+      p{
+        font-size:28rpx;
+        line-height:1.5;
       }
     }
-    span{
-      font-size: 20rpx;
-      color: #999;
-    }
-    .back_col{
-      width: 128rpx;
-	    height: 40rpx;
-      border-radius: 0 0 24px 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      font-size: 24rpx;
-      color: #fff
-    }
   }
-  .right{
-    width: 230rpx;
-    background-color: #d4d5d6;
-    text-align: center;
-    p{
-      color: #fff;
-      font-size: 38rpx;
-      font-weight: bold;
-      span{
-        font-size: 20rpx
+  .content{
+    background:#fff;
+    .dataBox{
+      padding-top:25rpx;
+    }
+    h2{
+      position:relative;
+      font-size:32rpx;
+      padding-left:20rpx;
+      line-height:36rpx;
+      &::before{
+        content:'';
+        display:block;
+        width:8rpx;
+        height:32rpx;
+        background:#ff3333;
+        position:absolute;
+        left:0;
+        top:2rpx;
       }
     }
-    span{
-      font-size: 20rpx;
-      color: #fff;
+    .data{
+      margin:0 20rpx;
+      padding:20rpx 0 ;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      text-align:center;
+      border-bottom:#e8e8e8 solid 1rpx;
+      &>div{
+      }
+      p{
+        font-size:28rpx;
+        color:#666;
+        line-height:1.5;
+      }
+      span{
+        font-size:36rpx;
+        line-height:1.6;
+      }
     }
   }
-}
-.back_col{
-  background-color: #ff3333!important;
-}
-
 </style>

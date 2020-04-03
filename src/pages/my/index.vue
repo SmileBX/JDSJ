@@ -107,7 +107,7 @@
                 <p>申请店铺</p>
               </div>
             </div>
-            <div class="icon flexc"  @click="switchPath('/pages/proAdminSon/index/main')">
+            <div class="icon flexc"  @click="switchPath('/pages/myson/proAdmin/main')">
               <div>
                 <img src="/static/icons/store.png" alt="">
                 <p>商品管理</p>
