@@ -300,6 +300,35 @@
 					"id": -1,
 					"name": "公告列表",
 					"pathName": "pages/news/newslist/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "添加一级分类",
+					"pathName": "pages/proAdminSon/choseTypeOne/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "二级分类",
+					"pathName": "pages/proAdminSon/choseTypeTwo/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "选择品牌",
+					"pathName": "pages/proAdminSon/choseBrand/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "上传商品",
+					"pathName": "pages/proAdminSon/upLoadPro/main",
+					"query": "",
 					"scene": null
 				}
 			]
