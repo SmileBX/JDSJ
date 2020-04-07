@@ -31,7 +31,8 @@
         "mycomment/main",
         "addInvoice/main",
         "invoiceList/main",
-        "addaddress/main"
+        "addaddress/main",
+        "proAdmin/main"
       ]
     },
     {
@@ -54,6 +55,19 @@
         "orderdetail/main",
         "confirmOrder/main",
         "teamDetail/main"
+      ]
+    },
+    {
+      "root":"pages/proAdminSon/",
+      "pages":[
+        "choseTypeOne/main",
+        "choseTypeTwo/main",
+        "choseBrand/main",
+        "upLoadPro/main",
+        "orderList/main",
+        "orderDetail/main",
+        "editAddress/main",
+        "ship/main"
       ]
     },
     {
