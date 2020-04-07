@@ -193,7 +193,7 @@ export default {
             wxToast('请输入商品重量！')
             return false
         }
-        if(this.query.TypeId == 0){
+        if(this.query.ClassId == 0){
             wxToast('请选择商品分类！')
             return false
         }

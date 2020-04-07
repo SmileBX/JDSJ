@@ -64,7 +64,16 @@ export default {
           })
           return false
         }
-        let str;
+        // 现在是每点击一次一级分类就会重置，这个方法用于解决这个问题
+        this.typeList.map(item=>{
+          item.SubClassInfoList.map(son=>{
+            if(son.Id===this.ClassId){
+              this.TypeId = item.ParentClassInfo.Id;
+              this.oneType = item.ParentClassInfo.ClassName;
+            }
+          })
+        })
+        let str='';
         this.twoType?(str = this.oneType + ' , ' + this.twoType):(str = this.oneType)
         wx.redirectTo({
           url:'/pages/proAdminSon/upLoadPro/main?TypeId='+this.TypeId+"&ClassId="+this.ClassId+"&TypeStr="+str
