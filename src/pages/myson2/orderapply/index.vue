@@ -43,15 +43,22 @@ export default {
       isFocus: false,
     }
   },
-  
+  onLoad(){
+    this.content='';
+    this.showList=false;
+    this.isContentFocus=false;
+    this.isInputContentFocus=false;
+    this.isFocus=false;
+    this.changeReason={};
+
+  },
   onShow(){
     this.type = this.$mp.query.type
     wx.setNavigationBarTitle({
       title: this.type==1?'申请退款':'申请退货'
     })
     this.text = this.type==1?'退款':'退货'
-    this.showList = false
-    console.log(this.$mp.query)
+    this.showList = false;
     this.getReason()
     this.getGoodsDetail()
   },
