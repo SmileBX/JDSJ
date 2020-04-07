@@ -22,7 +22,7 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "wx29f3bc26447a5652",
+	"appid": "wxbfbd6bf048020ffc",
 	"projectname": "%E9%9B%86%E5%BA%97",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
@@ -300,6 +300,14 @@
 					"id": -1,
 					"name": "公告列表",
 					"pathName": "pages/news/newslist/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "注册",
+					"pathName": "pages/login/register/main",
+					"query": "",
 					"scene": null
 				}
 			]
