@@ -1,7 +1,6 @@
 import logins from './login'
 
 // 线上后台地址
-// const filePath = 'http://xcx.gllgyz.com';
 const host = 'http://jdapi.wtvxin.com/api/';// 测试
 const wssPath = 'ws://jdapi.wtvxin.com';// wss地址
 const filePath = 'http://jd.wtvxin.com/';// 测试后台地址

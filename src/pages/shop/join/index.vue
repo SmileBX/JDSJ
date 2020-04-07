@@ -169,13 +169,13 @@ export default {
         })
         return false
       }
-      if(this.typeindex<0){
-        wx.showToast({
-          title:"请选择店铺主营产品！",
-          icon:"none"
-        })
-        return false
-      }
+      // if(this.typeindex<0){
+      //   wx.showToast({
+      //     title:"请选择店铺主营产品！",
+      //     icon:"none"
+      //   })
+      //   return false
+      // }
       if(this.ShopName==""){
         wx.showToast({
           title:"请输入您的姓名",

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <swiper class="swiper" @change="changeBanner">
+      <swiper class="swiper" @change="changeBanner" indicator-dots indicator-active-color="#ff3333">
         <div class="numpage">{{bannerindex+1}}/{{BannerNum}}</div>
         <swiper-item class="flexc" v-for="(item,index) in proInfo.ProductImgList" :key="index">
           <img mode='aspectFill' :src="item.PicUrl" alt="">
@@ -232,7 +232,7 @@
         <div class="couponbox" style="z-index: 10000;">
           <div class="titlebox">
             <div class="title">优惠券</div>
-            <!-- <div  @click="hidePopup" class="close">×</div> -->
+            <div  @click="hidePopup" class="close">×</div>
           </div>
           <div class="tips">可领优惠券<span>领取后可用于该商品</span></div>
           <scroll-view scroll-y style="width: 100%;height: 560rpx;">
@@ -611,10 +611,21 @@ export default {
         }
         _this.timeStr = [d,h,m,s];
       } else {
-        this.starTimetype=2;
-        clearInterval(this.timer);
+        _this.starTimetype=2;
+        clearInterval(_this.timer);
+        _this.onTimeEnd();
       }
       }, 1000);
+    },
+    // 已结束
+    onTimeEnd(){
+        wx.showToast({
+          title:'抢购已结束！',
+          icon:'none'
+        })
+        setTimeout(()=>{
+          wx.navigateBack();
+        },1500)
     },
     //获取购物车数
     async GetAllCartNumber(){

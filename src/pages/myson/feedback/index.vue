@@ -57,12 +57,16 @@ export default {
       isUploadBtn:true,//显示上传图片按钮
     }
   },
-  onShow(){
+  onLoad(){
+    this.PicList = [];
+    this.Name='';
+    this.Mobile='';
+    this.Content='';
+    this.typeTxt='请选择';
     this.getTypelist();
   },
   methods: {
     gettype(e){
-      console.log(e)
       this.type=e.code;
       this.typeTxt=e.message
     },
@@ -89,9 +93,10 @@ export default {
                 title:"提交成功"
             })
             setTimeout(() => {
-                wx.switchTab({
-                  url:"/pages/my/main"
-                });
+                // wx.switchTab({
+                //   url:"/pages/my/main"
+                // });
+                wx.navigateBack();
             }, 1500);
         }
     },
