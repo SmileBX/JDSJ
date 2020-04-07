@@ -18,9 +18,15 @@
       </div>
       <div style="height:90rpx"></div>
       <div class="footbox">
-        <div class="footItem" @click="goUrl('/pages/news/newsdetail/main?type=1')">购物须知</div>
-        <div class="footItem" @click="goUrl('/pages/news/newsdetail/main?type=2')">服务条款</div>
-        <div class="footItem" @click="notUrl">物流查询</div>
+        <div class="footItem" @click="goUrl('/pages/news/newsdetail/main?type=1')">
+          <img src="/static/icons/shop-label.png" alt="" mode="widthFix">
+          购物须知</div>
+        <div class="footItem" @click="goUrl('/pages/news/newsdetail/main?type=2')">
+          <img src="/static/icons/shop-label.png" alt="" mode="widthFix">
+          服务条款</div>
+        <div class="footItem" @click="notUrl">
+          <img src="/static/icons/shop-label.png" alt="" mode="widthFix">
+          物流查询</div>
       </div>
   </div>
 </template>
@@ -125,9 +131,10 @@ export default {
     }
     .footbox{
       width: 100%;
-      padding: 0 30rpx;
+      padding:10rpx 0;
       height: 90rpx;
-      background: #f5f5f5;
+      line-height: 90rpx;
+      background: #fff;
       position: fixed;
       bottom: 0;
       left: 0;
@@ -137,10 +144,20 @@ export default {
       border-radius:7rpx;
       .footItem{
         text-align: center;
-        width: 30%;
-        height: 60rpx;
-        line-height: 60rpx;
-        background: #fff;
+        width:33.333%;
+        height: 70rpx;
+        line-height: 70rpx;
+        border-right:1rpx solid #f2f2f2;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        img{
+          width:20rpx;
+          margin:5rpx 10rpx 0;
+        }
+        &:last-child{
+          border-right:none;
+        }
       }
     }
 </style>
