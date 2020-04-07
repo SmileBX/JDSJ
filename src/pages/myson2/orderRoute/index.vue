@@ -4,7 +4,7 @@
       <img :src="logo" alt="">
       <div>
         <p><span>物流公司：</span>{{companyName}}</p>
-        <p class="ali-c"><span>物流单号：</span>{{nu||''}}<span class="copy ali-c jus-c" @click="cop" v-if="nu">复制</span></p>
+        <p class="ali-c"><span>物流单号：</span>{{nu||'信息错误，请联系商家'}}<span class="copy ali-c jus-c" @click="cop" v-if="nu">复制</span></p>
         <!-- <p>预计8月22日送达</p> -->
       </div>
     </div>
@@ -40,11 +40,12 @@ export default {
       companyName:"",
       nu:"",
       address:'',
-      imgUrl:''
+      isAdmin:0,
     }
   },
-  onLoad(){
-
+  onLoad(options){
+    this.isAdmin = 0;
+    this.isAdmin = options.isAdmin||0;
   },
   onShow(){
     this.getInfo()
@@ -77,16 +78,26 @@ export default {
         this.companyName=res.data.kuaidiInfo.companyName;
         this.nu=res.data.kuaidiInfo.nu;
         this.msg=res.data.kuaidiInfo.data;
-        console.log(this.msg)
-        post('Order/OrderDetails',{//订单详情
-          UserId:wx.getStorageSync("userId"),
-          Token:wx.getStorageSync("token"),
-          OrderNo:this.$mp.query.id||'202001180957399227156'
-        }).then(resu=>{
-          console.log(resu)
-          this.address = resu.data.Address
-          this.imgUrl = resu.data.ShopLogo
-        })
+        // 商家
+        if(this.isAdmin){
+          post('Shop/GetOrderDetail',{//订单详情
+            UserId:wx.getStorageSync("userId"),
+            Token:wx.getStorageSync("token"),
+            OrderId:this.$mp.query.id
+          }).then(resu=>{
+            const data= resu.data.OrderInfo;
+            console.log(data)
+            this.address = data.areaName + data.addr;
+          })
+        }else{
+          post('Order/OrderDetails',{//订单详情
+            UserId:wx.getStorageSync("userId"),
+            Token:wx.getStorageSync("token"),
+            OrderNo:this.$mp.query.id
+          }).then(resu=>{
+            this.address = resu.data.Address
+          })
+        }
       })
     }
     

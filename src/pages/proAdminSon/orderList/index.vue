@@ -146,7 +146,9 @@ export default {
       //   this.goUrl('/pages/myson2/orderRoute/main',info.OrderId)
       // }else 
       if(btnIndex===3){
-        this.goUrl('/pages/myson2/orderRoute/main',info.OrderId)
+        wx.navigateTo({
+          url:`/pages/myson2/orderRoute/main?id=${info.OrderId}&isAdmin=1`
+        })
       }
     },
     // 跳转发货

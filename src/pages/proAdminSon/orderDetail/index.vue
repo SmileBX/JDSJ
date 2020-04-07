@@ -4,7 +4,7 @@
         <div class="bg_statu">{{info.StatusName}}</div>
         <div class="pp2 flexc  bg_fff bor_tit" v-if="info.statue==2||info.statue==3||info.statue==4">
             <img src="http://jd.wtvxin.com/images/images/icons/kc.png" alt="" class="kc_icon">
-            <div class="flex flex1 flexAlignCenter" @click="goUrl('/pages/myson2/orderRoute/main',info.orderid)">
+            <div class="flex flex1 flexAlignCenter" @click="goLogistics">
                 <div class="flex1">
                   <block v-if="logistics.data">  
                     <p class="cr twoline">
@@ -185,7 +185,9 @@ export default {
     },
     // 查看物流
     goLogistics(){
-        this.goUrl('/pages/myson2/orderRoute/main',this.info.orderid);
+      wx.navigateTo({
+        url:`/pages/myson2/orderRoute/main?id=${this.$mp.query.id}&isAdmin=1`
+      })
     },
     // 修改地址
     editAddress(){

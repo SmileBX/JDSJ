@@ -107,7 +107,7 @@
                 <p>申请店铺</p>
               </div>
             </div>
-            <div class="icon flexc"  @click="switchPath('/pages/myson/proAdmin/main')">
+            <div class="icon flexc"  @click="switchPath('/pages/myson/proAdmin/main')" v-if="isAdmin">
               <div>
                 <img src="/static/icons/store.png" alt="">
                 <p>商品管理</p>
@@ -155,7 +155,8 @@ export default {
   data () {
     return {
       info:{},
-      orderNum:{}
+      orderNum:{},
+      isAdmin:0,//是否客服
       // orderList:['待付款','待发货','待收货','待评价','退款/售后']
     }
   },
@@ -184,6 +185,15 @@ export default {
       }).then(res=>{
         if(res.code===0){
           this.orderNum = res.data
+        }
+      })
+      // 判断是否客服，/管理员
+      post('User/GetShopService',{
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token")
+      }).then(res=>{
+        if(res.code===0){
+          this.isAdmin = res.data
         }
       })
     },

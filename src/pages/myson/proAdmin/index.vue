@@ -5,7 +5,7 @@
           <img src="/static/icons/order.png" alt="">
           <p>订单管理</p>
         </div>
-        <div class="right">
+        <div class="right" @click="goUrl('proAdminSon/upLoadPro')">
           <img src="/static/icons/shop.png" alt="">
           <p>店铺管理</p>
         </div>
