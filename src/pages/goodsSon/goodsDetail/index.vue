@@ -1,7 +1,7 @@
 <template>
   <div>
+      <div class="numpage">{{bannerindex+1}}/{{BannerNum}}</div>
       <swiper class="swiper" @change="changeBanner" indicator-dots indicator-active-color="#ff3333">
-        <div class="numpage">{{bannerindex+1}}/{{BannerNum}}</div>
         <swiper-item class="flexc" v-for="(item,index) in proInfo.ProductImgList" :key="index">
           <img mode='aspectFill' :src="item.PicUrl" alt="">
         </swiper-item>
@@ -1019,20 +1019,21 @@ export default {
     }
   }
 }
-.swiper{
-  height: 700rpx;
-  position: relative;
-  .numpage{
-    position: absolute;
+.numpage{
+    position: fixed;
     right: 20rpx; 
-    bottom: 20rpx;
+    top: 640rpx;
     padding: 0 10rpx;
     color: #fff;
     font-size: 24rpx;
     background: rgba(0,0,0,.4); 
     border-radius: 100px;
-    z-index: 2;
+    z-index: 112;
   }
+.swiper{
+  height: 700rpx;
+  position: relative;
+  
   img{
     width: 100%;
     height: 100%;

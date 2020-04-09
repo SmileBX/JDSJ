@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="or_item bg_fff ">
-            <div class="pp3 flex bor_tit" @click="goUrl('/pages/goodsSon/goodsDetail/main',item.ProductId)" v-for="(item, index) in info.orderDetails" :key="index">
+            <div class="pp3 flex bor_tit" @click="godetail('/pages/goodsSon/goodsDetail/main',item.ProductId,info.ShopId)" v-for="(item, index) in info.orderDetails" :key="index">
                 <img :src="item.ProductImg" alt="" class="shop">
                 <div class="flex1 flex flexAlignCenter mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
@@ -121,6 +121,19 @@ export default {
       })
     },
     goUrl(url,param){
+      wx.navigateTo({
+        url:url+'?id='+param
+      })
+    },
+    godetail(url,param,sid){
+      var  shopid = wx.getStorageSync("shopid");
+      if(shopid!=sid){
+        wx.showToast({
+          icon:'none',
+          title:'该商品不是当前店铺的商品！'
+        })
+        return false
+      }
       wx.navigateTo({
         url:url+'?id='+param
       })
