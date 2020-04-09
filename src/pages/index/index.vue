@@ -214,6 +214,7 @@ export default {
         ShopId:this.shopid
       })
       if(res.code==0){
+        this.banner=[]
         if(res.data){
           res.data=res.data.slice(0,res.data.length-1);
           this.banner=res.data.split(',');

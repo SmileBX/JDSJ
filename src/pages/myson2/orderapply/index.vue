@@ -39,7 +39,7 @@ export default {
       type:0,
       text:'',
       isContentFocus: true,
-      isInputContentFocus: false,
+      isInputContentFocus: true,
       isFocus: false,
     }
   },
@@ -47,7 +47,7 @@ export default {
     this.content='';
     this.showList=false;
     this.isContentFocus=false;
-    this.isInputContentFocus=false;
+    this.isInputContentFocus=true;
     this.isFocus=false;
     this.changeReason={};
 

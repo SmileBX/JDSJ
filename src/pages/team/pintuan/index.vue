@@ -15,7 +15,7 @@
         </div>
         <div class="tuan">
           <p class="one">还差{{data.RemainingNum}}人即可成团</p>
-          <p class="two flexc" v-if="timeEnd||data.GroupStatus!==2">剩余<span>{{timeEnd}}</span>结束</p>
+          <p class="two flexc" v-if="timeEnd&&data.GroupStatus!==2">剩余<span>{{timeEnd}}</span>结束</p>
           <p class="two flexc" v-else><span>已结束</span></p>
           <div class="flexc thr">
             <div v-for="(item, index) in data.MemberList" :key="index">
@@ -97,7 +97,7 @@ export default {
     },
     timeEnds(){
       const timeend = new Date(editTime(this.data.EndTime,'s')).getTime();
-      const diff = timeend - new Date().getTime();
+      const diff = timeend - new Date().getTime();console.log(diff)
       // 小于0，已过时间
       if(diff<0){ 
         this.timeEnd ='';
@@ -145,7 +145,7 @@ export default {
           timeText+=this.formatNumber(m)+':'
         }
         timeText+=this.formatNumber(s);
-        this.timeEnd =timeText;
+        this.timeEnd =timeText;console.log(this.timeEnd)
         timeText = '';
       },1000) 
     },
