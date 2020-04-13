@@ -330,6 +330,12 @@
 					"pathName": "pages/proAdminSon/upLoadPro/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "店铺我的订单",
+					"pathName": "pages/proAdminSon/orderList/main",
+					"scene": null
 				}
 			]
 		}

@@ -46,6 +46,17 @@
           <switch :checked="query.SalesStatus" color="#ff3333" @change="switch1Change"/>
         </div>
         <div class="item flex justifyContentBetween flexAlignCenter bt">
+          <div>是否包邮</div>
+          <switch :checked="query.IsPinkage==0" color="#ff3333" @change="PinkageChange"/>
+        </div>
+        <div class="item flex justifyContentBetween flexAlignCenter bt" v-if="query.IsPinkage==1" @click="showFreightpicker"> 
+          <div>运费模板</div>
+          <div class="flex flexAlignCenter">
+             <input type="text" placeholder="请选择运费模板" class="text_right" disabled v-model="Freighttxt">
+             <img src="/static/arrow_r.png" alt="" class="arrow_r mr2">
+          </div>
+        </div>
+        <div class="item flex justifyContentBetween flexAlignCenter bt">
           <div>商品标签</div>
           <div class="flex tags">
               <span class="tag_item" v-for="(item,index) in tagList" :key="index" :class="{'active':activeIndex==index}" @tap="chose(index)">{{item.name}}</span>
@@ -74,9 +85,10 @@
           <input type="text" placeholder="非必填" class="text_right" v-model="query.Synopsis">
         </div>
         <div class="img_list bt pw3">
-            <div class="title boxSize">商品详情</div>
+            <div class="title boxSize">商品详情<span class="c-999">(非必填)</span></div>
             <div class="list">
                 <div class="img">
+                  <span class="close" v-if="detailPic" @click="deldetail">×</span>
                    <img :src="detailPic" alt="" v-if="detailPic">
                   <img src="/static/upImg.png" alt="" v-else @click="upLoadImg(1)">
                 </div>
@@ -85,6 +97,7 @@
     </div>
 
     <div class="btn_up" @click="upPro">立即上传</div>
+    <pickers v-if="showFreight" :arr="ThemeList" :show.sync="showFreight" @success="bindPickerChange"></pickers>
   </div>
 </template>
 
@@ -92,9 +105,11 @@
 import {post,get,wxToast} from '@/utils';
 import { pathToBase64 } from "@/utils/image-tools";
 import noData from "@/components/noData"; //没有数据的通用提示
+import pickers from '@/components/pickers';
 export default {
   components: {
-		noData,
+    noData,
+    pickers
   },
   data () {
     return {
@@ -119,13 +134,17 @@ export default {
         IsHot: 0,
         IsNewProduct: 0,
         IsExplosive: 0,
-        TypeId: 0,//商品类型 都为0
+        //TypeId: 0,//商品类型 都为0
         ClassId: 0, //二级分类id
         ProductBrandId: 0,
         Synopsis:"",
-        ContentDetail: ""
+        ContentDetail: "",
+        IsPinkage: 0,//是否包邮 1不包邮
+        FreightId: 0
       },
-      
+      Freighttxt:"",
+      showFreight:false,//弹出运费模板
+      ThemeList:[],//运费模板列表
     }
   },
   onShow(){
@@ -142,22 +161,27 @@ export default {
     if(this.$mp.query.TypeStr){
        this.TypeStr = this.$mp.query.TypeStr
     }
-   
+    this.GetFreightTemplateList();
   },
   methods: {
-      async submit(imglist){
+      async submit(){
          const res = await post('Shop/AddProduct',this.query)
          if(res.code == 0){
            wx.showToast({title:'上传成功！'})
+           setTimeout(()=>{
+              wx.navigateBack();
+            },1500)
            this.initData()
          }
       }, 
       async upPro(){
         if(this.valOther()){
           let baseArr = await this.base64Img(this.PicList);
-          let baseDetailPic = await this.base64Img(this.detailPic)
-          this.query.Pictures = JSON.stringify(baseArr)
-          this.query.ContentDetail = baseDetailPic[0].PicUrl
+          this.query.Pictures = JSON.stringify(baseArr);
+          if(this.detailPic){
+          let baseDetailPic = await this.base64Img(this.detailPic);
+          this.query.ContentDetail = baseDetailPic[0].PicUrl;
+          }
           this.submit()
 
         }
@@ -193,14 +217,18 @@ export default {
             wxToast('请输入商品重量！')
             return false
         }
+        if(this.query.IsPinkage==1&&this.query.FreightId==0){
+            wxToast('请选择运费模板！')
+            return false
+        }
         if(this.query.ClassId == 0){
             wxToast('请选择商品分类！')
             return false
         }
-        if(this.detailPic==''){
-            wxToast('请上传商品详情图！')
-            return false
-        }
+        // if(this.detailPic==''){
+        //     wxToast('请上传商品详情图！')
+        //     return false
+        // }
         return true
       },
       //商品标签
@@ -239,6 +267,39 @@ export default {
         // console.log(e)
         this.query.SalesStatus = e.mp.detail.value
       },
+      //是否包邮
+      PinkageChange(e){
+        if(e.mp.detail.value){
+          this.query.IsPinkage =0;
+        }else{
+          this.query.IsPinkage =1;
+        }
+      },
+      showFreightpicker(){
+        this.showFreight=true;
+      },
+      //选择运费模板
+      bindPickerChange(e){
+        this.Freighttxt=e[0].message;
+        let index=e[1];
+        this.query.FreightId=this.ThemeList[index].Id;
+      },
+      //获取运费模板
+      GetFreightTemplateList(){
+        post('Shop/GetFreightTemplateList',{
+          UserId:wx.getStorageSync("userId"),
+          Token:wx.getStorageSync("token"),
+          ShopId:wx.getStorageSync("shopid")
+        }).then(res=>{
+          if(res.code==0){
+            let ThemeArr=[];
+            res.data.map(item=>{
+              ThemeArr.push({message:item.FtTitle,Id:item.Id})
+            })
+            this.ThemeList=ThemeArr;
+          }
+        })
+      },
       //上传图片
       upLoadImg(type) {
           //type=1 上传1张 2-上传多张 
@@ -276,9 +337,11 @@ export default {
         this.PicList.splice(index,1);
         this.isUploadBtn = true;
       },
+      deldetail(){
+        this.detailPic="";
+      },
       switchPath(path){
         console.log(path,"path");
-        
         wx.navigateTo({
           url:path
         })
@@ -302,12 +365,16 @@ export default {
           IsHot: 0,
           IsNewProduct: 0,
           IsExplosive: 0,
-          TypeId: 0,//一级分类
+          // TypeId: 0,//一级分类
           ClassId: 0, //二级分类
           ProductBrandId: 0,
           Synopsis:"",
-          ContentDetail: ""
-        }
+          ContentDetail: "",
+          IsPinkage: 0,//是否包邮 1不包邮
+          FreightId: 0
+        },
+        this.Freighttxt="";
+        this.showFreight=false;
       }
   },
 }

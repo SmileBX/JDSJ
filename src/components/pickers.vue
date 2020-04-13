@@ -40,11 +40,12 @@ export default {
   data() {
     return {
       //临时改变的值
-      value: ""
+      value: "",
+      index:0,
     };
   },
   onLoad() {
-    console.log(this.arr,'arr')
+    //console.log(this.arr,'arr')
     this.value = this.arr[0];
     // this.arr.map((item, index) => {
     //   if (this.default === item) {
@@ -55,7 +56,7 @@ export default {
   methods: {
     // 点击确认，返回当前选中的值
     success(e) {
-      this.$emit("success", this.value);
+      this.$emit("success",[this.value,this.index]);
       this.$emit("update:show", false);
     },
     cancel() {
@@ -65,6 +66,7 @@ export default {
     onChange(e) {
       console.log(e)
       this.value = this.arr[e.mp.detail.value[0]];
+      this.index=e.mp.detail.value[0];
     }
   }
 };

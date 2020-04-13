@@ -320,8 +320,7 @@ export default {
     },
     bindPickerChange(e){
      //this.typeindex=e.mp.detail.value;
-     this.MasterProduct=e.message;
-
+     this.MasterProduct=e[0].message;
     },
     limitInput() {
       this.inputTxtLength = this.Remarks.length;
