@@ -46,7 +46,7 @@ export default {
   onLoad(){
     this.content='';
     this.showList=false;
-    this.isContentFocus=false;
+    this.isContentFocus=true;
     this.isInputContentFocus=false;
     this.isFocus=false;
     this.changeReason={};

@@ -335,6 +335,21 @@
 					"id": -1,
 					"name": "店铺我的订单",
 					"pathName": "pages/proAdminSon/orderList/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "详情",
+					"pathName": "pages/goodsSon/goodsDetail/main",
+					"query": "id= 83",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "退货",
+					"pathName": "pages/myson2/orderapply/main",
+					"query": "",
 					"scene": null
 				}
 			]

@@ -263,7 +263,7 @@
 </template>
 
 <script>
-import {post,get,previewImg} from '@/utils'
+import {post,get,previewImg,filePath} from '@/utils'
 import uniPopup from '@/components/uni-popup.vue';
 export default {
   components: {
@@ -535,6 +535,7 @@ export default {
         proId: this.proId
       })
       if(res.code==0){
+        res.data.ContentDetail = res.data.ContentDetail.replace(/<img/g,'<img style="max-width:100%;"');
         this.proInfo=res.data;
         this.BannerNum=res.data.ProductImgList.length;
         this.IsCollect=res.data.IsCollectionPro;
@@ -827,7 +828,7 @@ export default {
 	  font-weight: bold;
   }
   .detail-box{
-    image{
+    image,img{
       max-width:100%!important
     }
   }
