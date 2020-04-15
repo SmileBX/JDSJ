@@ -62,38 +62,36 @@ export default {
   },
   methods: {
     sureChose(){
+      let arr={};
       if(this.istwo){
-        if(this.ClassId == ''){
+        if(this.ClassId == 0){
           wx.showToast({
             title:'请选择分类！',
             icon:'none'
           })
           return false
+        }else{
+          arr={
+            TypeStr:this.oneType + ' , ' + this.twoType,
+            ClassId:this.ClassId
+          }
         }
       }else{
-        if(this.TypeId == ''){
+        if(this.TypeId == 0){
           wx.showToast({
             title:'请选择分类！',
             icon:'none'
           })
           return false
+        }else{
+          arr={
+            TypeStr:this.oneType,
+            ClassId:this.TypeId
+          }
         }
       }
-        // 现在是每点击一次一级分类就会重置，这个方法用于解决这个问题
-        this.typeList.map(item=>{
-          item.SubClassInfoList.map(son=>{
-            if(son.Id===this.ClassId){
-              this.TypeId = item.ParentClassInfo.Id;
-              this.oneType = item.ParentClassInfo.ClassName;
-            }
-          })
-        })
-        let str='',cid='';
-        this.twoType?(cid=this.ClassId):(cid=this.TypeId);
-        this.twoType?(str = this.oneType + ' , ' + this.twoType):(str = this.oneType);
-        wx.redirectTo({
-          url:'/pages/proAdminSon/upLoadPro/main?TypeId='+this.TypeId+"&ClassId="+cid+"&TypeStr="+str
-        })
+        wx.setStorageSync("ClassInfo",arr);
+        wx.navigateBack();
     },
    
     //展示详情
@@ -112,9 +110,14 @@ export default {
         })
         if(item.SubClassInfoList.length){
           this.istwo=true;
+          item.SubClassInfoList.map(son=>{
+            this.$set(son,"isCheck",false)
+          })
         }else{
           this.istwo=false;
         }
+        this.ClassId =0;
+        this.twoType = '';
         this.TypeId = item.ParentClassInfo.Id
         this.oneType = item.ParentClassInfo.ClassName
         console.log(this.TypeId,"typeId66666666666")

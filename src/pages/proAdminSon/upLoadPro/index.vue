@@ -119,6 +119,7 @@ export default {
       PicList:[],
       maxPicLen:6,//最多上传
       isUploadBtn:true,//显示上传图片按钮
+      ClassInfo:{},//缓存的选中分类
       TypeStr:'',//商品分类
       query:{
         UserId: "",
@@ -151,16 +152,23 @@ export default {
     this.query.UserId=wx.getStorageSync("userId");
     this.query.Token=wx.getStorageSync("token");
     this.query.ShopId = wx.getStorageSync("shopid");
+    if(wx.getStorageSync("ClassInfo")){
+      this.ClassInfo=wx.getStorageSync("ClassInfo");
+      this.query.ClassId =this.ClassInfo.ClassId;
+      this.TypeStr =this.ClassInfo.TypeStr;
+    }else{
+      this.ClassInfo={};
+    }
     // console.log(this.$mp.query.TypeId,"this.$mp.TypeId")
     // if(this.$mp.query.TypeId){
     //   this.query.TypeId = this.$mp.query.TypeId
     // }
-    if(this.$mp.query.ClassId){
-       this.query.ClassId = this.$mp.query.ClassId
-    }
-    if(this.$mp.query.TypeStr){
-       this.TypeStr = this.$mp.query.TypeStr
-    }
+    // if(this.$mp.query.ClassId){
+    //    this.query.ClassId = this.$mp.query.ClassId
+    // }
+    // if(this.$mp.query.TypeStr){
+    //    this.TypeStr = this.$mp.query.TypeStr
+    // }
     this.GetFreightTemplateList();
   },
   methods: {
@@ -347,6 +355,7 @@ export default {
         })
       },
       initData(){
+        wx.setStorageSync("ClassInfo",null);
         this.PicList = []
         this.detailPic = ''
         this.activeIndex = 0
