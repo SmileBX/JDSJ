@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="tuan">
-          <p class="one">还差{{data.RemainingNum}}人即可成团</p>
+          <p class="one" v-if="data.RemainingNum>0">还差{{data.RemainingNum}}人即可成团</p>
           <p class="two flexc" v-if="timeEnd||data.GroupStatus!==2">剩余<span>{{timeEnd}}</span>结束</p>
           <p class="two flexc" v-else><span>已结束</span></p>
           <div class="flexc thr">

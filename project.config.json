@@ -351,6 +351,12 @@
 					"pathName": "pages/myson2/orderapply/main",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "导购",
+					"pathName": "pages/service/chatRoom/main",
+					"scene": null
 				}
 			]
 		}

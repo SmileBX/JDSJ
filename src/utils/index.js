@@ -356,14 +356,23 @@ export function getNewMsgDot() {
               index: 1,
               text:num
             });
+          }else{
+            wx.removeTabBarBadge({
+              index: 1
+            });
           }
         }
-      }else{
+      }
+      else{
           wx.removeTabBarBadge({
             index: 1
           });
       }
-    });
+    }).catch(()=>{
+      wx.removeTabBarBadge({
+        index: 1
+      });
+    })
   }
 }
 // 更改时间格式
