@@ -3,7 +3,7 @@
       <div class="search_inn bg_fff">
         <div class="sear_iner flex flexAlignCenter">
             <input type="text" :focus="true" placeholder="请输入要搜索的商品" class="flex1" v-model="keyword">
-            <span class="sear_btn" @click="GetProductList()">
+            <span class="sear_btn" @click="serchpro">
                 <img src="http://jd.wtvxin.com/images/images/index/search.png" alt="" class="search">
             </span>
         </div>
@@ -203,6 +203,10 @@ export default {
 				_this.loadingType = 0; //0加载前，1加载中，2没有更多了
 				_this.GetProductList();
     },
+    serchpro(){
+      this.page=1;
+      this.GetProductList();
+    }
   },
   onReachBottom: function() {
     if (this.isLoad) {
