@@ -15,7 +15,7 @@
         </div>
         <div class="tuan">
           <p class="one" v-if="data.RemainingNum>0">还差{{data.RemainingNum}}人即可成团</p>
-          <p class="two flexc" v-if="timeEnd||data.GroupStatus!==2">剩余<span>{{timeEnd}}</span>结束</p>
+          <p class="two flexc" v-if="(timeEnd||data.GroupStatus!=2)&&data.GroupStatus!=1">剩余<span>{{timeEnd}}</span>结束</p>
           <p class="two flexc" v-else><span>已结束</span></p>
           <div class="flexc thr">
             <div v-for="(item, index) in data.MemberList" :key="index">
@@ -25,8 +25,10 @@
               <img src="http://jd.wtvxin.com/images/images/index/defute.png" alt="">
             </div>
           </div>
+          <block v-if="data.GroupStatus==0">
           <button class="fou flexc" open-type="share">邀请好友参团</button>
           <p class="fiv">请尽快成团，否则就被抢光了哦！</p>
+          </block>
         </div>
       </div>
       <div class="rule ali-c jus-b">
