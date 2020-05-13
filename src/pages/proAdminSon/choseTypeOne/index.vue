@@ -4,13 +4,18 @@
       <scroll-view scroll-y style="padding-bottom:100rpx;"> 
           <div class="list2 bg_fff">
             <div v-for="(item,index) in typeList" :key="index" class="">
-                <div class="item2 flex justifyContentBetween flexAlignCenter"  @click="showDetail(item,index)">
-                    <div :class="{'active':index==activeIndex}">{{item.ParentClassInfo.ClassName}}</div>
+              <div class="item2 flex justifyContentBetween flexAlignCenter"  @click="showDetail(item,index)">
+                  <div :class="{'active':index==activeIndex}">{{item.ParentClassInfo.ClassName}}</div>
+                  <block v-if="item.SubClassInfoList.length>0">
                     <img src="/static/arrow_r.png" alt="" class="img" v-if="!item.isShow">
                     <img src="/static/arrow_d.png" alt="" class="img2" v-else>
-                </div>
-                <!---切换展示-->
-                <div class="list pw3" v-if="item.isShow" style="background:#f5f5f5">
+                  </block>
+                  <div v-else>
+                    <radio color="#ffffff" :checked="index==activeIndex" :value="item.Id" ></radio>
+                  </div>
+              </div>
+              <!---切换展示-->
+              <div class="list pw3" v-if="item.isShow" style="background:#f5f5f5">
                 <radio-group v-if="item.SubClassInfoList.length>0">
                   <label >
                     <div class="item flex justifyContentBetween flexAlignCenter" v-for="(dll,key) in item.SubClassInfoList" :key="key" @tap="choseType(index,dll)">
@@ -19,7 +24,7 @@
                     </div>
                   </label>
                 </radio-group>
-                <div v-else style="padding:25rpx;text-align:center">暂无分类</div>
+                <!-- <div v-else style="padding:25rpx;text-align:center">暂无分类</div> -->
               </div>
             </div>
           </div>
@@ -45,8 +50,8 @@ export default {
       TypeId: 0,//一级分类
       ClassId: 0, //二级分类
       oneType:'',//
-      twoType:''
-     
+      twoType:'',
+      istwo:false,//当前是否有二级分类
     }
   },
   onShow(){
@@ -57,47 +62,67 @@ export default {
   },
   methods: {
     sureChose(){
-        if(this.ClassId == ''){
+      let arr={};
+      if(this.istwo){
+        if(this.ClassId == 0){
           wx.showToast({
             title:'请选择分类！',
             icon:'none'
           })
           return false
+        }else{
+          arr={
+            TypeStr:this.oneType + ' , ' + this.twoType,
+            ClassId:this.ClassId
+          }
         }
-        // 现在是每点击一次一级分类就会重置，这个方法用于解决这个问题
-        this.typeList.map(item=>{
-          item.SubClassInfoList.map(son=>{
-            if(son.Id===this.ClassId){
-              this.TypeId = item.ParentClassInfo.Id;
-              this.oneType = item.ParentClassInfo.ClassName;
-            }
+      }else{
+        if(this.TypeId == 0){
+          wx.showToast({
+            title:'请选择分类！',
+            icon:'none'
           })
-        })
-        let str='';
-        this.twoType?(str = this.oneType + ' , ' + this.twoType):(str = this.oneType)
-        wx.redirectTo({
-          url:'/pages/proAdminSon/upLoadPro/main?TypeId='+this.TypeId+"&ClassId="+this.ClassId+"&TypeStr="+str
-        })
+          return false
+        }else{
+          arr={
+            TypeStr:this.oneType,
+            ClassId:this.TypeId
+          }
+        }
+      }
+        wx.setStorageSync("ClassInfo",arr);
+        wx.navigateBack();
     },
    
     //展示详情
 			showDetail(item,i){
-        this.activeIndex = i
-				this.typeList.map((value,index)=>{
-					if(index == i){
-						if(value.isShow){
-							this.$set(value,"isShow",false)
-						}else{
-							this.$set(value,"isShow",true)
-						}
-					}else{
-						this.$set(value,"isShow",false)
-					}
+        this.activeIndex = i;
+        this.typeList.map((value,index)=>{
+          if(index == i){
+            if(value.isShow){
+              this.$set(value,"isShow",false)
+            }else{
+              this.$set(value,"isShow",true)
+            }
+          }else{
+            this.$set(value,"isShow",false)
+          }
         })
-        this.TypeId = item.ParentClassInfo.TypeId
+        if(item.SubClassInfoList.length){
+          this.istwo=true;
+          item.SubClassInfoList.map(son=>{
+            this.$set(son,"isCheck",false)
+          })
+        }else{
+          this.istwo=false;
+        }
+        this.ClassId =0;
+        this.twoType = '';
+        this.TypeId = item.ParentClassInfo.Id
         this.oneType = item.ParentClassInfo.ClassName
         console.log(this.TypeId,"typeId66666666666")
-				// this.getDetail(item)
+        // this.getDetail(item)
+        
       },
       //选择二级分类
       choseType(i,value){
@@ -126,7 +151,7 @@ export default {
               }
 						})
             this.typeList = res.data
-            this.TypeId = res.data[0].ParentClassInfo.TypeId
+            this.TypeId = res.data[0].ParentClassInfo.Id
             this.oneType = res.data[0].ParentClassInfo.ClassName
           }
         })
@@ -156,7 +181,7 @@ export default {
     }
   }
   .img2{
-    width:50rpx;height:50rpx;
+    width:40rpx;height:40rpx;
   }
   .btn_sure{
     position: fixed;bottom:0;

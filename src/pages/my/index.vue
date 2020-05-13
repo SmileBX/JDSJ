@@ -156,11 +156,11 @@ export default {
     return {
       info:{},
       orderNum:{},
-      isAdmin:0,//是否客服
+      isAdmin:false,//是否客服
       // orderList:['待付款','待发货','待收货','待评价','退款/售后']
     }
   },
-  onLoad(){
+  onShow(){
     this.getInfo();
     getNewMsgDot();
   },
@@ -193,7 +193,11 @@ export default {
         Token:wx.getStorageSync("token")
       }).then(res=>{
         if(res.code===0){
-          this.isAdmin = res.data
+          if(wx.getStorageSync("shopid")==res.data){
+            this.isAdmin = true;
+          }else{
+            this.isAdmin = false;
+          }
         }
       })
     },

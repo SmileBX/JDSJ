@@ -96,9 +96,17 @@ export default {
             wx.showToast({
               title: res.msg
             });
-            setTimeout(()=> {
-              wx.navigateBack()
+            if(res.code==0){
+              this.express={
+                id:'',
+                text:'',
+                code:''
+              };//快递公司
+              this.no='';//快递单号
+              setTimeout(()=> {
+                wx.navigateBack()
               },1500)
+            } 
         })
             
     },

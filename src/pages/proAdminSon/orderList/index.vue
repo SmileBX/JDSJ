@@ -1,7 +1,10 @@
 <template>
   <div class="ticket" style="padding-top:98rpx;">
       <div class="tab flex">
-        <div class="flex1 flexc" :class="{'active':tabIndex==index}" v-for="(item, index) in tabList" :key="index" @click="cliTab(index)">{{item}}</div>
+        <div class="flex1 flexc" :class="{'active':tabIndex==index}" v-for="(item, index) in tabList" :key="index" @click="cliTab(index)">
+          {{item}}
+          <div class="redtag" v-if="dfhcount>0&&index==2"></div>
+        </div>
         <span :style="'left:'+tabStyle+'rpx'"></span>
       </div>
       <div class="or_list mt2">
@@ -59,6 +62,7 @@ export default {
       isHaveData:false,
       isOver:false,
       changeNumId:'',//评价多商品订单时选中的订单id
+      dfhcount:0//待发货订单数量
     }
   },
   computed: {
@@ -79,7 +83,8 @@ export default {
     this.showgoodlist = false
     this.cancelId = ''
     this.cancelGoodsId = ''
-    this.getList()
+    this.getList();
+    this.GetSpecialDeliveryCount();
   },
   methods: {
     getList(){
@@ -157,6 +162,18 @@ export default {
         url:`/pages/proAdminSon/ship/main?OrderId=${orderId}`
       })
     },
+    //获取待发货数量
+    GetSpecialDeliveryCount(){
+      post('Shop/GetSpecialDeliveryCount',{
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token"),
+        ShopId:wx.getStorageSync("shopid")
+      }).then(res=>{
+        if(res.code===0){
+          this.dfhcount=res.data;
+        }
+      })
+    }
   },
   onReachBottom(){
     if(!this.isOver&&!this.isHaveData){
@@ -253,6 +270,7 @@ export default {
   .active{
     color: #f00
   }
+  .redtag{ height: 12rpx; width: 12rpx; border-radius: 50%; background: #f00; }
   span{
     position: absolute;
     bottom: 0;

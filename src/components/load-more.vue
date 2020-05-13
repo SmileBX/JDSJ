@@ -75,7 +75,7 @@
 
 	.loading-text {
 		font-size: 28upx;
-		color: #777777;
+		color: #999;
 	}
 
 	.loading-img>view {

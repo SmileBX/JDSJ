@@ -28,7 +28,7 @@
             <img class="sendImg" mode="widthFix" v-if="msg.Pic" :src="msg.Pic" @click="previewImg(msg.Pic)" />
           </div>
           <div class="avatarbox mr0">
-            <img :src="msg.Headimgurl" alt class="avatar"/>
+            <img :src="msg.Headimgurl||'http://jd.wtvxin.com/images/images/default.png'" alt class="avatar"/>
           </div>
           <input type="checkbox" class="checkbox" v-if="showModule==='manySelect'"  :checked="msg.selectStatus"/>
         </label>
@@ -38,7 +38,7 @@
               <input type="checkbox" class="checkbox" v-if="showModule==='manySelect'"  
               :checked="msg.selectStatus"/>
               <div class="avatarbox mr0">
-                <img :src="msg.Headimgurl" class="avatar"/>
+                <img :src="msg.Headimgurl||'http://jd.wtvxin.com/images/images/default.png'" class="avatar"/>
               </div>
               <div class="flex flexAlignEnd mrl2">
                 <div class="tagmsg bg_fff black" v-if="msg.Info" @longpress.stop="gotouchstart(msg)">
@@ -126,7 +126,7 @@
   <div v-if="IsShopServie==1">
     <div class="itembox" v-for="(item,index) in ShopMessageList.DataTable" :key="index" @click="goUrl(item.FriendId)">
       <div class="leftbox">
-        <img :src="item.Headimgurl" alt="">
+        <img :src="item.Headimgurl||'http://jd.wtvxin.com/images/images/default.png'" alt="">
         <span v-if="item.Count>0">{{item.Count}}</span>
       </div>
       <div class="rightbox">
@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { post,host,wssPath,emotionPath,filePath,getNewMsgDot } from "@/utils";
+import { post,host,wssPath,emotionPath,filePath } from "@/utils";
 import emotionList from "@/utils/emotionList";
 export default {
   data() {
@@ -189,7 +189,6 @@ export default {
     this.shopid=wx.getStorageSync("shopid");
     this.IsShopServie='';
     this.getShopMessageList()
-    getNewMsgDot()
   },
   onUnload() {
     wx.closeSocket({
@@ -241,19 +240,43 @@ export default {
       if(res.code==0){
         this.isshowInput=true;
         this.IsShopServie=res.data.IsShopServie;
+        let num=0;
         if(res.data.IsShopServie==0){//不是客服，直接显示聊天室
           this.FriendId=res.data.DataTable[0].FriendId
           this.getFriendMessage("scrollBottom").then(() => {
             this.connectSocket();
           });
+          num = res.data.DataTable[0].Count;
+          if(num&&num>0){
+            num>99?num = '99+':num = String(num);
+            wx.setTabBarBadge({
+              index: 1,
+              text:num
+            });
+          }else{
+            wx.removeTabBarBadge({
+              index: 1
+            });
+          }
         }else{
           var list=res.data.DataTable;
           list.map(item=>{
             item.AddTime=item.AddTime.replace(/T/,' ').substring(0,19)
           })
           this.ShopMessageList=res.data;
-          console.log(this.ShopMessageList)
+          num = list[0].SumCount;
+          if(num&&num>0){
+            num>99?num = '99+':num = String(num);
+            wx.setTabBarBadge({
+              index: 1,
+              text:num
+            });
+          }
         }
+      }else{
+        wx.removeTabBarBadge({
+          index: 1
+        });
       }
     },
     // 返回字符串长度，中文2，英文1
