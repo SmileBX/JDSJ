@@ -314,6 +314,7 @@ export default {
     this.proId=this.$root.$mp.query.id;
     this.isLimint=this.$root.$mp.query.isLimint||0;
     this.goodsNum = 1;
+    this.bannerindex = 0;
     this.specList=[];
     this.SpecText="";
     this.SpecValue={};
@@ -524,8 +525,8 @@ export default {
         duration: 200
       });
     },
-    changeBanner(e){
-      this.bannerindex=e.detail.current;
+    changeBanner(e){console.log(e)
+      this.bannerindex=e.mp.detail.current;
     },
     async ProductInfo(){
       let res=await post("Goods/ProductInfo",{
