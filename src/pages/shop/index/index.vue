@@ -24,7 +24,7 @@
         <div class="footItem" @click="goUrl('/pages/news/newsdetail/main?type=2')">
           <img src="/static/icons/shop-label.png" alt="" mode="widthFix">
           服务条款</div>
-        <div class="footItem" @click="notUrl">
+        <div class="footItem" @click="notUrl('/pages/myson2/order/main?type=2')">
           <img src="/static/icons/shop-label.png" alt="" mode="widthFix">
           物流查询</div>
       </div>

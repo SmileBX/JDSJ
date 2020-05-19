@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="navbox" :style="{height:height+'px'}">
+      <img src="/static/back.png" alt="" @click="goUrl('/pages/shop/index/main')">
+      <span>首页</span>
+      <span></span>
+    </div>
+    <div class="navbox2" :style="{height:height+'px'}"></div>
     <div class="top">
       <div class="search ali-c">
         <p class="oneline shopName" @click="goUrl('/pages/shop/index/main')">{{shopName}}</p>
@@ -137,11 +143,18 @@ export default {
       ],
       sortname: "m", //j：价格排序；s：销量排序；m：默认排序
       sFilter:0,//按销量 0:无 1:价格正序 2:价格倒序 ,
-      pFilter:0//按价格
+      pFilter:0,//按价格
+      height:0,
     }
   },
   onLoad(e){
     this.init();
+    var that=this;
+    wx.getSystemInfo({
+      success (res) {
+        that.height=res.statusBarHeight+44;console.log(that.height)
+      }
+    })
   },
   onShow(){
       if(wx.getStorageSync("shopid")!==this.shopid){
@@ -548,5 +561,27 @@ export default {
     }
   }
 }
-
+.navbox{
+  height: 128rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 25px 20rpx 0;
+  background: #ff3333;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  img{
+    width: 40rpx;
+    height: 40rpx;
+  }
+  span{
+    color: #fff;
+  }
+}
+.navbox2{
+  height: 128rpx;
+}
 </style>
