@@ -56,7 +56,7 @@
              <img src="/static/arrow_r.png" alt="" class="arrow_r mr2">
           </div>
         </div>
-        <div class="item flex justifyContentBetween flexAlignCenter bt">
+        <div class="item flex justifyContentBetween flexAlignCenter bt" style="display:none">
           <div>商品标签</div>
           <div class="flex tags">
               <span class="tag_item" v-for="(item,index) in tagList" :key="index" :class="{'active':activeIndex==index}" @tap="chose(index)">{{item.name}}</span>

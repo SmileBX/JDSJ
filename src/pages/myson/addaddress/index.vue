@@ -1,10 +1,10 @@
 <template>
   <div class="ca">
       <div class="bpm-box">
-        <!-- <div class="list ali-c">
+        <div class="list ali-c">
           <span>收货人</span>
           <input type="text" placeholder="请输入收货人姓名" v-model="Consignee">
-        </div> -->
+        </div>
         <div class="list ali-c">
           <span>手机号码</span>
           <input type="text" placeholder="请输入收货人电话" v-model="Mobile">
@@ -103,9 +103,9 @@ export default {
       this.showArea = true
     },
     jiaoyan(){
-      // if(!this.Consignee){
-      //     return '请输入收货人'
-      // }
+      if(!this.Consignee){
+          return '请输入收货人'
+      }
       if(!(/^1[3|4|5|6|7|8][0-9]\d{4,8}$/.test(this.Mobile))){
           return '请输入正确的手机号码'
       }
@@ -208,7 +208,7 @@ export default {
           params = {
             userId:this.userId,
             Token: this.token,
-            //Consignee: this.Consignee,
+            Consignee: this.Consignee,
             Mobile: this.Mobile,
             IsDefault: this.isDefault?1:0,
             ProvinceCode: this.ProvinceCode,

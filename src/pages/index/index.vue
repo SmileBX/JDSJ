@@ -146,17 +146,20 @@ export default {
       pFilter:0,//按价格
       height:0,
       statusBarHeight:24,
+      scanID:"",//扫码获取的店铺id
     }
   },
   onLoad(e){
+    this.scanID=decodeURIComponent(e.shopid);
     this.init();
     var that=this;
     wx.getSystemInfo({
       success (res) {
-        that.height=res.statusBarHeight+44;console.log(that.height)
+        that.height=res.statusBarHeight+44;
         that.statusBarHeight=res.statusBarHeight;
       }
     })
+    
   },
   onShow(){
       if(wx.getStorageSync("shopid")!==this.shopid){
@@ -169,9 +172,12 @@ export default {
       this.token = wx.getStorageSync("token");
       if(wx.getStorageSync("shopid")){
         this.shopid = wx.getStorageSync("shopid");
+      }else if(this.scanID){
+        this.shopid=this.scanID;
         this.AddVisitShop();//添加浏览店铺
       }else{
-        this.shopid ="50FB070743F1853A";
+        this.shopid=this.$root.$mp.query.shareshopid;
+        this.AddVisitShop();//添加浏览店铺
       }
       this.GetMerchantDetail();
       this.GetShopRecruitment();
@@ -354,7 +360,7 @@ export default {
   onShareAppMessage: function() {
     return {
       title: this.shopName, //转发页面的标题
-      path: '/pages/index/main?shopid='+this.shopid
+      path: '/pages/index/main?shareshopid='+this.shopid
     }
   }
 }

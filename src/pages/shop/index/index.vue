@@ -1,7 +1,9 @@
 <template>
   <div class="p30">
       <img class="shopImg" src="http://jd.wtvxin.com/images/images/shop/joinShop.png" alt="" @click="goUrl('/pages/news/newslist/main')">
-      <h3>为你收集港澳台心意店铺<span class="red" @click="goUrl('/pages/shop/join/main')">(开店)</span></h3>
+      <h3>为你收集港澳台心意店铺
+        <!-- <span class="red" @click="goUrl('/pages/shop/join/main')">(开店)</span> -->
+      </h3>
       <div class="list">
         <block v-for="(item,index) in ShopList" :key="index">
           <div class="item flex-center-start" @click="goshop(item.Id)">

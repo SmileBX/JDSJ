@@ -52,7 +52,7 @@
           <h3>优惠劵</h3>
           <h4 class="flex-center"><span :class="[couponid>0?'red':'']">{{coupontxt}}</span> <span class="icon"><van-icon name="arrow" color="#999"/></span></h4>
         </div>
-        <div class="item" @click="ChooseInvoice">
+        <div class="item" @click="ChooseInvoice" style="display:none">
           <h3>开票类型</h3>
           <h4 class="flex-center">{{Invoicetxt}}<span v-if="InvoiceId>0" @click.stop="delInvoicet" class="delinvoice">×</span><span class="icon"><van-icon name="arrow" color="#999"/></span> </h4>
         </div>

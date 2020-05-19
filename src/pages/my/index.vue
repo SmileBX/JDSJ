@@ -130,7 +130,7 @@
                 <p>我的评价</p>
               </div>
             </div>
-            <div class="icon flexc" @click="switchPath('/pages/myson/invoiceList/main')">
+            <div style="display:none" class="icon flexc" @click="switchPath('/pages/myson/invoiceList/main')">
               <div>
                 <img src="http://jd.wtvxin.com/images/images/icons/14.png" alt="">
                 <p>我的发票</p>

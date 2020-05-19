@@ -7,7 +7,7 @@
         </div>
         <div class="right" @click="goUrl('proAdminSon/upLoadPro')">
           <img src="/static/icons/shop.png" alt="">
-          <p>店铺管理</p>
+          <p>上传商品</p>
         </div>
       </div>
       <div class="content">
