@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="navbox" :style="{height:height+'px'}">
+    <div class="navbox" :style="{'height':height+'px','padding-top':statusBarHeight+'px'}">
       <img src="/static/back.png" alt="" @click="goUrl('/pages/shop/index/main')">
       <span>首页</span>
       <span></span>
@@ -52,7 +52,7 @@
       <img @click="goUrl('/pages/team/goods/main')" src="http://jd.wtvxin.com/images/images/index/pintuan.png" alt="">
     </div>
     <div class="goods-box" id="goods-box">
-      <div class="xd">
+      <div class="xd"  :style="{'top':height+'px'}">
         <div class="all flexc">
           <img src="http://jd.wtvxin.com/images/images/index/title.png" alt="">
         </div>
@@ -145,6 +145,7 @@ export default {
       sFilter:0,//按销量 0:无 1:价格正序 2:价格倒序 ,
       pFilter:0,//按价格
       height:0,
+      statusBarHeight:24,
     }
   },
   onLoad(e){
@@ -153,6 +154,7 @@ export default {
     wx.getSystemInfo({
       success (res) {
         that.height=res.statusBarHeight+44;console.log(that.height)
+        that.statusBarHeight=res.statusBarHeight;
       }
     })
   },
@@ -566,7 +568,7 @@ export default {
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 25px 20rpx 0;
+  padding: 0 20rpx;
   background: #ff3333;
   justify-content: space-between;
   position: fixed;
