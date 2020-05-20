@@ -147,11 +147,13 @@ export default {
       height:0,
       statusBarHeight:24,
       scanID:"",//扫码获取的店铺id
+      shareID:"",//分享获取的店铺id
     }
   },
   onLoad(e){
-    this.scanID=decodeURIComponent(e.shopid);
-    this.init();
+   this.scanID=decodeURIComponent(e.shopid);
+   this.init();
+    console.log('this.scanID'+this.scanID)
     var that=this;
     wx.getSystemInfo({
       success (res) {
@@ -162,21 +164,22 @@ export default {
     
   },
   onShow(){
-      if(wx.getStorageSync("shopid")!==this.shopid){
-        this.init();
-      }
+    if(wx.getStorageSync("selectshopid")){
+     this.init();
+    }
   },
   methods: {
     init(){
       this.userId = wx.getStorageSync("userId");
       this.token = wx.getStorageSync("token");
-      if(wx.getStorageSync("shopid")){
-        this.shopid = wx.getStorageSync("shopid");
-      }else if(this.scanID){
-        this.shopid=this.scanID;
+      this.shareID=this.$root.$mp.query.shareshopid||'';
+      if(this.shareID){
+        this.shopid=this.shareID
         this.AddVisitShop();//添加浏览店铺
-      }else{
-        this.shopid=this.$root.$mp.query.shareshopid;
+      }else if(wx.getStorageSync("selectshopid")){
+        this.shopid=wx.getStorageSync("selectshopid");
+      }else if(this.scanID){
+        this.shopid=this.scanID
         this.AddVisitShop();//添加浏览店铺
       }
       this.GetMerchantDetail();
@@ -219,6 +222,8 @@ export default {
       })
       if(res.code==0){
         this.shopName=res.data.ShopInfo.shopNick;
+        wx.setStorageSync("shopid", this.shopid);
+        wx.setStorageSync("selectshopid","");
       }
     },
     //添加浏览店铺

@@ -53,7 +53,7 @@ export default {
         wx.switchTab({
           url: '/pages/index/main'
         })
-        wx.setStorageSync("shopid", id);
+        wx.setStorageSync("selectshopid", id);
       },
       goUrl(str){
         wx.navigateTo({
