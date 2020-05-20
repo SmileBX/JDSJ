@@ -113,6 +113,12 @@
                 <p>商品管理</p>
               </div>
             </div>
+            <div class="icon flexc"  @click="switchPath('/pages/myson/set/main')">
+              <div>
+                <img src="/static/icons/u_set.png" alt="">
+                <p>设置</p>
+              </div>
+            </div>
           </div>
         </div>
         <div class="card">

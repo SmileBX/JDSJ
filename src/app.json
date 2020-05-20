@@ -31,7 +31,10 @@
         "addInvoice/main",
         "invoiceList/main",
         "addaddress/main",
-        "proAdmin/main"
+        "proAdmin/main",
+        "set/main",
+        "verPhone/main",
+        "authentication/main"
       ]
     },
     {

@@ -18,6 +18,7 @@
               <img src="http://jd.wtvxin.com/images/images/goods/address-icon.png" alt="">
               <p>暂无收货地址，点击添加</p>
           </div>
+          <div class="tips" style="color:#ffa82e;">温馨提示：请确保登记信息真实，购买人及支付人为同一人。</div>
       </div>
       <div class="pro plr30">
         <h3 class="flex-center-start" @click="goshop">{{shopName}}<span class="icon"><van-icon name="arrow" color="#999"/></span></h3>

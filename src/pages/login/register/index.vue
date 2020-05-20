@@ -12,7 +12,7 @@
             <span class="icon icon_phone"></span>
             <input type="text" class="ipt" placeholder="请输入手机号码" v-model="phoneNumber" />
           </div>
-          <div class="from-line">
+          <div class="from-line" style="display:none">
             <span class="icon icon_code"></span>
             <input type="text" class="ipt" placeholder="请输入验证码" v-model="verifyCode" />
             <!-- <div class="getcode" @click="getCode(this)">{{btnText}}</div> -->
@@ -120,7 +120,7 @@ export default {
       const unionid = wx.getStorageSync("unionid");
       const res = await post("Login/BindOrRegister", {
         Mobile: this.phoneNumber,
-        yzcode: this.verifyCode,
+        //yzcode: this.verifyCode,
         PassWord: this.password,
         OkPassWord: this.password2,
         Unionid: unionid, //微信统一unionid号
@@ -217,7 +217,7 @@ export default {
         return false;
       }
 
-      if (!this.phoneNumber || !this.verifyCode) {
+      if (!this.phoneNumber) {
         wx.showToast({
           title: "请填写手机号和验证码",
           icon: "none",
@@ -225,7 +225,14 @@ export default {
         });
         return false;
       }
-
+      if (!this.verifyCode) {
+        wx.showToast({
+          title: "请填写验证码",
+          icon: "none",
+          duration: 2000
+        });
+        return false;
+      }
       if (!/^1(3|4|5|6|7|8)\d{9}$/.test(this.phoneNumber)) {
         wx.showToast({
           title: "请填写正确的手机号",
