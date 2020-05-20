@@ -1022,7 +1022,7 @@ export default {
   }
 }
 .numpage{
-    position: fixed;
+    position: absolute;
     right: 20rpx; 
     top: 640rpx;
     padding: 0 10rpx;
@@ -1030,7 +1030,7 @@ export default {
     font-size: 24rpx;
     background: rgba(0,0,0,.4); 
     border-radius: 100px;
-    z-index: 112;
+    z-index: 9;
   }
 .swiper{
   height: 700rpx;
