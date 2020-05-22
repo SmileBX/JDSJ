@@ -236,6 +236,7 @@ export default {
         Lng:"",
         Lat:""
       })
+      console.log("添加店铺"+JSON.stringify(res))
     },
     async GetShopRecruitment(){
       let res=await post("Shop/GetShopRecruitment",{

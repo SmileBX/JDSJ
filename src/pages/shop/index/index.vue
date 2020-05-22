@@ -44,9 +44,7 @@ export default {
   onLoad(){
   },
   onShow(){
-    if(this.ShopList.length<1){
-      this.GetVisitShopList();
-    }
+    this.GetVisitShopList();
   },
   methods: {
       goshop(id){
