@@ -151,8 +151,10 @@ export default {
     }
   },
   onLoad(e){
-   this.scanID=decodeURIComponent(e.shopid);
-   this.init();
+    const scene = decodeURIComponent(e.scene);
+    console.log(scene);
+    this.scanID=scene;
+    this.init();
     console.log('this.scanID'+this.scanID)
     var that=this;
     wx.getSystemInfo({
