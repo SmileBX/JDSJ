@@ -110,7 +110,7 @@
             <div class="icon flexc"  @click="switchPath('/pages/myson/proAdmin/main')" v-if="isAdmin">
               <div>
                 <img src="/static/icons/store.png" alt="">
-                <p>商品管理</p>
+                <p>店铺管理</p>
               </div>
             </div>
             <div class="icon flexc"  @click="switchPath('/pages/myson/set/main')">

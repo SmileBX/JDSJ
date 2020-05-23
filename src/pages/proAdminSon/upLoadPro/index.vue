@@ -80,6 +80,14 @@
              <img src="/static/arrow_r.png" alt="" class="arrow_r mr2">
           </div>
         </div> -->
+        <!-- <div class="item flex justifyContentBetween flexAlignCenter bt">
+          <div>原产国</div>
+          <input type="text" placeholder="非必填" class="text_right" v-model="query.Country">
+        </div>
+        <div class="item flex justifyContentBetween flexAlignCenter bt">
+          <div>货号</div>
+          <input type="text" placeholder="非必填" class="text_right" v-model="query.ItemNumber">
+        </div> -->
         <div class="item flex justifyContentBetween flexAlignCenter bt">
           <div>商品描述</div>
           <input type="text" placeholder="非必填" class="text_right" v-model="query.Synopsis">
@@ -141,7 +149,9 @@ export default {
         Synopsis:"",
         ContentDetail: "",
         IsPinkage: 0,//是否包邮 1不包邮
-        FreightId: 0
+        FreightId: 0,
+        // Country:"",
+        // ItemNumber:""
       },
       Freighttxt:"",
       showFreight:false,//弹出运费模板
@@ -380,7 +390,9 @@ export default {
           Synopsis:"",
           ContentDetail: "",
           IsPinkage: 0,//是否包邮 1不包邮
-          FreightId: 0
+          FreightId: 0,
+          // Country:"",
+          // ItemNumber:""
         },
         this.Freighttxt="";
         this.showFreight=false;
@@ -393,6 +405,9 @@ export default {
   .upPro{
     .item{
       padding:25rpx 30rpx;
+      input{
+        width: 540rpx
+      }
     }
     .title{
         padding:25rpx 0;

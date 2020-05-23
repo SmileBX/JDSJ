@@ -225,14 +225,14 @@ export default {
         });
         return false;
       }
-      if (!this.verifyCode) {
-        wx.showToast({
-          title: "请填写验证码",
-          icon: "none",
-          duration: 2000
-        });
-        return false;
-      }
+      // if (!this.verifyCode) {
+      //   wx.showToast({
+      //     title: "请填写验证码",
+      //     icon: "none",
+      //     duration: 2000
+      //   });
+      //   return false;
+      // }
       if (!/^1(3|4|5|6|7|8)\d{9}$/.test(this.phoneNumber)) {
         wx.showToast({
           title: "请填写正确的手机号",
