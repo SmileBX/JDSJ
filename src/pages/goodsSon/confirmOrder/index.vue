@@ -514,6 +514,19 @@ export default {
         wx.redirectTo({ 
           url: "/pages/goodsSon/paysuccess/main?orderNo=" + res.data+'&status='+res.code+'&price=0'
         });
+      }else if(res.code==3){
+        wx.showModal({
+          title: '实名认证',
+          content: res.msg,
+          success (res) {
+            if (res.confirm) {
+              console.log('用户点击确定')
+              wx.navigateTo({url:"/pages/myson/authentication/main"})
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
       }else{
         wx.showToast({
           title: res.msg,
