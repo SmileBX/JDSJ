@@ -1,4 +1,4 @@
-import {host,LoginPath,RegisterPath} from '../utils';
+ import {host,LoginPath,RegisterPath} from '../utils';
 const LoginRequestUrl = "Login/SignIn_New";//登录接口地址，
 const LoginSuccessCode = 0;//登录成功
 const LoginNotRegisterCode = 2;//未注册

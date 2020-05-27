@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import {post,get,getNewMsgDot} from '@/utils'
+import {post,get,getNewMsgDot,judgeLogin} from '@/utils'
 import noData from "@/components/noData"; //没有数据的通用提示。
 import LoadMore from '@/components/load-more';
 export default {
@@ -148,6 +148,7 @@ export default {
       statusBarHeight:24,
       scanID:"",//扫码获取的店铺id
       shareID:"",//分享获取的店铺id
+      isaddSHOP:false,//是否添加店铺
     }
   },
   onLoad(e){
@@ -155,7 +156,6 @@ export default {
     console.log(scene);
     this.scanID=scene;
     this.init(0);
-    console.log('this.scanID'+this.scanID)
     var that=this;
     wx.getSystemInfo({
       success (res) {
@@ -166,8 +166,12 @@ export default {
     
   },
   onShow(){
+    this.isaddSHOP=wx.getStorageSync("isaddSHOP");
     if(wx.getStorageSync("selectshopid")){
      this.init(1);
+    }
+    if(this.isaddSHOP){
+      this.AddVisitShop();//添加浏览店铺
     }
   },
   methods: {
@@ -178,10 +182,11 @@ export default {
       if(num==0){
         if(this.shareID){
           this.shopid=this.shareID
-          this.AddVisitShop();//添加浏览店铺
         }else if(this.scanID){
           this.shopid=this.scanID
-          this.AddVisitShop();//添加浏览店铺
+        }
+        if(!judgeLogin()){
+          wx.setStorageSync("isaddSHOP", true);
         }
       }else{
         this.shopid=wx.getStorageSync("selectshopid");
