@@ -154,7 +154,7 @@ export default {
     const scene = decodeURIComponent(e.scene);
     console.log(scene);
     this.scanID=scene;
-    this.init();
+    this.init(0);
     console.log('this.scanID'+this.scanID)
     var that=this;
     wx.getSystemInfo({
@@ -167,22 +167,24 @@ export default {
   },
   onShow(){
     if(wx.getStorageSync("selectshopid")){
-     this.init();
+     this.init(1);
     }
   },
   methods: {
-    init(){
+    init(num){
       this.userId = wx.getStorageSync("userId");
       this.token = wx.getStorageSync("token");
       this.shareID=this.$root.$mp.query.shareshopid||'';
-      if(this.shareID){
-        this.shopid=this.shareID
-        this.AddVisitShop();//添加浏览店铺
-      }else if(wx.getStorageSync("selectshopid")){
+      if(num==0){
+        if(this.shareID){
+          this.shopid=this.shareID
+          this.AddVisitShop();//添加浏览店铺
+        }else if(this.scanID){
+          this.shopid=this.scanID
+          this.AddVisitShop();//添加浏览店铺
+        }
+      }else{
         this.shopid=wx.getStorageSync("selectshopid");
-      }else if(this.scanID){
-        this.shopid=this.scanID
-        this.AddVisitShop();//添加浏览店铺
       }
       this.GetMerchantDetail();
       this.GetShopRecruitment();

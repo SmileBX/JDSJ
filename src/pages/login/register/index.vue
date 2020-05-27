@@ -219,7 +219,7 @@ export default {
 
       if (!this.phoneNumber) {
         wx.showToast({
-          title: "请填写手机号和验证码",
+          title: "请填写手机号",
           icon: "none",
           duration: 2000
         });
