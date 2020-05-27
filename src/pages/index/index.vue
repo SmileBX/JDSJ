@@ -148,7 +148,6 @@ export default {
       statusBarHeight:24,
       scanID:"",//扫码获取的店铺id
       shareID:"",//分享获取的店铺id
-      isaddSHOP:false,//是否添加店铺
     }
   },
   onLoad(e){
@@ -166,11 +165,9 @@ export default {
     
   },
   onShow(){
-    this.isaddSHOP=wx.getStorageSync("isaddSHOP");
     if(wx.getStorageSync("selectshopid")){
      this.init(1);
-    }
-    if(this.isaddSHOP){
+    }else{
       this.AddVisitShop();//添加浏览店铺
     }
   },
@@ -185,9 +182,7 @@ export default {
         }else if(this.scanID){
           this.shopid=this.scanID
         }
-        if(!judgeLogin()){
-          wx.setStorageSync("isaddSHOP", true);
-        }
+        judgeLogin();
       }else{
         this.shopid=wx.getStorageSync("selectshopid");
       }
