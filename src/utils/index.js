@@ -20,6 +20,7 @@ const code={
   fail:1,//失败
   notRegister:2,//未注册
   resCode1:200,//成功特别方式
+  resCode2:3,//成功特别方式
 }
 function request(url, data,method, loginFn) {
   wx.showLoading({
@@ -40,6 +41,8 @@ function request(url, data,method, loginFn) {
             resolve(res.data);
             break;
           case code.resCode1:
+            resolve(res.data);
+          case code.resCode2:
             resolve(res.data);
 
             break;
