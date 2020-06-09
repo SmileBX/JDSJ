@@ -10,8 +10,8 @@
             </div>
           </div>
           <div class="shop ali-c">
-            <img :src="datainfo.logo" :alt="datainfo.companyName">
-            <p>{{datainfo.companyName}}</p>
+            <img :src="datainfo.logo" :alt="datainfo.shopNick">
+            <p>{{datainfo.shopNick}}</p>
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default {
       })
     },
     async GetMerchantDetail(){
-      let res=await post("Shop/GetMerchantDetail",{
+      let res = await post("Shop/GetMerchantDetail",{
         ShopId:this.shopid
       })
       if(res.code==0){
@@ -194,11 +194,13 @@ export default {
         typeId: 0,
         parentId: 0
       });
-      if (result.code === 0) {
+      if (result.code === 0&&result.data.length) {
         this.categoryList = result.data;
         //this.typeId = result.data[0].TypeId;
         this.parentId=result.data[0].Id;
         this.categoryClickMain(this.parentId, this.categoryActive); //默认的第一条顶级分类(获取下级分类)
+      }else{
+						this.noDataIsShow=true;
       }
     },
 			async classifyList() {

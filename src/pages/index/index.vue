@@ -151,8 +151,13 @@ export default {
     }
   },
   onLoad(e){
-    const scene = decodeURIComponent(e.scene);
-    console.log(scene);
+    let scene ='';
+    if(e.scene){
+      scene= decodeURIComponent(e.scene);
+    }else{
+      scene=wx.getStorageSync("selectshopid");
+    }
+    console.log('scene',scene);
     this.scanID=scene;
     this.init(0);
     var that=this;
