@@ -24,7 +24,7 @@
         </div>
       </div>
         <view class="page-body">
-          <scroll-view class="nav-left" scroll-y style="height:100%" v-if="categoryList.length>0">
+          <scroll-view class="nav-left" scroll-y style="height:100%">
             <view class="nav-left-item" @click="categoryClickMain(item.Id,index)" :key="index" :class="index==categoryActive?'active':''"
             v-for="(item,index) in categoryList">
               {{item.ClassName}}
@@ -200,7 +200,10 @@ export default {
         this.parentId=result.data[0].Id;
         this.categoryClickMain(this.parentId, this.categoryActive); //默认的第一条顶级分类(获取下级分类)
       }else{
-						this.noDataIsShow=true;
+            this.noDataIsShow=true;
+            this.hasData=false;
+            this.hasProData=false;
+            this.categoryList=[];
       }
     },
 			async classifyList() {
